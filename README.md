@@ -1,50 +1,168 @@
-# Welcome to your Expo app 👋
+# Question pour un Catho - Application de Quiz Théologique
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Une application mobile moderne pour se former à la théologie catholique à travers des quiz interactifs, des récompenses et un système de progression.
 
-## Get started
+## 🎯 Fonctionnalités
 
-1. Install dependencies
+### Quiz Interactifs
+- **Questions variées** : Dogmes, sacrements, liturgie, Saintes Écritures, morale, histoire de l'Église, saints et prières
+- **Système de difficulté** : Questions faciles, moyennes et difficiles
+- **Explications détaillées** : Chaque question inclut une explication et des références bibliques/catéchétiques
+- **Timer optionnel** : Quiz chronométrés pour plus de défi
 
+### Système de Récompenses
+- **Points** : Gagnez des points en fonction de la difficulté et de la précision
+- **Badges** : Débloquez des badges en fonction de vos performances
+- **Niveaux** : Progressez à travers différents niveaux de maîtrise
+- **Séries** : Suivez vos jours consécutifs d'utilisation
+
+### Interface Utilisateur
+- **Design moderne** : Interface intuitive et responsive
+- **Mode sombre/clair** : Support automatique des thèmes
+- **Navigation fluide** : Navigation par onglets et écrans dédiés
+- **Animations** : Retour haptique et animations pour une meilleure expérience
+
+## 📱 Écrans Principaux
+
+### Accueil
+- Vue d'ensemble de la progression
+- Quiz recommandés
+- Défi du jour
+- Statistiques rapides
+
+### Catégories
+- Navigation par domaines théologiques
+- Quiz populaires
+- Statistiques par catégorie
+
+### Quiz
+- Interface de jeu immersive
+- Barre de progression
+- Timer en temps réel
+- Feedback immédiat
+
+### Progression
+- Statistiques détaillées
+- Badges obtenus
+- Historique d'activité
+- Graphiques de progression
+
+### Profil
+- Informations utilisateur
+- Paramètres de notification
+- Préférences d'accessibilité
+
+## 🛠️ Technologies Utilisées
+
+- **React Native** avec Expo
+- **TypeScript** pour la sécurité des types
+- **Expo Router** pour la navigation
+- **React Hooks** pour la gestion d'état
+- **StyleSheet** pour le styling
+
+## 🚀 Installation et Démarrage
+
+1. **Cloner le projet**
+   ```bash
+   git clone [url-du-repo]
+   cd questionpouruncatho2
+   ```
+
+2. **Installer les dépendances**
    ```bash
    npm install
+   # ou
+   yarn install
    ```
 
-2. Start the app
-
+3. **Démarrer l'application**
    ```bash
-   npx expo start
+   npm start
+   # ou
+   yarn start
    ```
 
-In the output, you'll find options to open the app in a
+4. **Ouvrir sur votre appareil**
+   - Scannez le QR code avec l'app Expo Go (iOS/Android)
+   - Ou appuyez sur `w` pour ouvrir dans le navigateur
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 📊 Structure des Données
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+### Questions
+```typescript
+interface Question {
+  id: string;
+  category: QuestionCategory;
+  difficulty: 'facile' | 'moyen' | 'difficile';
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
+  points: number;
+  scripture?: string;
+  catechism?: string;
+}
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Quiz
+```typescript
+interface Quiz {
+  id: string;
+  title: string;
+  description: string;
+  category: QuestionCategory;
+  questions: Question[];
+  timeLimit?: number;
+  passingScore: number;
+}
+```
 
-## Learn more
+## 🎨 Personnalisation
 
-To learn more about developing your project with Expo, look at the following resources:
+### Ajouter de Nouvelles Questions
+1. Modifiez le fichier `data/questions.ts`
+2. Ajoutez vos questions dans le tableau `sampleQuestions`
+3. Créez de nouveaux quiz dans `sampleQuizzes`
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Modifier les Catégories
+1. Mettez à jour `QuestionCategory` dans `types/quiz.ts`
+2. Ajoutez les noms et icônes dans `data/questions.ts`
 
-## Join the community
+### Personnaliser l'Interface
+1. Modifiez les couleurs dans `constants/Colors.ts`
+2. Ajustez les styles dans les composants
+3. Personnalisez les icônes avec `IconSymbol`
 
-Join our community of developers creating universal apps.
+## 📈 Fonctionnalités Futures
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [ ] Synchronisation cloud des scores
+- [ ] Mode multijoueur
+- [ ] Quiz personnalisés
+- [ ] Notifications de rappel
+- [ ] Mode hors ligne
+- [ ] Export des résultats
+- [ ] Intégration avec des ressources théologiques
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! Pour contribuer :
+
+1. Fork le projet
+2. Créez une branche pour votre fonctionnalité
+3. Committez vos changements
+4. Poussez vers la branche
+5. Ouvrez une Pull Request
+
+## 📄 Licence
+
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
+
+## 🙏 Remerciements
+
+- L'Église catholique pour son enseignement
+- La communauté React Native
+- Les contributeurs open source
+
+---
+
+**Développé avec ❤️ pour la formation théologique catholique**

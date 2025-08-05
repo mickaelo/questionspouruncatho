@@ -1,26 +1,47 @@
 /**
  * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
+ * Theme inspired by http://prierenligne.fr/ - Catholic and spiritual aesthetic
  */
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+// Couleurs inspirées du site prierenligne.fr
+const tintColorLight = '#8B4513'; // Marron chaud (Saddle Brown)
+const tintColorDark = '#DAA520'; // Doré (Goldenrod)
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
+    text: '#2C1810', // Marron très foncé pour le texte
+    background: '#FDF8F3', // Blanc cassé très chaud
     tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
+    icon: '#8B4513', // Marron chaud pour les icônes
+    tabIconDefault: '#A0522D', // Marron plus clair pour les icônes non sélectionnées
     tabIconSelected: tintColorLight,
+    // Couleurs supplémentaires pour le thème catholique
+    primary: '#8B4513', // Marron chaud principal
+    secondary: '#DAA520', // Doré secondaire
+    accent: '#CD853F', // Marron sable
+    success: '#228B22', // Vert forêt
+    warning: '#FF8C00', // Orange foncé
+    error: '#B22222', // Rouge brique
+    card: '#FFF8DC', // Blanc coquille d'œuf
+    border: '#DEB887', // Marron bois clair
+    shadow: '#D2B48C', // Marron tan
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
+    text: '#F5DEB3', // Blé clair pour le texte
+    background: '#2C1810', // Marron très foncé pour le fond
     tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
+    icon: '#DAA520', // Doré pour les icônes
+    tabIconDefault: '#CD853F', // Marron sable pour les icônes non sélectionnées
     tabIconSelected: tintColorDark,
+    // Couleurs supplémentaires pour le thème catholique (mode sombre)
+    primary: '#DAA520', // Doré principal
+    secondary: '#8B4513', // Marron chaud secondaire
+    accent: '#CD853F', // Marron sable
+    success: '#32CD32', // Vert lime
+    warning: '#FFA500', // Orange
+    error: '#DC143C', // Rouge cramoisi
+    card: '#3C2A21', // Marron très foncé pour les cartes
+    border: '#654321', // Marron brun
+    shadow: '#1C1C1C', // Noir profond
   },
 };

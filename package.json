@@ -5,19 +5,31 @@
   "scripts": {
     "start": "expo start",
     "reset-project": "node ./scripts/reset-project.js",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
-    "lint": "expo lint"
+    "lint": "expo lint",
+    "populate-db": "tsx scripts/populate-database.ts populate",
+    "clear-db": "tsx scripts/populate-database.ts clear",
+    "db-stats": "tsx scripts/populate-database.ts stats",
+    "saint-thomas-populate": "tsx scripts/populate-saint-thomas.ts populate",
+    "saint-thomas-clear": "tsx scripts/populate-saint-thomas.ts clear",
+    "saint-thomas-stats": "tsx scripts/populate-saint-thomas.ts stats",
+    "import-firebase": "tsx scripts/import-to-firebase.ts"
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
+    "@react-native-firebase/app": "^22.4.0",
+    "@react-native-firebase/auth": "^22.4.0",
+    "@react-native-firebase/crashlytics": "^22.4.0",
     "@react-navigation/bottom-tabs": "^7.3.10",
     "@react-navigation/elements": "^2.3.8",
     "@react-navigation/native": "^7.1.6",
-    "expo": "~53.0.20",
+    "expo": "^53.0.20",
+    "expo-auth-session": "^5.4.0",
     "expo-blur": "~14.1.5",
     "expo-constants": "~17.1.7",
+    "expo-crypto": "~13.0.0",
     "expo-font": "~13.3.2",
     "expo-haptics": "~14.1.4",
     "expo-image": "~2.4.0",
@@ -28,6 +40,7 @@
     "expo-symbols": "~0.4.5",
     "expo-system-ui": "~5.0.10",
     "expo-web-browser": "~14.2.0",
+    "firebase": "^12.0.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-native": "0.79.5",
@@ -41,9 +54,10 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~19.0.10",
-    "typescript": "~5.8.3",
     "eslint": "^9.25.0",
-    "eslint-config-expo": "~9.2.0"
+    "eslint-config-expo": "~9.2.0",
+    "tsx": "^4.20.3",
+    "typescript": "~5.8.3"
   },
   "private": true
 }

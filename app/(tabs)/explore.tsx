@@ -1,110 +1,233 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
-
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { Colors } from '@/constants/Colors';
+import { categoryIcons, categoryNames, getAvailableQuizzes } from '@/data/questions';
+import { useAuth } from '@/hooks/useAuth';
+import { useColorScheme } from '@/hooks/useColorScheme';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { router } from 'expo-router';
+import React from 'react';
+import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export default function TabTwoScreen() {
+export default function CategoriesScreen() {
+  const { user, isAuthenticated } = useAuth();
+  const colorScheme = useColorScheme();
+  const colors = Colors[colorScheme ?? 'light'];
+  const insets = useSafeAreaInsets();
+  const isWeb = Platform.OS === 'web';
+
+  // Check if user is admin
+  const isAdmin = isAuthenticated && user?.type?.includes('admin');
+  
+  // Get user level (default to 1 if not available)
+  const userLevel = 1; // TODO: Get from user progress
+
+  const handleCategoryPress = (category: string) => {
+    router.push({
+      pathname: '/category/[id]',
+      params: { id: category }
+    });
+  };
+
+  const getQuizCount = (category: string) => {
+    const availableQuizzes = getAvailableQuizzes(userLevel, isAdmin);
+    return availableQuizzes.filter(quiz => quiz.category === category).length;
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
+    <ScrollView 
+      style={[
+        styles.container, 
+        { 
+          backgroundColor: colors.background,
+          paddingTop: Platform.OS === 'android' ? insets.top : 0,
+        }
+      ]}
+      contentContainerStyle={{
+        paddingBottom: Platform.OS === 'android' ? 150 : 60, // Espace pour la barre de navigation
+      }}
+    >
+      <ThemedView style={styles.section}>
+        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
+          Toutes les catégories
+        </ThemedText>
+
+        <View style={styles.categoriesGrid}>
+          {Object.entries(categoryNames).map(([key, name]) => (
+            <TouchableOpacity
+              key={key}
+              style={[styles.categoryCard, { backgroundColor: colors.card, borderColor: colors.border }]}
+              onPress={() => handleCategoryPress(key)}
+            >
+              <View style={[styles.iconContainer, { backgroundColor: 'rgba(139, 69, 19, 0.1)' }]}>
+                <MaterialIcons 
+                  name={categoryIcons[key] as any || 'help'} 
+                  size={24} 
+                  color={colors.primary} 
+                />
+              </View>
+              <ThemedText type="subtitle" style={[styles.categoryName, { color: colors.text }]}>
+                {name}
+              </ThemedText>
+              <ThemedText style={[styles.quizCount, { color: colors.text }]}>
+                {getQuizCount(key)} quiz
+              </ThemedText>
+            </TouchableOpacity>
+          ))}
+        </View>
       </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
+
+      <ThemedView style={styles.section}>
+        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
+          Quiz populaires
         </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user&apos;s current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+
+        {getAvailableQuizzes(userLevel, isAdmin).slice(0, 3).map((quiz) => (
+          <TouchableOpacity
+            key={quiz.id}
+            style={[styles.popularQuiz, { backgroundColor: colors.card, borderColor: colors.border }]}
+            onPress={() => router.push({
+              pathname: '/quiz/[id]',
+              params: { id: quiz.id }
+            })}
+          >
+            <View style={styles.quizInfo}>
+              <ThemedText type="subtitle" style={[styles.quizTitle, { color: colors.text }]}>
+                {quiz.title}
+              </ThemedText>
+              <ThemedText style={[styles.quizDescription, { color: colors.text }]}>
+                {quiz.description}
+              </ThemedText>
+              <View style={styles.quizMeta}>
+                <ThemedText style={[styles.quizMetaText, { color: colors.primary }]}>
+                  {quiz.questions.length} questions
+                </ThemedText>
+                {quiz.timeLimit && (
+                  <ThemedText style={[styles.quizMetaText, { color: colors.primary }]}>
+                    {quiz.timeLimit} min
+                  </ThemedText>
+                )}
+              </View>
+            </View>
+            <IconSymbol name="chevron.right" size={20} color={colors.primary} />
+          </TouchableOpacity>
+        ))}
+      </ThemedView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
   },
-  titleContainer: {
+  appHeader: {
+    padding: 20,
+    paddingTop: 40,
+    margin: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  appTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 4,
+    textAlign: 'center',
+  },
+  appSubtitle: {
+    fontSize: 14,
+    opacity: 0.8,
+    textAlign: 'center',
+  },
+  section: {
+    padding: 20,
+    paddingTop: 0,
+  },
+  sectionTitle: {
+    marginBottom: 16,
+  },
+  categoriesGrid: {
     flexDirection: 'row',
-    gap: 8,
+    flexWrap: 'wrap',
+    gap: 12,
+  },
+  categoryCard: {
+    width: '48%',
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  iconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 12,
+  },
+  categoryName: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 4,
+  },
+  quizCount: {
+    fontSize: 12,
+    opacity: 0.7,
+  },
+  popularQuiz: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    marginBottom: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  quizInfo: {
+    flex: 1,
+  },
+  quizTitle: {
+    fontSize: 16,
+    marginBottom: 4,
+  },
+  quizDescription: {
+    fontSize: 14,
+    opacity: 0.8,
+    marginBottom: 8,
+  },
+  quizMeta: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  quizMetaText: {
+    fontSize: 12,
+    fontWeight: '600',
   },
 });
