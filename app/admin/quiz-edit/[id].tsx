@@ -35,25 +35,24 @@ export default function QuizEditScreen() {
   const [selectedQuestions, setSelectedQuestions] = useState<string[]>([]);
   const [isSaving, setIsSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
 
   // Vérifier si l'utilisateur est admin
   const isAdmin = user?.type?.includes('admin');
 
   const handleBackNavigation = () => {
-    console.log('🔙 Navigation de retour demandée');
-    try {
-      // Essayer d'abord router.back()
+    if (hasChanges) {
+      Alert.alert(
+        'Changements non sauvegardés',
+        'Voulez-vous vraiment quitter sans sauvegarder ?',
+        [
+          { text: 'Annuler', style: 'cancel' },
+          { text: 'Quitter', onPress: () => router.back() }
+        ]
+      );
+    } else {
       router.back();
-    } catch (error) {
-      console.error('❌ Erreur avec router.back():', error);
-      try {
-        // Fallback: navigation explicite
-        router.push('/admin/quiz-management');
-      } catch (fallbackError) {
-        console.error('❌ Erreur avec fallback navigation:', fallbackError);
-        // Dernier recours: navigation vers admin
-        router.push('/admin');
-      }
     }
   };
 
@@ -61,6 +60,7 @@ export default function QuizEditScreen() {
   useEffect(() => {
     if (id && quizzes.length > 0) {
       const foundQuiz = quizzes.find(q => q.id === id);
+      console.log(foundQuiz)
       if (foundQuiz) {
         setQuiz(foundQuiz);
         setEditedQuiz({
@@ -72,11 +72,19 @@ export default function QuizEditScreen() {
         });
         
         // Extraire les IDs des questions actuelles
-        const questionIds = foundQuiz.questions.map(q => {
-          if (typeof q === 'string') return q;
-          if (typeof q === 'object' && q.id) return q.id;
-          return null;
-        }).filter(id => id !== null) as string[];
+        let questionIds: string[] = [];
+        
+        // Vérifier d'abord s'il y a un tableau questionIds
+        if (foundQuiz.questionIds && Array.isArray(foundQuiz.questionIds)) {
+          questionIds = foundQuiz.questionIds;
+        } else if (foundQuiz.questions && Array.isArray(foundQuiz.questions)) {
+          // Fallback: extraire les IDs du tableau questions
+          questionIds = foundQuiz.questions.map(q => {
+            if (typeof q === 'string') return q;
+            if (typeof q === 'object' && q.id) return q.id;
+            return null;
+          }).filter(id => id !== null) as string[];
+        }
         
         setSelectedQuestions(questionIds);
         console.log('📋 Quiz chargé:', foundQuiz.title, 'avec', questionIds.length, 'questions');
@@ -94,178 +102,183 @@ export default function QuizEditScreen() {
         editedQuiz.level !== quiz.level ||
         editedQuiz.passingScore !== quiz.passingScore;
 
-      const currentQuestionIds = quiz.questions.map(q => {
-        if (typeof q === 'string') return q;
-        if (typeof q === 'object' && q.id) return q.id;
-        return null;
-      }).filter(id => id !== null) as string[];
+      // Obtenir les IDs actuels des questions
+      let currentQuestionIds: string[] = [];
+      if (quiz.questionIds && Array.isArray(quiz.questionIds)) {
+        currentQuestionIds = quiz.questionIds;
+      } else if (quiz.questions && Array.isArray(quiz.questions)) {
+        currentQuestionIds = quiz.questions.map(q => {
+          if (typeof q === 'string') return q;
+          if (typeof q === 'object' && q.id) return q.id;
+          return null;
+        }).filter(id => id !== null) as string[];
+      }
 
       const hasQuestionChanges = 
         selectedQuestions.length !== currentQuestionIds.length ||
-        !selectedQuestions.every(id => currentQuestionIds.includes(id));
+        !selectedQuestions.every(id => currentQuestionIds.includes(id)) ||
+        !currentQuestionIds.every(id => selectedQuestions.includes(id));
 
       setHasChanges(hasQuizChanges || hasQuestionChanges);
     }
-  }, [editedQuiz, selectedQuestions, quiz]);
-
-  if (!isAdmin) {
-    return (
-      <ThemedView style={[styles.container, { backgroundColor: colors.background }]}>
-        <ScrollView 
-          contentContainerStyle={[
-            styles.contentContainer,
-            {
-              paddingTop: Platform.OS === 'android' ? insets.top : 20,
-              paddingBottom: Platform.OS === 'android' ? insets.bottom : 20,
-            }
-          ]}
-        >
-          <ThemedView style={[styles.errorCard, { backgroundColor: colors.card }]}>
-            <MaterialIcons name="security" size={48} color={colors.error} />
-            <ThemedText type="title" style={[styles.errorTitle, { color: colors.error }]}>
-              Accès refusé
-            </ThemedText>
-            <ThemedText style={[styles.errorText, { color: colors.text }]}>
-              Vous n'avez pas les permissions nécessaires pour accéder à cette page.
-            </ThemedText>
-            <TouchableOpacity
-              style={[styles.backButton, { backgroundColor: colors.primary }]}
-              onPress={handleBackNavigation}
-            >
-              <ThemedText style={[styles.backButtonText, { color: colors.background }]}>
-                Retour
-              </ThemedText>
-            </TouchableOpacity>
-          </ThemedView>
-        </ScrollView>
-      </ThemedView>
-    );
-  }
-
-  if (isLoading || !quiz) {
-    return (
-      <ThemedView style={[styles.container, { backgroundColor: colors.background }]}>
-        <ScrollView 
-          contentContainerStyle={[
-            styles.contentContainer,
-            {
-              paddingTop: Platform.OS === 'android' ? insets.top : 20,
-              paddingBottom: Platform.OS === 'android' ? insets.bottom : 20,
-            }
-          ]}
-        >
-          <ThemedView style={[styles.loadingCard, { backgroundColor: colors.card }]}>
-            <MaterialIcons name="error" size={48} color={colors.error} />
-            <ThemedText type="title" style={[styles.loadingTitle, { color: colors.error }]}>
-              Quiz non trouvé
-            </ThemedText>
-            <ThemedText style={[styles.loadingText, { color: colors.text }]}>
-              Le quiz demandé n'existe pas ou a été supprimé.
-            </ThemedText>
-          </ThemedView>
-        </ScrollView>
-      </ThemedView>
-    );
-  }
+  }, [quiz, editedQuiz, selectedQuestions]);
 
   const handleSave = async () => {
     if (!quiz || !hasChanges) return;
 
     setIsSaving(true);
-    
     try {
-      console.log('🔄 Sauvegarde du quiz en cours...', {
-        quizId: quiz.id,
-        changes: editedQuiz,
-        questionCount: selectedQuestions.length
-      });
+      // Mettre à jour les propriétés du quiz si elles ont changé
+      const quizUpdates: Partial<Quiz> = {};
+      let hasQuizUpdates = false;
 
-      // Mettre à jour les propriétés du quiz
-      if (editedQuiz.title || editedQuiz.description || editedQuiz.category || editedQuiz.level !== undefined || editedQuiz.passingScore !== undefined) {
-        await updateQuiz(quiz.id, editedQuiz);
-        console.log('✅ Propriétés du quiz mises à jour');
+      if (editedQuiz.title !== quiz.title) {
+        quizUpdates.title = editedQuiz.title;
+        hasQuizUpdates = true;
+      }
+      if (editedQuiz.description !== quiz.description) {
+        quizUpdates.description = editedQuiz.description;
+        hasQuizUpdates = true;
+      }
+      if (editedQuiz.category !== quiz.category) {
+        quizUpdates.category = editedQuiz.category;
+        hasQuizUpdates = true;
+      }
+      if (editedQuiz.level !== quiz.level) {
+        quizUpdates.level = editedQuiz.level;
+        hasQuizUpdates = true;
+      }
+      if (editedQuiz.passingScore !== quiz.passingScore) {
+        quizUpdates.passingScore = editedQuiz.passingScore;
+        hasQuizUpdates = true;
       }
 
-      // Mettre à jour les questions assignées
-      const currentQuestionIds = quiz.questions.map(q => {
-        if (typeof q === 'string') return q;
-        if (typeof q === 'object' && q.id) return q.id;
-        return null;
-      }).filter(id => id !== null) as string[];
+      // Sauvegarder les changements du quiz
+      if (hasQuizUpdates) {
+        await updateQuiz(quiz.id, quizUpdates);
+      }
 
-      if (selectedQuestions.length !== currentQuestionIds.length || 
+      // Sauvegarder les changements des questions
+      let currentQuestionIds: string[] = [];
+      if (quiz.questionIds && Array.isArray(quiz.questionIds)) {
+        currentQuestionIds = quiz.questionIds;
+      } else if (quiz.questions && Array.isArray(quiz.questions)) {
+        currentQuestionIds = quiz.questions.map(q => {
+          if (typeof q === 'string') return q;
+          if (typeof q === 'object' && q.id) return q.id;
+          return null;
+        }).filter(id => id !== null) as string[];
+      }
+
+      if (selectedQuestions.length !== currentQuestionIds.length ||
           !selectedQuestions.every(id => currentQuestionIds.includes(id))) {
         await updateQuizQuestions(quiz.id, selectedQuestions);
-        console.log('✅ Questions assignées mises à jour');
       }
 
-      // Rafraîchir les données
-      await refreshQuizzes();
-      
-      console.log('✅ Quiz mis à jour avec succès dans Firebase');
-      
-      Alert.alert(
-        'Succès', 
-        'Quiz mis à jour avec succès !',
-        [
-          {
-            text: 'OK',
-            onPress: () => router.back()
-          }
-        ]
-      );
+      setHasChanges(false);
+      Alert.alert('Succès', 'Quiz mis à jour avec succès');
     } catch (error) {
-      console.error('❌ Erreur lors de la sauvegarde:', error);
-      Alert.alert(
-        'Erreur', 
-        'Impossible de sauvegarder le quiz. Vérifiez votre connexion Firebase.'
-      );
+      console.error('Erreur lors de la sauvegarde:', error);
+      Alert.alert('Erreur', 'Impossible de sauvegarder le quiz');
     } finally {
       setIsSaving(false);
     }
   };
 
   const toggleQuestionSelection = (questionId: string) => {
-    setSelectedQuestions(prev => {
-      const newSelection = prev.includes(questionId) 
+    setSelectedQuestions(prev => 
+      prev.includes(questionId)
         ? prev.filter(id => id !== questionId)
-        : [...prev, questionId];
-      
-      console.log('🔄 Sélection mise à jour:', {
-        questionId,
-        action: prev.includes(questionId) ? 'désélectionnée' : 'sélectionnée',
-        totalSelected: newSelection.length
-      });
-      
-      return newSelection;
-    });
+        : [...prev, questionId]
+    );
+  };
+
+  const selectAllQuestions = () => {
+    setSelectedQuestions(filteredQuestions.map(q => q.id));
+  };
+
+  const deselectAllQuestions = () => {
+    setSelectedQuestions([]);
   };
 
   const getQuestionById = (questionId: string) => {
     return questions.find(q => q.id === questionId);
   };
 
+  // Filtrer les questions
+  const filteredQuestions = questions.filter(question => {
+    const matchesSearch = question.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         question.category.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = !filterCategory || question.category === filterCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  // Obtenir les catégories uniques
+  const categories = [...new Set(questions.map(q => q.category))].sort();
+
+  if (!isAdmin) {
+    return (
+      <ThemedView style={[styles.container, { backgroundColor: colors.background }]}>
+        <View style={styles.centerContainer}>
+          <MaterialIcons name="security" size={48} color={colors.error} />
+          <ThemedText style={[styles.errorText, { color: colors.text }]}>
+            Accès refusé
+          </ThemedText>
+          <ThemedText style={[styles.errorDescription, { color: colors.secondary }]}>
+            Vous devez être administrateur pour accéder à cette page.
+          </ThemedText>
+        </View>
+      </ThemedView>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <ThemedView style={[styles.container, { backgroundColor: colors.background }]}>
+        <View style={styles.centerContainer}>
+          <MaterialIcons name="sync" size={48} color={colors.primary} />
+          <ThemedText style={[styles.loadingText, { color: colors.text }]}>
+            Chargement...
+          </ThemedText>
+        </View>
+      </ThemedView>
+    );
+  }
+
+  if (!quiz) {
+    return (
+      <ThemedView style={[styles.container, { backgroundColor: colors.background }]}>
+        <View style={styles.centerContainer}>
+          <MaterialIcons name="error" size={48} color={colors.error} />
+          <ThemedText style={[styles.errorText, { color: colors.text }]}>
+            Quiz non trouvé
+          </ThemedText>
+          <TouchableOpacity onPress={() => router.back()}>
+            <ThemedText style={[styles.backLink, { color: colors.primary }]}>
+              Retour
+            </ThemedText>
+          </TouchableOpacity>
+        </View>
+      </ThemedView>
+    );
+  }
+
   return (
     <ThemedView style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView 
-        contentContainerStyle={[
-          styles.contentContainer,
-          {
-            paddingTop: Platform.OS === 'android' ? insets.top : 20,
-            paddingBottom: Platform.OS === 'android' ? insets.bottom : 20,
-          }
-        ]}
-      >
-        {/* Header */}
-        <ThemedView style={[styles.header, { backgroundColor: colors.card }]}>
+      {/* Header fixe */}
+      <ThemedView style={[styles.header, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
+        <View style={styles.headerContent}>
           <TouchableOpacity
             style={styles.backButton}
             onPress={handleBackNavigation}
           >
             <MaterialIcons name="arrow-back" size={24} color={colors.primary} />
+            <ThemedText style={[styles.backButtonText, { color: colors.primary }]}>
+              Retour
+            </ThemedText>
           </TouchableOpacity>
           
-          <ThemedText type="title" style={[styles.title, { color: colors.primary }]}>
+          <ThemedText type="title" style={[styles.title, { color: colors.text }]}>
             Éditer le Quiz
           </ThemedText>
           
@@ -288,158 +301,287 @@ export default function QuizEditScreen() {
                 </ThemedText>
               </View>
             ) : (
-              <ThemedText style={[styles.saveButtonText, { color: colors.background }]}>
-                Sauvegarder
-              </ThemedText>
+              <>
+                <MaterialIcons name="save" size={16} color={colors.background} />
+                <ThemedText style={[styles.saveButtonText, { color: colors.background }]}>
+                  Sauvegarder
+                </ThemedText>
+              </>
             )}
           </TouchableOpacity>
-        </ThemedView>
+        </View>
+      </ThemedView>
 
-        {/* Informations du quiz */}
-        <ThemedView style={[styles.section, { backgroundColor: colors.card }]}>
-          <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-            Informations du Quiz
-          </ThemedText>
-          
-          <TextInput
-            style={[styles.input, { color: colors.text, borderColor: colors.border }]}
-            placeholder="Titre du quiz"
-            placeholderTextColor={colors.text + '80'}
-            value={editedQuiz.title || ''}
-            onChangeText={(text) => setEditedQuiz({ ...editedQuiz, title: text })}
-          />
-          
-          <TextInput
-            style={[styles.input, { color: colors.text, borderColor: colors.border }]}
-            placeholder="Description"
-            placeholderTextColor={colors.text + '80'}
-            value={editedQuiz.description || ''}
-            onChangeText={(text) => setEditedQuiz({ ...editedQuiz, description: text })}
-            multiline
-            numberOfLines={3}
-          />
-          
-          <TextInput
-            style={[styles.input, { color: colors.text, borderColor: colors.border }]}
-            placeholder="Catégorie"
-            placeholderTextColor={colors.text + '80'}
-            value={editedQuiz.category || ''}
-            onChangeText={(text) => setEditedQuiz({ ...editedQuiz, category: text })}
-          />
-          
-          <View style={styles.row}>
-            <View style={styles.halfInput}>
-              <TextInput
-                style={[styles.input, { color: colors.text, borderColor: colors.border }]}
-                placeholder="Niveau (1-10)"
-                placeholderTextColor={colors.text + '80'}
-                value={editedQuiz.level?.toString() || ''}
-                onChangeText={(text) => setEditedQuiz({ ...editedQuiz, level: parseInt(text) || 1 })}
-                keyboardType="numeric"
-              />
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={[
+          styles.contentContainer,
+          {
+            paddingTop: Platform.OS === 'web' ? 20 : insets.top + 80,
+            paddingBottom: Platform.OS === 'web' ? 40 : insets.bottom + 20,
+          }
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.mainContent}>
+          {/* Informations du quiz */}
+          <ThemedView style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.cardHeader}>
+              <MaterialIcons name="edit" size={24} color={colors.primary} />
+              <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>
+                Informations du Quiz
+              </ThemedText>
             </View>
-            <View style={styles.halfInput}>
-              <TextInput
-                style={[styles.input, { color: colors.text, borderColor: colors.border }]}
-                placeholder="Score de passage (%)"
-                placeholderTextColor={colors.text + '80'}
-                value={editedQuiz.passingScore?.toString() || ''}
-                onChangeText={(text) => setEditedQuiz({ ...editedQuiz, passingScore: parseInt(text) || 70 })}
-                keyboardType="numeric"
-              />
-            </View>
-          </View>
-        </ThemedView>
-
-        {/* Gestion des questions */}
-        <ThemedView style={[styles.section, { backgroundColor: colors.card }]}>
-          <View style={styles.sectionHeader}>
-            <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-              Questions Assignées
-            </ThemedText>
-            <ThemedText style={[styles.questionCount, { color: colors.secondary }]}>
-              {selectedQuestions.length} sélectionnée(s)
-            </ThemedText>
-          </View>
-          
-          <ScrollView style={styles.questionsList} showsVerticalScrollIndicator={false}>
-            {questions.map((question) => (
-              <TouchableOpacity
-                key={question.id}
-                style={[
-                  styles.questionItem,
-                  { 
-                    backgroundColor: selectedQuestions.includes(question.id) 
-                      ? colors.primary + '20' 
-                      : colors.background,
-                    borderColor: colors.border
-                  }
-                ]}
-                onPress={() => toggleQuestionSelection(question.id)}
-              >
-                <View style={styles.questionCheckbox}>
-                  <MaterialIcons
-                    name={selectedQuestions.includes(question.id) ? 'check-box' : 'check-box-outline-blank'}
-                    size={20}
-                    color={selectedQuestions.includes(question.id) ? colors.primary : colors.text}
+            
+            <View style={styles.formGrid}>
+              <View style={styles.formGroup}>
+                <ThemedText style={[styles.label, { color: colors.text }]}>
+                  Titre du quiz
+                </ThemedText>
+                <TextInput
+                  style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                  placeholder="Titre du quiz"
+                  placeholderTextColor={colors.text + '80'}
+                  value={editedQuiz.title || ''}
+                  onChangeText={(text) => setEditedQuiz({ ...editedQuiz, title: text })}
+                />
+              </View>
+              
+              <View style={styles.formGroup}>
+                <ThemedText style={[styles.label, { color: colors.text }]}>
+                  Description
+                </ThemedText>
+                <TextInput
+                  style={[styles.textArea, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                  placeholder="Description du quiz"
+                  placeholderTextColor={colors.text + '80'}
+                  value={editedQuiz.description || ''}
+                  onChangeText={(text) => setEditedQuiz({ ...editedQuiz, description: text })}
+                  multiline
+                  numberOfLines={3}
+                />
+              </View>
+              
+              <View style={styles.formRow}>
+                <View style={styles.formGroup}>
+                  <ThemedText style={[styles.label, { color: colors.text }]}>
+                    Catégorie
+                  </ThemedText>
+                  <TextInput
+                    style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                    placeholder="Catégorie"
+                    placeholderTextColor={colors.text + '80'}
+                    value={editedQuiz.category || ''}
+                    onChangeText={(text) => setEditedQuiz({ ...editedQuiz, category: text })}
                   />
                 </View>
-                <View style={styles.questionContent}>
-                  <ThemedText style={[styles.questionText, { color: colors.text }]}>
-                    {question.question}
+                
+                <View style={styles.formGroup}>
+                  <ThemedText style={[styles.label, { color: colors.text }]}>
+                    Niveau
                   </ThemedText>
-                  <View style={styles.questionMeta}>
-                    <ThemedText style={[styles.questionMetaText, { color: colors.secondary }]}>
-                      {question.category} • {question.difficulty} • Niveau {question.level}
-                    </ThemedText>
-                  </View>
+                  <TextInput
+                    style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                    placeholder="Niveau (1-10)"
+                    placeholderTextColor={colors.text + '80'}
+                    value={editedQuiz.level?.toString() || ''}
+                    onChangeText={(text) => setEditedQuiz({ ...editedQuiz, level: parseInt(text) || 1 })}
+                    keyboardType="numeric"
+                  />
                 </View>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </ThemedView>
+              </View>
+              
+              <View style={styles.formGroup}>
+                <ThemedText style={[styles.label, { color: colors.text }]}>
+                  Score de passage (%)
+                </ThemedText>
+                <TextInput
+                  style={[styles.input, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                  placeholder="Score de passage (%)"
+                  placeholderTextColor={colors.text + '80'}
+                  value={editedQuiz.passingScore?.toString() || ''}
+                  onChangeText={(text) => setEditedQuiz({ ...editedQuiz, passingScore: parseInt(text) || 70 })}
+                  keyboardType="numeric"
+                />
+              </View>
+            </View>
+          </ThemedView>
 
-        {/* Aperçu du quiz */}
-        <ThemedView style={[styles.section, { backgroundColor: colors.card }]}>
-          <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-            Aperçu du Quiz
-          </ThemedText>
-          
-          <View style={styles.preview}>
-            <ThemedText style={[styles.previewTitle, { color: colors.primary }]}>
-              {editedQuiz.title || 'Titre du quiz'}
-            </ThemedText>
-            <ThemedText style={[styles.previewDescription, { color: colors.text }]}>
-              {editedQuiz.description || 'Description du quiz'}
-            </ThemedText>
-            <View style={styles.previewMeta}>
-              <View style={styles.metaItem}>
-                <MaterialIcons name="category" size={16} color={colors.secondary} />
-                <ThemedText style={[styles.metaText, { color: colors.text }]}>
-                  {editedQuiz.category || 'Catégorie'}
-                </ThemedText>
+          {/* Filtres pour les questions */}
+          <ThemedView style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.cardHeader}>
+              <MaterialIcons name="search" size={24} color={colors.primary} />
+              <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>
+                Questions Disponibles
+              </ThemedText>
+            </View>
+            
+            <View style={styles.searchSection}>
+              <TextInput
+                style={[styles.searchInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                placeholder="Rechercher des questions..."
+                placeholderTextColor={colors.text + '80'}
+                value={searchTerm}
+                onChangeText={setSearchTerm}
+              />
+              
+              <View style={styles.filterRow}>
+                <TextInput
+                  style={[styles.filterInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                  placeholder="Filtrer par catégorie"
+                  placeholderTextColor={colors.text + '80'}
+                  value={filterCategory}
+                  onChangeText={setFilterCategory}
+                />
+                <TouchableOpacity
+                  style={[styles.clearFilterButton, { backgroundColor: colors.secondary }]}
+                  onPress={() => setFilterCategory('')}
+                >
+                  <MaterialIcons name="clear" size={16} color={colors.background} />
+                </TouchableOpacity>
               </View>
-              <View style={styles.metaItem}>
-                <MaterialIcons name="star" size={16} color={colors.warning} />
-                <ThemedText style={[styles.metaText, { color: colors.text }]}>
-                  Niveau {editedQuiz.level || 1}
-                </ThemedText>
+              
+              <View style={styles.actionButtons}>
+                <TouchableOpacity
+                  style={[styles.actionButton, { backgroundColor: colors.primary }]}
+                  onPress={selectAllQuestions}
+                >
+                  <MaterialIcons name="select-all" size={16} color={colors.background} />
+                  <ThemedText style={[styles.actionButtonText, { color: colors.background }]}>
+                    Tout sélectionner
+                  </ThemedText>
+                </TouchableOpacity>
+                
+                <TouchableOpacity
+                  style={[styles.actionButton, { backgroundColor: colors.error }]}
+                  onPress={deselectAllQuestions}
+                >
+                  <MaterialIcons name="clear-all" size={16} color={colors.background} />
+                  <ThemedText style={[styles.actionButtonText, { color: colors.background }]}>
+                    Tout désélectionner
+                  </ThemedText>
+                </TouchableOpacity>
               </View>
-              <View style={styles.metaItem}>
-                <MaterialIcons name="help" size={16} color={colors.primary} />
-                <ThemedText style={[styles.metaText, { color: colors.text }]}>
-                  {selectedQuestions.length} questions
-                </ThemedText>
-              </View>
-              <View style={styles.metaItem}>
-                <MaterialIcons name="check-circle" size={16} color={colors.success} />
-                <ThemedText style={[styles.metaText, { color: colors.text }]}>
-                  {editedQuiz.passingScore || 70}% pour réussir
+            </View>
+          </ThemedView>
+
+          {/* Gestion des questions */}
+          <ThemedView style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.cardHeader}>
+              <MaterialIcons name="quiz" size={24} color={colors.primary} />
+              <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>
+                Questions Assignées
+              </ThemedText>
+              <View style={styles.questionCountBadge}>
+                <ThemedText style={[styles.questionCountText, { color: colors.background }]}>
+                  {selectedQuestions.length} / {questions.length}
                 </ThemedText>
               </View>
             </View>
-          </View>
-        </ThemedView>
+            
+            <ScrollView style={styles.questionsList} showsVerticalScrollIndicator={false}>
+              {filteredQuestions.length === 0 ? (
+                <View style={styles.emptyState}>
+                  <MaterialIcons name="search-off" size={48} color={colors.secondary} />
+                  <ThemedText style={[styles.emptyStateText, { color: colors.secondary }]}>
+                    Aucune question trouvée
+                  </ThemedText>
+                </View>
+              ) : (
+                filteredQuestions.map((question) => (
+                  <TouchableOpacity
+                    key={question.id}
+                    style={[
+                      styles.questionItem,
+                      { 
+                        backgroundColor: selectedQuestions.includes(question.id) 
+                          ? colors.primary + '20' 
+                          : colors.background,
+                        borderColor: selectedQuestions.includes(question.id) ? colors.primary : colors.border
+                      }
+                    ]}
+                    onPress={() => toggleQuestionSelection(question.id)}
+                  >
+                    <View style={styles.questionCheckbox}>
+                      <MaterialIcons
+                        name={selectedQuestions.includes(question.id) ? 'check-box' : 'check-box-outline-blank'}
+                        size={20}
+                        color={selectedQuestions.includes(question.id) ? colors.primary : colors.text}
+                      />
+                    </View>
+                    <View style={styles.questionContent}>
+                      <ThemedText style={[styles.questionText, { color: colors.text }]}>
+                        {question.question}
+                      </ThemedText>
+                      <View style={styles.questionMeta}>
+                        <View style={styles.metaBadge}>
+                          <ThemedText style={[styles.metaBadgeText, { color: colors.background }]}>
+                            {question.category}
+                          </ThemedText>
+                        </View>
+                        <View style={styles.metaBadge}>
+                          <ThemedText style={[styles.metaBadgeText, { color: colors.background }]}>
+                            {question.difficulty}
+                          </ThemedText>
+                        </View>
+                        <View style={styles.metaBadge}>
+                          <ThemedText style={[styles.metaBadgeText, { color: colors.background }]}>
+                            Niveau {question.level}
+                          </ThemedText>
+                        </View>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ))
+              )}
+            </ScrollView>
+          </ThemedView>
+
+          {/* Aperçu du quiz */}
+          <ThemedView style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.cardHeader}>
+              <MaterialIcons name="preview" size={24} color={colors.primary} />
+              <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>
+                Aperçu du Quiz
+              </ThemedText>
+            </View>
+            
+            <View style={[styles.preview, { borderColor: colors.border }]}>
+              <ThemedText style={[styles.previewTitle, { color: colors.primary }]}>
+                {editedQuiz.title || 'Titre du quiz'}
+              </ThemedText>
+              <ThemedText style={[styles.previewDescription, { color: colors.text }]}>
+                {editedQuiz.description || 'Description du quiz'}
+              </ThemedText>
+              <View style={styles.previewMeta}>
+                <View style={styles.metaItem}>
+                  <MaterialIcons name="category" size={16} color={colors.secondary} />
+                  <ThemedText style={[styles.metaText, { color: colors.text }]}>
+                    {editedQuiz.category || 'Catégorie'}
+                  </ThemedText>
+                </View>
+                <View style={styles.metaItem}>
+                  <MaterialIcons name="star" size={16} color={colors.warning} />
+                  <ThemedText style={[styles.metaText, { color: colors.text }]}>
+                    Niveau {editedQuiz.level || 1}
+                  </ThemedText>
+                </View>
+                <View style={styles.metaItem}>
+                  <MaterialIcons name="help" size={16} color={colors.primary} />
+                  <ThemedText style={[styles.metaText, { color: colors.text }]}>
+                    {selectedQuestions.length} questions
+                  </ThemedText>
+                </View>
+                <View style={styles.metaItem}>
+                  <MaterialIcons name="check-circle" size={16} color={colors.success} />
+                  <ThemedText style={[styles.metaText, { color: colors.text }]}>
+                    {editedQuiz.passingScore || 70}% pour réussir
+                  </ThemedText>
+                </View>
+              </View>
+            </View>
+          </ThemedView>
+        </View>
       </ScrollView>
     </ThemedView>
   );
@@ -449,36 +591,54 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  scrollView: {
+    flex: 1,
+  },
   contentContainer: {
     padding: 20,
   },
+  mainContent: {
+    gap: 20,
+  },
   header: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    paddingTop: Platform.OS === 'android' ? 0 : 20,
+    paddingBottom: Platform.OS === 'android' ? 0 : 20,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
+  },
+  headerContent: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 4,
+    justifyContent: 'space-between',
+    paddingBottom: 10,
   },
   backButton: {
-    marginRight: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  backButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     flex: 1,
+    textAlign: 'center',
   },
   saveButton: {
-    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingVertical: 8,
+    paddingHorizontal: 16,
     borderRadius: 8,
+    gap: 8,
   },
   saveButtonText: {
     fontSize: 16,
@@ -487,82 +647,149 @@ const styles = StyleSheet.create({
   loadingContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
+    gap: 8,
   },
-  section: {
-    padding: 20,
+  card: {
     borderRadius: 12,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 4,
+    padding: 20,
+    borderWidth: 1,
   },
-  sectionHeader: {
+  cardHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 16,
   },
-  sectionTitle: {
+  cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginLeft: 8,
   },
-  questionCount: {
+  formGrid: {
+    gap: 16,
+  },
+  formGroup: {
+    marginBottom: 12,
+  },
+  label: {
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: '600',
+    marginBottom: 8,
   },
   input: {
+    height: 48,
     borderWidth: 1,
     borderRadius: 8,
-    padding: 12,
+    paddingHorizontal: 12,
     fontSize: 16,
-    marginBottom: 15,
   },
-  row: {
+  textArea: {
+    height: 100,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    fontSize: 16,
+    paddingTop: 10,
+  },
+  formRow: {
     flexDirection: 'row',
-    gap: 10,
+    gap: 12,
   },
-  halfInput: {
+  questionCountBadge: {
+    backgroundColor: '#e0e0e0',
+    borderRadius: 12,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    alignSelf: 'flex-start',
+    marginTop: 8,
+  },
+  questionCountText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  searchSection: {
+    gap: 12,
+  },
+  searchInput: {
+    height: 48,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    fontSize: 16,
+  },
+  filterRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  filterInput: {
     flex: 1,
+    height: 48,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    fontSize: 16,
+  },
+  clearFilterButton: {
+    padding: 8,
+    borderRadius: 6,
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 12,
+  },
+  actionButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    gap: 6,
+  },
+  actionButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
   questionsList: {
-    maxHeight: 300,
+    maxHeight: 400,
   },
   questionItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 12,
+    padding: 16,
     borderRadius: 8,
-    marginBottom: 8,
     borderWidth: 1,
+    marginBottom: 8,
   },
   questionCheckbox: {
-    width: 30,
-    alignItems: 'center',
+    marginRight: 12,
   },
   questionContent: {
     flex: 1,
-    marginLeft: 10,
   },
   questionText: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: 16,
+    marginBottom: 4,
   },
   questionMeta: {
-    marginTop: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
-  questionMetaText: {
+  metaBadge: {
+    backgroundColor: '#e0e0e0',
+    borderRadius: 12,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+  },
+  metaBadgeText: {
     fontSize: 12,
+    fontWeight: '600',
   },
   preview: {
-    padding: 15,
+    padding: 16,
     borderRadius: 8,
-    backgroundColor: '#f8f9fa',
+    borderWidth: 1,
   },
   previewTitle: {
     fontSize: 18,
@@ -571,75 +798,55 @@ const styles = StyleSheet.create({
   },
   previewDescription: {
     fontSize: 14,
-    marginBottom: 15,
-    opacity: 0.8,
+    marginBottom: 12,
   },
   previewMeta: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 15,
+    gap: 16,
   },
   metaItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 5,
+    gap: 4,
   },
   metaText: {
     fontSize: 12,
-    opacity: 0.7,
   },
-  errorCard: {
-    padding: 20,
-    borderRadius: 12,
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  errorTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 10,
-    marginBottom: 5,
+    padding: 20,
   },
   errorText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 16,
+    textAlign: 'center',
+  },
+  errorDescription: {
     fontSize: 14,
     textAlign: 'center',
-    marginBottom: 20,
-  },
-  backButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  loadingCard: {
-    padding: 20,
-    borderRadius: 12,
-    alignItems: 'center',
-    marginTop: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  loadingTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
     marginTop: 10,
-    marginBottom: 5,
   },
   loadingText: {
-    fontSize: 14,
+    fontSize: 16,
+    marginTop: 16,
+  },
+  backLink: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginTop: 20,
+    textDecorationLine: 'underline',
+  },
+  emptyState: {
+    alignItems: 'center',
+    paddingVertical: 30,
+  },
+  emptyStateText: {
+    fontSize: 16,
+    marginTop: 10,
     textAlign: 'center',
-    marginBottom: 20,
   },
 }); 

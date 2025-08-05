@@ -1,12 +1,12 @@
 import { auth, db } from '@/config/firebase';
 import {
-  AuthError,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  updateProfile,
-  User,
-  UserCredential
+    AuthError,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    signOut,
+    updateProfile,
+    User,
+    UserCredential
 } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 

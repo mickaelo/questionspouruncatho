@@ -2,6 +2,7 @@ import { SSOButton } from '@/components/SSOButton';
 import { SuccessToast } from '@/components/SuccessToast';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { RegisterErrorModal } from '@/components/RegisterErrorModal';
 import { Colors } from '@/constants/Colors';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -39,6 +40,8 @@ export default function RegisterScreen() {
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSSORegister = async (provider: string) => {
     try {
@@ -64,32 +67,38 @@ export default function RegisterScreen() {
           router.replace('/(tabs)');
         }, 1500);
       } else {
-        Alert.alert('Erreur', result.error || 'Erreur lors de la création du compte');
+        setErrorMessage(result.error || 'Erreur lors de la création du compte');
+        setShowErrorModal(true);
       }
     } catch (error) {
-      Alert.alert('Erreur', 'Une erreur inattendue s\'est produite');
+      setErrorMessage('Une erreur inattendue s\'est produite');
+      setShowErrorModal(true);
     }
   };
 
   const handleEmailRegister = async () => {
     // Validation
     if (!name || !email || !password || !confirmPassword) {
-      Alert.alert('Erreur', 'Veuillez remplir tous les champs');
+      setErrorMessage('Veuillez remplir tous les champs');
+      setShowErrorModal(true);
       return;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Erreur', 'Les mots de passe ne correspondent pas');
+      setErrorMessage('Les mots de passe ne correspondent pas');
+      setShowErrorModal(true);
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert('Erreur', 'Le mot de passe doit contenir au moins 6 caractères');
+      setErrorMessage('Le mot de passe doit contenir au moins 6 caractères');
+      setShowErrorModal(true);
       return;
     }
 
     if (!acceptTerms) {
-      Alert.alert('Erreur', 'Veuillez accepter les conditions d\'utilisation');
+      setErrorMessage('Veuillez accepter les conditions d\'utilisation');
+      setShowErrorModal(true);
       return;
     }
 
@@ -112,11 +121,33 @@ export default function RegisterScreen() {
           router.replace('/(tabs)');
         }, 1500);
       } else {
-        Alert.alert('Erreur', result.error || 'Erreur lors de la création du compte');
+        setErrorMessage(result.error || 'Erreur lors de la création du compte');
+        setShowErrorModal(true);
       }
     } catch (error) {
-      Alert.alert('Erreur', 'Une erreur inattendue s\'est produite');
+      setErrorMessage('Une erreur inattendue s\'est produite');
+      setShowErrorModal(true);
     }
+  };
+
+  const handleRetryRegistration = () => {
+    setShowErrorModal(false);
+    setErrorMessage('');
+    // Optionnel : vider les champs pour permettre une nouvelle tentative
+    if (errorMessage.includes('email-already-in-use') || errorMessage.includes('déjà utilisée')) {
+      setEmail('');
+    }
+  };
+
+  const handleDismissError = () => {
+    setShowErrorModal(false);
+    setErrorMessage('');
+  };
+
+  const handleGoToLogin = () => {
+    setShowErrorModal(false);
+    setErrorMessage('');
+    router.push('/auth/login');
   };
 
   return (
@@ -311,6 +342,15 @@ export default function RegisterScreen() {
         </TouchableOpacity>
       </View>
       </ScrollView>
+
+      {/* Register Error Modal */}
+      <RegisterErrorModal
+        visible={showErrorModal}
+        error={errorMessage}
+        onRetry={handleRetryRegistration}
+        onDismiss={handleDismissError}
+        onGoToLogin={handleGoToLogin}
+      />
     </View>
   );
 }

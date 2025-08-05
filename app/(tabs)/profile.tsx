@@ -83,13 +83,19 @@ export default function ProfileScreen() {
             <ThemedText type="subtitle" style={[styles.profileName, { color: colors.text }]}>
               {user?.name || sampleUserProfile.name}
             </ThemedText>
-            <ThemedText style={[styles.profileEmail, { color: colors.text }]}>
-              {user?.email || sampleUserProfile.email}
-            </ThemedText>
+            {user?.provider === 'anonymous' ? (
+              <ThemedText style={[styles.profileEmail, { color: colors.secondary }]}>
+                Mode visiteur
+              </ThemedText>
+            ) : (
+              <ThemedText style={[styles.profileEmail, { color: colors.text }]}>
+                {user?.email || sampleUserProfile.email}
+              </ThemedText>
+            )}
             <ThemedText style={[styles.profileJoinDate, { color: colors.text }]}>
-              Membre depuis {formatDate(user?.createdAt || sampleUserProfile.joinDate)}
+              {user?.provider === 'anonymous' ? 'Session temporaire' : `Membre depuis ${formatDate(user?.createdAt || sampleUserProfile.joinDate)}`}
             </ThemedText>
-            {user?.provider && user.provider !== 'email' && (
+            {user?.provider && user.provider !== 'email' && user.provider !== 'anonymous' && (
               <View style={styles.providerBadge}>
                 <MaterialIcons 
                   name={user.provider === 'google' ? 'g-translate' : 
@@ -100,7 +106,19 @@ export default function ProfileScreen() {
                   color={colors.primary} 
                 />
                 <ThemedText style={[styles.providerText, { color: colors.primary }]}>
-                  Connecté avec {user.provider.charAt(0).toUpperCase() + user.provider.slice(1)}
+                  {user.provider.charAt(0).toUpperCase() + user.provider.slice(1)}
+                </ThemedText>
+              </View>
+            )}
+            {user?.provider === 'anonymous' && (
+              <View style={styles.anonymousBadge}>
+                <MaterialIcons 
+                  name="visibility" 
+                  size={16} 
+                  color={colors.secondary} 
+                />
+                <ThemedText style={[styles.anonymousText, { color: colors.secondary }]}>
+                  Visiteur
                 </ThemedText>
               </View>
             )}
@@ -139,41 +157,60 @@ export default function ProfileScreen() {
             Mode familial
           </ThemedText>
           
-          <View style={styles.familyMembers}>
-            {sampleUserProfile.childrenProfiles?.map((child) => (
-              <TouchableOpacity
-                key={child.id}
-                style={[styles.familyMemberCard, { backgroundColor: colors.card, borderColor: colors.border }]}
-                onPress={() => router.push(`/child-profile/${child.id}`)}
-              >
-                <View style={[styles.childAvatar, { backgroundColor: `${colors.secondary}20` }]}>
-                  <ThemedText style={styles.childAvatarText}>{child.avatar}</ThemedText>
+          {/* Profils enfants */}
+          {familyMode && sampleUserProfile.childrenProfiles?.map((child) => (
+            <TouchableOpacity
+              key={child.id}
+              style={[styles.childItem, { backgroundColor: colors.card, borderColor: colors.border }]}
+              onPress={() => {
+                // TODO: Implémenter la page de profil enfant
+                Alert.alert('Profil enfant', `Profil de ${child.name} - À implémenter`);
+              }}
+            >
+              <View style={styles.childInfo}>
+                <View style={[styles.childAvatar, { backgroundColor: `${colors.primary}20` }]}>
+                  <ThemedText style={styles.childAvatarText}>
+                    {child.name.charAt(0)}
+                  </ThemedText>
                 </View>
-                <View style={styles.childInfo}>
-                  <ThemedText type="subtitle" style={[styles.childName, { color: colors.text }]}>
+                <View style={styles.childText}>
+                  <ThemedText style={[styles.childName, { color: colors.text }]}>
                     {child.name}
                   </ThemedText>
                   <ThemedText style={[styles.childAge, { color: colors.text }]}>
-                    {child.age} ans • Niveau {child.level}
-                  </ThemedText>
-                  <ThemedText style={[styles.childPoints, { color: colors.secondary }]}>
-                    {child.totalPoints} points
+                    {child.age} ans
                   </ThemedText>
                 </View>
-                <MaterialIcons name="chevron-right" size={20} color={colors.primary} />
-              </TouchableOpacity>
-            ))}
-          </View>
+              </View>
+              <MaterialIcons name="chevron-right" size={20} color={colors.text} />
+            </TouchableOpacity>
+          ))}
 
-          <TouchableOpacity
-            style={[styles.addChildButton, { backgroundColor: colors.primary }]}
-            onPress={() => router.push('/add-child')}
-          >
-            <MaterialIcons name="add" size={20} color={colors.background} />
-            <ThemedText style={[styles.addChildText, { color: colors.background }]}>
-              Ajouter un enfant
-            </ThemedText>
-          </TouchableOpacity>
+          {/* Ajouter un enfant */}
+          {familyMode && (
+            <TouchableOpacity
+              style={[styles.childItem, { backgroundColor: colors.card, borderColor: colors.border }]}
+              onPress={() => {
+                // TODO: Implémenter la page d'ajout d'enfant
+                Alert.alert('Ajouter un enfant', 'Page d\'ajout d\'enfant - À implémenter');
+              }}
+            >
+              <View style={styles.childInfo}>
+                <View style={[styles.childAvatar, { backgroundColor: `${colors.primary}20` }]}>
+                  <MaterialIcons name="add" size={20} color={colors.primary} />
+                </View>
+                <View style={styles.childText}>
+                  <ThemedText style={[styles.childName, { color: colors.text }]}>
+                    Ajouter un enfant
+                  </ThemedText>
+                  <ThemedText style={[styles.childAge, { color: colors.text }]}>
+                    Nouveau profil
+                  </ThemedText>
+                </View>
+              </View>
+              <MaterialIcons name="chevron-right" size={20} color={colors.text} />
+            </TouchableOpacity>
+          )}
         </ThemedView>
       )}
 
@@ -273,6 +310,27 @@ export default function ProfileScreen() {
         </ThemedText>
 
         <View style={styles.actionsList}>
+          {/* Bouton de connexion pour utilisateurs anonymes */}
+          {user?.provider === 'anonymous' && (
+            <TouchableOpacity
+              style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
+              onPress={() => router.push('/auth/login' as any)}
+            >
+              <View style={styles.actionInfo}>
+                <MaterialIcons name="login" size={20} color={colors.primary} />
+                <View style={styles.actionText}>
+                  <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                    Se connecter
+                  </ThemedText>
+                  <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
+                    Créer un compte ou se connecter pour sauvegarder vos progrès
+                  </ThemedText>
+                </View>
+              </View>
+              <MaterialIcons name="chevron-right" size={20} color={colors.text} />
+            </TouchableOpacity>
+          )}
+
           {/* Bouton de test Google OAuth */}
           <TouchableOpacity
             style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
@@ -280,70 +338,111 @@ export default function ProfileScreen() {
               try {
                 const result = await loginWithGoogle();
                 if (result.success) {
-                  Alert.alert('Succès', 'Authentification Google réussie !');
+                  Alert.alert('Succès', 'Test Google OAuth réussi !');
                 } else {
-                  // Vérifier si c'est une erreur CORS
-                  if (result.error && result.error.includes('CORS')) {
-                    setCorsErrorMessage(result.error);
-                    setShowCORSError(true);
-                  } else {
-                    Alert.alert('Erreur', result.error || 'Échec de l\'authentification');
-                  }
+                  Alert.alert('Erreur', result.error || 'Erreur lors du test');
                 }
               } catch (error) {
                 Alert.alert('Erreur', 'Erreur lors du test d\'authentification');
               }
             }}
           >
-            <MaterialIcons name="g-translate" size={20} color="#4285F4" />
-            <ThemedText style={[styles.actionText, { color: colors.text }]}>
-              Test Google OAuth
-            </ThemedText>
+            <View style={styles.actionInfo}>
+              <MaterialIcons name="g-translate" size={20} color="#4285F4" />
+              <View style={styles.actionText}>
+                <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                  Test Google OAuth
+                </ThemedText>
+                <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
+                  Tester l'authentification Google
+                </ThemedText>
+              </View>
+            </View>
             <MaterialIcons name="chevron-right" size={20} color="#4285F4" />
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
-            onPress={() => router.push('/edit-profile')}
+            onPress={() => {
+              // TODO: Implémenter la page d'édition de profil
+              Alert.alert('Éditer le profil', 'Page d\'édition de profil - À implémenter');
+            }}
           >
-            <MaterialIcons name="edit" size={20} color={colors.primary} />
-            <ThemedText style={[styles.actionText, { color: colors.text }]}>
-              Modifier le profil
-            </ThemedText>
-            <MaterialIcons name="chevron-right" size={20} color={colors.primary} />
+            <View style={styles.actionInfo}>
+              <MaterialIcons name="edit" size={20} color={colors.primary} />
+              <View style={styles.actionText}>
+                <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                  Éditer le profil
+                </ThemedText>
+                <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
+                  Modifier vos informations personnelles
+                </ThemedText>
+              </View>
+            </View>
+            <MaterialIcons name="chevron-right" size={20} color={colors.text} />
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
-            onPress={() => router.push('/export-data')}
+            onPress={() => {
+              // TODO: Implémenter l'export des données
+              Alert.alert('Exporter les données', 'Page d\'export des données - À implémenter');
+            }}
           >
-            <MaterialIcons name="download" size={20} color={colors.secondary} />
-            <ThemedText style={[styles.actionText, { color: colors.text }]}>
-              Exporter mes données
-            </ThemedText>
-            <MaterialIcons name="chevron-right" size={20} color={colors.secondary} />
+            <View style={styles.actionInfo}>
+              <MaterialIcons name="download" size={20} color={colors.primary} />
+              <View style={styles.actionText}>
+                <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                  Exporter mes données
+                </ThemedText>
+                <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
+                  Télécharger vos données personnelles
+                </ThemedText>
+              </View>
+            </View>
+            <MaterialIcons name="chevron-right" size={20} color={colors.text} />
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
-            onPress={() => router.push('/help-support')}
+            onPress={() => {
+              // TODO: Implémenter la page d'aide
+              Alert.alert('Aide et support', 'Page d\'aide et support - À implémenter');
+            }}
           >
-            <MaterialIcons name="help" size={20} color={colors.warning} />
-            <ThemedText style={[styles.actionText, { color: colors.text }]}>
-              Aide et support
-            </ThemedText>
-            <MaterialIcons name="chevron-right" size={20} color={colors.warning} />
+            <View style={styles.actionInfo}>
+              <MaterialIcons name="help" size={20} color={colors.primary} />
+              <View style={styles.actionText}>
+                <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                  Aide et support
+                </ThemedText>
+                <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
+                  Centre d'aide et contact
+                </ThemedText>
+              </View>
+            </View>
+            <MaterialIcons name="chevron-right" size={20} color={colors.text} />
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
-            onPress={() => router.push('/about')}
+            onPress={() => {
+              // TODO: Implémenter la page à propos
+              Alert.alert('À propos', 'Page à propos - À implémenter');
+            }}
           >
-            <MaterialIcons name="info" size={20} color={colors.success} />
-            <ThemedText style={[styles.actionText, { color: colors.text }]}>
-              À propos de l'application
-            </ThemedText>
-            <MaterialIcons name="chevron-right" size={20} color={colors.success} />
+            <View style={styles.actionInfo}>
+              <MaterialIcons name="info" size={20} color={colors.primary} />
+              <View style={styles.actionText}>
+                <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                  À propos
+                </ThemedText>
+                <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
+                  Informations sur l'application
+                </ThemedText>
+              </View>
+            </View>
+            <MaterialIcons name="chevron-right" size={20} color={colors.text} />
           </TouchableOpacity>
         </View>
       </ThemedView>
@@ -583,11 +682,23 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderWidth: 1,
   },
-  actionText: {
-    fontSize: 16,
-    fontWeight: '500',
-    marginLeft: 12,
+  actionInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
     flex: 1,
+  },
+  actionText: {
+    flex: 1,
+    marginLeft: 12,
+  },
+  actionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 2,
+  },
+  actionDescription: {
+    fontSize: 14,
+    opacity: 0.8,
   },
   logoutButton: {
     flexDirection: 'row',
@@ -615,5 +726,35 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: 4,
     fontWeight: '500',
+  },
+  anonymousBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 4,
+    backgroundColor: '#FFE0E0', // Light red background for anonymous badge
+    borderRadius: 8,
+    paddingVertical: 4,
+    paddingHorizontal: 8,
+  },
+  anonymousText: {
+    fontSize: 12,
+    fontWeight: '500',
+    marginLeft: 4,
+  },
+  childItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    marginBottom: 8,
+  },
+  childInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  childText: {
+    marginLeft: 12,
   },
 }); 

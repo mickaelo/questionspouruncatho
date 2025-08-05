@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import 'react-native-reanimated';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 // Initialiser Firebase
 import '@/config/firebase';
@@ -44,24 +45,26 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <LoadingBarProvider>
-        <QuizDataProvider>
-          <GlobalLoadingBar />
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen name="auth" options={{ headerShown: false }} />
-            <Stack.Screen name="quiz" options={{ headerShown: false }} />
-            <Stack.Screen name="quiz-result" options={{ headerShown: false }} />
-            <Stack.Screen name="category" options={{ headerShown: false }} />
-            <Stack.Screen name="level" options={{ headerShown: false }} />
-            <Stack.Screen name="admin" options={{ headerShown: false }} />
-            <Stack.Screen name="admin/quiz-management" options={{ headerShown: false }} />
-            <Stack.Screen name="admin/quiz-edit/[id]" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
-        </QuizDataProvider>
-      </LoadingBarProvider>
-    </ThemeProvider>
+    <SafeAreaProvider>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <LoadingBarProvider>
+          <QuizDataProvider>
+            <GlobalLoadingBar />
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen name="auth" options={{ headerShown: false }} />
+              <Stack.Screen name="quiz" options={{ headerShown: false }} />
+              <Stack.Screen name="quiz-result" options={{ headerShown: false }} />
+              <Stack.Screen name="category" options={{ headerShown: false }} />
+              <Stack.Screen name="level" options={{ headerShown: false }} />
+              <Stack.Screen name="admin" options={{ headerShown: false }} />
+              <Stack.Screen name="admin/quiz-management" options={{ headerShown: false }} />
+              <Stack.Screen name="admin/quiz-edit/[id]" options={{ headerShown: false }} />
+              <Stack.Screen name="+not-found" />
+            </Stack>
+          </QuizDataProvider>
+        </LoadingBarProvider>
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }

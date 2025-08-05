@@ -25,6 +25,7 @@ export interface Quiz {
   category: string;
   level: number; // Niveau de formation requis (1-5)
   questions: Question[];
+  questionIds?: string[]; // IDs des questions assignées au quiz
   passingScore: number;
   timeLimit?: number; // en minutes
   prerequisites?: string[]; // IDs des quiz requis

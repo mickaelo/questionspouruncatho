@@ -300,16 +300,56 @@ export function useAuth() {
     }
   }, []);
 
-
+  // Fonction pour passer la connexion (utilisateur anonyme)
+  const skipLogin = useCallback(() => {
+    console.log('👤 Utilisateur anonyme - passage de la connexion');
+    
+    // Créer un utilisateur anonyme temporaire
+    const anonymousUser: AuthUser = {
+      id: 'anonymous-' + Date.now(),
+      type: 'anonymous',
+      name: 'Visiteur',
+      email: '',
+      avatar: '',
+      emailVerified: false,
+      createdAt: new Date(),
+      lastLoginAt: new Date(),
+      provider: 'anonymous',
+    };
+    
+    setAuthState({
+      user: anonymousUser,
+      isLoading: false,
+      isAuthenticated: true, // Considérer comme authentifié pour l'accès à l'app
+      error: null,
+    });
+    
+    return { success: true, user: anonymousUser };
+  }, []);
 
   // Connexion avec email/mot de passe
   const loginWithEmail = useCallback(async (credentials: LoginCredentials): Promise<SSOLoginResult> => {
+    console.log('🔐 Début de la connexion avec email:', credentials.email);
     setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
     
     try {
+      // Validation des données côté client
+      if (!credentials.email || !credentials.password) {
+        const errorMsg = 'Email et mot de passe sont requis';
+        console.error('❌ Validation échouée:', errorMsg);
+        setAuthState(prev => ({
+          ...prev,
+          isLoading: false,
+          error: errorMsg,
+        }));
+        return { success: false, error: errorMsg };
+      }
+
       const result = await FirebaseAuthService.signInWithEmail(credentials.email, credentials.password);
       
       if (result.success && result.user) {
+        console.log('✅ Connexion réussie pour:', result.user.email);
+        
         // Convertir FirebaseUser en AuthUser
         const authUser: AuthUser = {
           id: result.user.uid,
@@ -332,15 +372,18 @@ export function useAuth() {
         
         return { success: true, user: authUser };
       } else {
+        const errorMsg = result.error || 'Erreur de connexion';
+        console.error('❌ Échec de la connexion:', errorMsg);
         setAuthState(prev => ({
           ...prev,
           isLoading: false,
-          error: result.error || 'Erreur de connexion',
+          error: errorMsg,
         }));
-        return { success: false, error: result.error };
+        return { success: false, error: errorMsg };
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Erreur inconnue';
+      console.error('❌ Erreur inattendue lors de la connexion:', error);
       setAuthState(prev => ({
         ...prev,
         isLoading: false,
@@ -467,5 +510,6 @@ export function useAuth() {
     logout,
     updateProfile,
     clearError,
+    skipLogin,
   };
 } 

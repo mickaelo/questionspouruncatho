@@ -1,16 +1,16 @@
 import {
-    addDoc,
-    collection,
-    deleteDoc,
-    doc,
-    getDoc,
-    getDocs,
-    orderBy,
-    query,
-    serverTimestamp,
-    updateDoc,
-    where,
-    writeBatch
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where,
+  writeBatch
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Question, Quiz } from '../types/quiz';
@@ -180,7 +180,16 @@ class QuizAdminServiceImpl implements QuizAdminService {
 
   async updateQuiz(id: string, quiz: Partial<Quiz>): Promise<void> {
     try {
-      const docRef = doc(db, QUIZZES_COLLECTION, id);
+      // Rechercher le document par la propriété id
+      const quizzesRef = collection(db, QUIZZES_COLLECTION);
+      const q = query(quizzesRef, where("id", "==", id));
+      const querySnapshot = await getDocs(q);
+      
+      if (querySnapshot.empty) {
+        throw new Error(`Quiz with id ${id} not found`);
+      }
+      
+      const docRef = querySnapshot.docs[0].ref;
       await updateDoc(docRef, {
         ...quiz,
         updatedAt: serverTimestamp()
@@ -193,9 +202,18 @@ class QuizAdminServiceImpl implements QuizAdminService {
 
   async updateQuizQuestions(id: string, questionIds: string[]): Promise<void> {
     try {
-      const docRef = doc(db, QUIZZES_COLLECTION, id);
+      // Rechercher le document par la propriété id
+      const quizzesRef = collection(db, QUIZZES_COLLECTION);
+      const q = query(quizzesRef, where("id", "==", id));
+      const querySnapshot = await getDocs(q);
+      
+      if (querySnapshot.empty) {
+        throw new Error(`Quiz with id ${id} not found`);
+      }
+      
+      const docRef = querySnapshot.docs[0].ref;
       await updateDoc(docRef, {
-        questions: questionIds,
+        questionIds: questionIds,
         updatedAt: serverTimestamp()
       });
     } catch (error) {
@@ -206,7 +224,16 @@ class QuizAdminServiceImpl implements QuizAdminService {
 
   async deleteQuiz(id: string): Promise<void> {
     try {
-      const docRef = doc(db, QUIZZES_COLLECTION, id);
+      // Rechercher le document par la propriété id
+      const quizzesRef = collection(db, QUIZZES_COLLECTION);
+      const q = query(quizzesRef, where("id", "==", id));
+      const querySnapshot = await getDocs(q);
+      
+      if (querySnapshot.empty) {
+        throw new Error(`Quiz with id ${id} not found`);
+      }
+      
+      const docRef = querySnapshot.docs[0].ref;
       await deleteDoc(docRef);
     } catch (error) {
       console.error('Error deleting quiz:', error);
@@ -218,13 +245,17 @@ class QuizAdminServiceImpl implements QuizAdminService {
     try {
       const quizzesRef = collection(db, QUIZZES_COLLECTION);
       const q = query(quizzesRef, where("id", "==", id));
-
       const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        return doc
-      });
-
-      return null;
+      
+      if (querySnapshot.empty) {
+        return null;
+      }
+      
+      const doc = querySnapshot.docs[0];
+      return {
+        id: doc.id,
+        ...doc.data()
+      } as Quiz;
     } catch (error) {
       console.error('Error getting quiz:', error);
       throw new Error('Failed to get quiz');

@@ -40,35 +40,19 @@ export default function AdminScreen() {
           contentContainerStyle={[
             styles.contentContainer,
             {
-              paddingTop: Platform.OS === 'android' ? insets.top : 20,
-              paddingBottom: Platform.OS === 'android' ? insets.bottom : 20,
+              paddingTop: Platform.OS === 'web' ? 20 : insets.top + 20,
+              paddingBottom: Platform.OS === 'web' ? 40 : insets.bottom + 20,
             }
           ]}
         >
-          <ThemedView style={[styles.errorCard, { backgroundColor: colors.card }]}>
+          <ThemedView style={[styles.errorCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
             <MaterialIcons name="security" size={48} color={colors.error} />
             <ThemedText type="title" style={[styles.errorTitle, { color: colors.error }]}>
               Accès refusé
             </ThemedText>
-            <ThemedText style={[styles.errorText, { color: colors.text }]}>
-              Vous n'avez pas les permissions nécessaires pour accéder à cette page.
+            <ThemedText style={[styles.errorDescription, { color: colors.secondary }]}>
+              Vous devez être administrateur pour accéder à cette page.
             </ThemedText>
-            <TouchableOpacity
-              style={[styles.backButton, { backgroundColor: colors.primary }]}
-              onPress={() => {
-                console.log('🔙 Bouton retour pressé (accès refusé admin)');
-                try {
-                  router.back();
-                } catch (error) {
-                  console.error('❌ Erreur lors de la navigation retour:', error);
-                  router.push('/');
-                }
-              }}
-            >
-              <ThemedText style={[styles.backButtonText, { color: colors.background }]}>
-                Retour
-              </ThemedText>
-            </TouchableOpacity>
           </ThemedView>
         </ScrollView>
       </ThemedView>
@@ -77,17 +61,9 @@ export default function AdminScreen() {
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: colors.background }]}>
-      <ScrollView 
-        contentContainerStyle={[
-          styles.contentContainer,
-          {
-            paddingTop: Platform.OS === 'android' ? insets.top : 20,
-            paddingBottom: Platform.OS === 'android' ? insets.bottom : 20,
-          }
-        ]}
-      >
-        {/* Header */}
-        <ThemedView style={[styles.header, { backgroundColor: colors.card }]}>
+      {/* Header fixe */}
+      <ThemedView style={[styles.header, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
+        <View style={styles.headerContent}>
           <TouchableOpacity
             style={styles.backButton}
             onPress={() => {
@@ -101,156 +77,216 @@ export default function AdminScreen() {
             }}
           >
             <MaterialIcons name="arrow-back" size={24} color={colors.primary} />
+            <ThemedText style={[styles.backButtonText, { color: colors.primary }]}>
+              Retour
+            </ThemedText>
           </TouchableOpacity>
           
-          <ThemedText type="title" style={[styles.title, { color: colors.primary }]}>
+          <ThemedText type="title" style={[styles.title, { color: colors.text }]}>
             Administration
           </ThemedText>
-        </ThemedView>
-
-        {/* Statistiques */}
-        <ThemedView style={[styles.section, { backgroundColor: colors.card }]}>
-          <View style={styles.sectionHeader}>
-            <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-              Statistiques
-            </ThemedText>
-            <TouchableOpacity onPress={() => {
+          
+          <TouchableOpacity
+            style={[styles.refreshButton, { backgroundColor: colors.primary }]}
+            onPress={() => {
               refreshQuestions();
               refreshQuizzes();
               refreshStatistics();
-            }} disabled={isLoading}>
-              <MaterialIcons name="refresh" size={20} color={colors.primary} />
-            </TouchableOpacity>
-          </View>
-          
-          {statistics ? (
+            }}
+          >
+            <MaterialIcons name="refresh" size={20} color={colors.background} />
+          </TouchableOpacity>
+        </View>
+      </ThemedView>
+
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={[
+          styles.contentContainer,
+          {
+            paddingTop: Platform.OS === 'web' ? 20 : insets.top + 80,
+            paddingBottom: Platform.OS === 'web' ? 40 : insets.bottom + 20,
+          }
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.mainContent}>
+          {/* Statistiques */}
+          <ThemedView style={[styles.statsCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.cardHeader}>
+              <MaterialIcons name="analytics" size={24} color={colors.primary} />
+              <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>
+                Statistiques
+              </ThemedText>
+            </View>
+            
             <View style={styles.statsGrid}>
               <View style={styles.statItem}>
                 <MaterialIcons name="quiz" size={24} color={colors.primary} />
-                <ThemedText style={[styles.statValue, { color: colors.text }]}>
-                  {statistics.totalQuizzes}
+                <ThemedText style={[styles.statNumber, { color: colors.text }]}>
+                  {quizzes.length}
                 </ThemedText>
-                <ThemedText style={[styles.statLabel, { color: colors.text }]}>
-                  Quiz
+                <ThemedText style={[styles.statLabel, { color: colors.secondary }]}>
+                  Quiz créés
                 </ThemedText>
               </View>
               <View style={styles.statItem}>
-                <MaterialIcons name="help" size={24} color={colors.secondary} />
-                <ThemedText style={[styles.statValue, { color: colors.text }]}>
-                  {statistics.totalQuestions}
+                <MaterialIcons name="help" size={24} color={colors.warning} />
+                <ThemedText style={[styles.statNumber, { color: colors.text }]}>
+                  {questions.length}
                 </ThemedText>
-                <ThemedText style={[styles.statLabel, { color: colors.text }]}>
-                  Questions
+                <ThemedText style={[styles.statLabel, { color: colors.secondary }]}>
+                  Questions disponibles
+                </ThemedText>
+              </View>
+              <View style={styles.statItem}>
+                <MaterialIcons name="category" size={24} color={colors.success} />
+                <ThemedText style={[styles.statNumber, { color: colors.text }]}>
+                  {[...new Set(quizzes.map(q => q.category))].length}
+                </ThemedText>
+                <ThemedText style={[styles.statLabel, { color: colors.secondary }]}>
+                  Catégories
                 </ThemedText>
               </View>
             </View>
-          ) : (
-            <ThemedText style={[styles.description, { color: colors.text }]}>
-              Aucune statistique disponible
-            </ThemedText>
-          )}
-        </ThemedView>
+          </ThemedView>
 
-        {/* Gestion des Questions */}
-        <ThemedView style={[styles.section, { backgroundColor: colors.card }]}>
-          <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-            Gestion des Questions
-          </ThemedText>
-          <ThemedText style={[styles.description, { color: colors.text }]}>
-            {questions.length} questions disponibles
-          </ThemedText>
-          
-          <View style={styles.actionButtons}>
+          {/* Actions principales */}
+          <View style={styles.actionsGrid}>
             <TouchableOpacity
-              style={[styles.actionButton, { backgroundColor: colors.warning }]}
+              style={[styles.actionCard, { backgroundColor: colors.card, borderColor: colors.border }]}
+              onPress={() => router.push('/admin/quiz-management' as any)}
+            >
+              <View style={styles.actionIcon}>
+                <MaterialIcons name="quiz" size={32} color={colors.primary} />
+              </View>
+              <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                Gestion des Quiz
+              </ThemedText>
+              <ThemedText style={[styles.actionDescription, { color: colors.secondary }]}>
+                Créer, modifier et supprimer des quiz
+              </ThemedText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.actionCard, { backgroundColor: colors.card, borderColor: colors.border }]}
+              onPress={() => router.push('/admin/question-management' as any)}
+            >
+              <View style={styles.actionIcon}>
+                <MaterialIcons name="help" size={32} color={colors.warning} />
+              </View>
+              <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                Gestion des Questions
+              </ThemedText>
+              <ThemedText style={[styles.actionDescription, { color: colors.secondary }]}>
+                Créer et modifier des questions
+              </ThemedText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.actionCard, { backgroundColor: colors.card, borderColor: colors.border }]}
               onPress={() => {
                 Alert.alert(
-                  'Supprimer toutes les questions',
-                  'Êtes-vous sûr de vouloir supprimer toutes les questions ?',
-                  [
-                    { text: 'Annuler', style: 'cancel' },
-                    { 
-                      text: 'Supprimer', 
-                      style: 'destructive',
-                      onPress: () => deleteAllQuestions()
-                    }
-                  ]
+                  'Fonctionnalité à venir',
+                  'Les statistiques détaillées seront bientôt disponibles.',
+                  [{ text: 'OK' }]
                 );
               }}
             >
-              <MaterialIcons name="delete-sweep" size={20} color={colors.background} />
-              <ThemedText style={[styles.actionButtonText, { color: colors.background }]}>
-                Tout supprimer
+              <View style={styles.actionIcon}>
+                <MaterialIcons name="analytics" size={32} color={colors.success} />
+              </View>
+              <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                Statistiques Avancées
+              </ThemedText>
+              <ThemedText style={[styles.actionDescription, { color: colors.secondary }]}>
+                Voir les statistiques détaillées
+              </ThemedText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.actionCard, { backgroundColor: colors.card, borderColor: colors.border }]}
+              onPress={() => {
+                Alert.alert(
+                  'Fonctionnalité à venir',
+                  'La gestion des utilisateurs sera bientôt disponible.',
+                  [{ text: 'OK' }]
+                );
+              }}
+            >
+              <View style={styles.actionIcon}>
+                <MaterialIcons name="people" size={32} color={colors.error} />
+              </View>
+              <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                Gestion des Utilisateurs
+              </ThemedText>
+              <ThemedText style={[styles.actionDescription, { color: colors.secondary }]}>
+                Gérer les utilisateurs et permissions
               </ThemedText>
             </TouchableOpacity>
           </View>
-        </ThemedView>
 
-        {/* Gestion des Quiz */}
-        <ThemedView style={[styles.section, { backgroundColor: colors.card }]}>
-          <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-            Gestion des Quiz
-          </ThemedText>
-          <ThemedText style={[styles.description, { color: colors.text }]}>
-            {quizzes.length} quiz disponibles
-          </ThemedText>
-          
-          <View style={styles.actionButtons}>
-            <TouchableOpacity
-              style={[styles.actionButton, { backgroundColor: colors.primary }]}
-              onPress={() => router.push('/admin/quiz-management')}
-            >
-              <MaterialIcons name="list" size={20} color={colors.background} />
-              <ThemedText style={[styles.actionButtonText, { color: colors.background }]}>
-                Gérer les quiz
+          {/* Actions dangereuses */}
+          <ThemedView style={[styles.dangerCard, { backgroundColor: colors.card, borderColor: colors.error }]}>
+            <View style={styles.cardHeader}>
+              <MaterialIcons name="warning" size={24} color={colors.error} />
+              <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.error }]}>
+                Actions Dangereuses
               </ThemedText>
-            </TouchableOpacity>
+            </View>
             
-            <TouchableOpacity
-              style={[styles.actionButton, { backgroundColor: colors.warning }]}
-              onPress={() => {
-                Alert.alert(
-                  'Supprimer tous les quiz',
-                  'Êtes-vous sûr de vouloir supprimer tous les quiz ?',
-                  [
-                    { text: 'Annuler', style: 'cancel' },
-                    { 
-                      text: 'Supprimer', 
-                      style: 'destructive',
-                      onPress: () => deleteAllQuizzes()
-                    }
-                  ]
-                );
-              }}
-            >
-              <MaterialIcons name="delete-sweep" size={20} color={colors.background} />
-              <ThemedText style={[styles.actionButtonText, { color: colors.background }]}>
-                Tout supprimer
+            <View style={styles.dangerActions}>
+              <TouchableOpacity
+                style={[styles.dangerButton, { backgroundColor: colors.error }]}
+                onPress={() => {
+                  Alert.alert(
+                    'Supprimer toutes les questions',
+                    'Êtes-vous sûr de vouloir supprimer toutes les questions ? Cette action est irréversible.',
+                    [
+                      { text: 'Annuler', style: 'cancel' },
+                      { text: 'Supprimer', style: 'destructive', onPress: deleteAllQuestions }
+                    ]
+                  );
+                }}
+              >
+                <MaterialIcons name="delete-forever" size={16} color={colors.background} />
+                <ThemedText style={[styles.dangerButtonText, { color: colors.background }]}>
+                  Supprimer toutes les questions
+                </ThemedText>
+              </TouchableOpacity>
+              
+              <TouchableOpacity
+                style={[styles.dangerButton, { backgroundColor: colors.error }]}
+                onPress={() => {
+                  Alert.alert(
+                    'Supprimer tous les quiz',
+                    'Êtes-vous sûr de vouloir supprimer tous les quiz ? Cette action est irréversible.',
+                    [
+                      { text: 'Annuler', style: 'cancel' },
+                      { text: 'Supprimer', style: 'destructive', onPress: deleteAllQuizzes }
+                    ]
+                  );
+                }}
+              >
+                <MaterialIcons name="delete-forever" size={16} color={colors.background} />
+                <ThemedText style={[styles.dangerButtonText, { color: colors.background }]}>
+                  Supprimer tous les quiz
+                </ThemedText>
+              </TouchableOpacity>
+            </View>
+          </ThemedView>
+
+          {/* Diagnostic Firebase */}
+          <ThemedView style={[styles.diagnosticCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.cardHeader}>
+              <MaterialIcons name="bug-report" size={24} color={colors.primary} />
+              <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>
+                Diagnostic Firebase
               </ThemedText>
-            </TouchableOpacity>
-          </View>
-        </ThemedView>
-
-        {/* Diagnostic Firebase */}
-        <ThemedView style={[styles.section, { backgroundColor: colors.card }]}>
-          <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-            Diagnostic Firebase
-          </ThemedText>
-          <ThemedText style={[styles.description, { color: colors.text }]}>
-            Utilisez ce diagnostic pour identifier les problèmes de connectivité avec Firebase.
-          </ThemedText>
-          <FirebaseDiagnostic />
-        </ThemedView>
-
-        {/* Gestion des utilisateurs */}
-        <ThemedView style={[styles.section, { backgroundColor: colors.card }]}>
-          <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-            Gestion des utilisateurs
-          </ThemedText>
-          <ThemedText style={[styles.description, { color: colors.text }]}>
-            Fonctionnalités d'administration des utilisateurs à venir...
-          </ThemedText>
-        </ThemedView>
+            </View>
+            <FirebaseDiagnostic />
+          </ThemedView>
+        </View>
       </ScrollView>
     </ThemedView>
   );
@@ -260,15 +296,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  scrollView: {
+    flex: 1,
+  },
   contentContainer: {
     padding: 20,
   },
+  mainContent: {
+    gap: 20,
+  },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 20,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    paddingTop: Platform.OS === 'android' ? 0 : 20,
+    paddingBottom: Platform.OS === 'android' ? 0 : 20,
+    paddingHorizontal: 20,
+    borderBottomWidth: 1,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -278,22 +324,34 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4,
   },
+  headerContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
   backButton: {
-    marginRight: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   backButtonText: {
     fontSize: 16,
     fontWeight: '600',
+    marginLeft: 8,
+  },
+  refreshButton: {
+    padding: 8,
+    borderRadius: 8,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     flex: 1,
+    textAlign: 'center',
   },
-  section: {
+  statsCard: {
     padding: 20,
     borderRadius: 12,
-    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -302,70 +360,124 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 4,
+    borderWidth: 1,
   },
-  sectionHeader: {
+  cardHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: 15,
   },
-  sectionTitle: {
+  cardTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-  },
-  description: {
-    fontSize: 14,
-    marginBottom: 15,
-    opacity: 0.8,
+    marginLeft: 10,
   },
   statsGrid: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    marginTop: 10,
+    flexWrap: 'wrap',
   },
   statItem: {
     alignItems: 'center',
-    width: '45%', // Adjust as needed for spacing
+    width: '30%',
+    marginVertical: 10,
   },
-  statValue: {
-    fontSize: 24,
+  statNumber: {
+    fontSize: 28,
     fontWeight: 'bold',
     marginTop: 5,
   },
   statLabel: {
-    fontSize: 12,
+    fontSize: 14,
     opacity: 0.7,
   },
-  actionButtons: {
+  actionsGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  actionCard: {
+    width: '48%',
+    padding: 20,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+    borderWidth: 1,
+    marginBottom: 15,
+  },
+  actionIcon: {
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  actionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+  },
+  actionDescription: {
+    fontSize: 12,
+    opacity: 0.8,
+  },
+  dangerCard: {
+    padding: 20,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+    borderWidth: 1,
+  },
+  dangerActions: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 15,
   },
-  actionButton: {
+  dangerButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    padding: 12,
     borderRadius: 8,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 3,
   },
-  actionButtonText: {
+  dangerButtonText: {
     fontSize: 14,
     fontWeight: '600',
-    marginLeft: 5,
+    marginLeft: 8,
   },
-  errorCard: {
+  diagnosticCard: {
     padding: 20,
     borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+    borderWidth: 1,
+  },
+  errorCard: {
+    padding: 40,
+    borderRadius: 12,
     alignItems: 'center',
-    marginTop: 20,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -381,7 +493,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 5,
   },
-  errorText: {
+  errorDescription: {
     fontSize: 14,
     textAlign: 'center',
     marginBottom: 20,

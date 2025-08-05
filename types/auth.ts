@@ -23,7 +23,7 @@ export interface AuthUser {
   email: string;
   name: string;
   avatar?: string;
-  provider: 'google' | 'facebook' | 'email' | 'apple' | 'microsoft';
+  provider: 'google' | 'facebook' | 'email' | 'apple' | 'microsoft' | 'anonymous';
   providerId?: string;
   emailVerified: boolean;
   createdAt: Date;

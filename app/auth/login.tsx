@@ -10,14 +10,15 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-    Alert,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    TextInput,
-    TouchableOpacity,
-    View
+  Alert,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function LoginScreen() {
   const colorScheme = useColorScheme();
@@ -27,6 +28,7 @@ export default function LoginScreen() {
     loginWithGoogle,
     loginWithFacebook,
     loginWithEmail,
+    skipLogin,
     isLoading,
     error,
     clearError,
@@ -104,8 +106,27 @@ export default function LoginScreen() {
     }
   };
 
+  const handleSkipLogin = () => {
+    // Utiliser la fonction skipLogin du hook useAuth
+    const result = skipLogin();
+    if (result.success) {
+      // Afficher une notification de succès
+      setSuccessMessage('Mode visiteur activé ! Redirection...');
+      setShowSuccessToast(true);
+      
+      // Redirection automatique après un court délai
+      setTimeout(() => {
+        if (Platform.OS === 'android') {
+          router.replace('/');
+        } else {
+          router.replace('/(tabs)');
+        }
+      }, 1500);
+    }
+  };
+
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Success Toast */}
       <SuccessToast
         visible={showSuccessToast}
@@ -143,6 +164,17 @@ export default function LoginScreen() {
             : 'Connectez-vous pour continuer votre formation'
           }
         </ThemedText>
+
+        {/* Skip Login Option */}
+        <TouchableOpacity
+          style={[styles.skipButton, { borderColor: colors.border }]}
+          onPress={handleSkipLogin}
+        >
+          <MaterialIcons name="visibility" size={16} color={colors.secondary} style={styles.skipIcon} />
+          <ThemedText style={[styles.skipText, { color: colors.secondary }]}>
+            Explorer sans compte
+          </ThemedText>
+        </TouchableOpacity>
       </View>
 
       {/* SSO Buttons */}
@@ -256,7 +288,7 @@ export default function LoginScreen() {
         </TouchableOpacity>
       </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -397,5 +429,23 @@ const styles = StyleSheet.create({
   registerLink: {
     fontSize: 14,
     fontWeight: '600',
+  },
+  skipButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'transparent',
+    marginTop: 12,
+    backgroundColor: 'transparent',
+  },
+  skipIcon: {
+    marginRight: 6,
+  },
+  skipText: {
+    fontSize: 13,
+    fontWeight: '500',
   },
 }); 

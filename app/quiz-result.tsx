@@ -3,7 +3,9 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from '@/constants/Colors';
+import { useLoadingBarContext } from '@/contexts/LoadingBarContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { Quiz } from '@/types/quiz';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
@@ -20,19 +22,35 @@ export default function QuizResultScreen() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
   const { getQuiz } = useQuizDataContext();
+  const { showLoading, hideLoading } = useLoadingBarContext();
 
   const [quiz, setQuiz] = useState<Quiz | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Charger le quiz dynamiquement
   useEffect(() => {
     const loadQuiz = async () => {
       if (params.quizId) {
-        const quizData = await getQuiz(params.quizId);
-        setQuiz(quizData);
+        setIsLoading(true);
+        showLoading({ duration: 1500 });
+        
+        try {
+          const quizData = await getQuiz(params.quizId);
+          setQuiz(quizData);
+        } catch (error) {
+          console.error('Erreur lors du chargement du quiz:', error);
+        } finally {
+          setIsLoading(false);
+          hideLoading();
+        }
+      } else {
+        setIsLoading(false);
+        hideLoading();
       }
     };
     loadQuiz();
-  }, [params.quizId, getQuiz]);
+  }, [params.quizId, getQuiz, showLoading, hideLoading]);
+
   const score = parseInt(params.score || '0');
   const totalPoints = parseInt(params.totalPoints || '0');
   const percentage = parseInt(params.percentage || '0');
@@ -47,15 +65,28 @@ export default function QuizResultScreen() {
   };
 
   const getBadge = () => {
-    if (percentage >= 90) return { name: 'Expert', icon: 'star.fill', color: '#FFD700' };
-    if (percentage >= 80) return { name: 'Adepte', icon: 'medal.fill', color: '#C0C0C0' };
-    if (percentage >= 70) return { name: 'Initié', icon: 'trophy.fill', color: '#CD7F32' };
-    return { name: 'Débutant', icon: 'person.fill', color: '#4CAF50' };
+    if (percentage >= 90) return { name: 'Expert', icon: 'star.fill' as const, color: '#FFD700' };
+    if (percentage >= 80) return { name: 'Adepte', icon: 'medal.fill' as const, color: '#C0C0C0' };
+    if (percentage >= 70) return { name: 'Initié', icon: 'trophy.fill' as const, color: '#CD7F32' };
+    return { name: 'Débutant', icon: 'person.fill' as const, color: '#4CAF50' };
   };
 
   const badge = getBadge();
 
-  // Gérer le cas où le quiz n'est pas encore chargé
+  // Gérer le cas où le quiz est en cours de chargement
+  if (isLoading) {
+    return (
+      <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
+        <ThemedView style={styles.loadingContainer}>
+          <ThemedText style={[styles.loadingText, { color: colors.text }]}>
+            Chargement du quiz...
+          </ThemedText>
+        </ThemedView>
+      </ScrollView>
+    );
+  }
+
+  // Gérer le cas où le quiz n'est pas trouvé
   if (!quiz) {
     return (
       <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
@@ -63,6 +94,14 @@ export default function QuizResultScreen() {
           <ThemedText style={[styles.loadingText, { color: colors.error }]}>
             Quiz non trouvé
           </ThemedText>
+          <TouchableOpacity 
+            style={[styles.errorButton, { backgroundColor: colors.primary }]}
+            onPress={() => router.push('/')}
+          >
+            <ThemedText style={[styles.errorButtonText, { color: colors.background }]}>
+              Retour à l'accueil
+            </ThemedText>
+          </TouchableOpacity>
         </ThemedView>
       </ScrollView>
     );
@@ -162,37 +201,6 @@ export default function QuizResultScreen() {
             </ThemedText>
           </TouchableOpacity>
         </View>
-
-        {/* Suggestions de quiz similaires */}
-        {quiz && (
-          <View style={styles.suggestionsContainer}>
-            <ThemedText type="subtitle" style={styles.suggestionsTitle}>
-              Quiz similaires
-            </ThemedText>
-            
-            {sampleQuizzes
-              .filter(q => q.id !== quiz.id && q.category === quiz.category)
-              .slice(0, 2)
-              .map((suggestedQuiz) => (
-                <TouchableOpacity
-                  key={suggestedQuiz.id}
-                  style={[styles.suggestionCard, { backgroundColor: colors.background, borderColor: colors.border }]}
-                  onPress={() => router.push({
-                    pathname: '/quiz/[id]',
-                    params: { id: suggestedQuiz.id }
-                  })}
-                >
-                  <ThemedText type="subtitle" style={styles.suggestionTitle}>
-                    {suggestedQuiz.title}
-                  </ThemedText>
-                  <ThemedText style={styles.suggestionDescription}>
-                    {suggestedQuiz.description}
-                  </ThemedText>
-                  <IconSymbol name="chevron.right" size={16} color={colors.tint} />
-                </TouchableOpacity>
-              ))}
-          </View>
-        )}
       </ThemedView>
     </ScrollView>
   );
@@ -299,30 +307,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-  suggestionsContainer: {
-    marginBottom: 20,
-  },
-  suggestionsTitle: {
-    marginBottom: 16,
-  },
-  suggestionCard: {
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 2,
-    marginBottom: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  suggestionTitle: {
-    fontSize: 16,
-    marginBottom: 4,
-  },
-  suggestionDescription: {
-    fontSize: 14,
-    opacity: 0.7,
-    flex: 1,
-  },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
@@ -332,5 +316,16 @@ const styles = StyleSheet.create({
   loadingText: {
     fontSize: 18,
     textAlign: 'center',
+  },
+  errorButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+    alignSelf: 'center',
+    marginTop: 20,
+  },
+  errorButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
   },
 }); 
