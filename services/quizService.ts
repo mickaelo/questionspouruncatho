@@ -1,11 +1,11 @@
 import {
-    collection,
-    doc,
-    getDoc,
-    getDocs,
-    orderBy,
-    query,
-    where
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  where
 } from 'firebase/firestore';
 import { db } from '../config/firebase';
 import { Question, Quiz } from '../types/quiz';
@@ -22,7 +22,7 @@ export interface QuizService {
   getQuestionsByDifficulty(difficulty: string): Promise<Question[]>;
   getQuestionsByLevel(level: number): Promise<Question[]>;
   getQuestionsByQuizId(quizId: string): Promise<Question[]>;
-  
+
   // Quiz retrieval
   getQuiz(id: string): Promise<Quiz | null>;
   getAllQuizzes(): Promise<Quiz[]>;
@@ -30,7 +30,7 @@ export interface QuizService {
   getQuizzesByLevel(level: number): Promise<Quiz[]>;
   getAvailableQuizzes(userLevel: number): Promise<Quiz[]>;
   getQuizzesByCategoryAndLevel(category: string, userLevel: number): Promise<Quiz[]>;
-  
+
   // Statistics
   getQuizStatistics(): Promise<{
     totalQuestions: number;
@@ -42,26 +42,26 @@ export interface QuizService {
 }
 
 class QuizServiceImpl implements QuizService {
-  
+
   // Question retrieval
   async getQuestion(id: string): Promise<Question | null> {
     try {
       console.log('🔍 Recherche de la question avec ID:', id);
-      
+
       // Rechercher par la propriété 'id' au lieu de l'ID du document
       const questionsRef = collection(db, QUESTIONS_COLLECTION);
       const q = query(questionsRef, where("id", "==", id));
-      
+
       const querySnapshot = await getDocs(q);
       console.log('📄 Nombre de questions trouvées:', querySnapshot.docs.length);
-      
+
       if (!querySnapshot.empty) {
         const doc = querySnapshot.docs[0]; // Prendre le premier document trouvé
         const question = { id: doc.id, ...doc.data() } as Question;
         console.log('✅ Question trouvée:', question.id);
         return question;
       }
-      
+
       console.log('❌ Aucune question trouvée avec la propriété id:', id);
       return null;
     } catch (error) {
@@ -74,7 +74,7 @@ class QuizServiceImpl implements QuizService {
     try {
       const q = query(collection(db, QUESTIONS_COLLECTION), orderBy('id'));
       const querySnapshot = await getDocs(q);
-      
+
       return querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
@@ -93,7 +93,7 @@ class QuizServiceImpl implements QuizService {
         orderBy('id')
       );
       const querySnapshot = await getDocs(q);
-      
+
       return querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
@@ -112,7 +112,7 @@ class QuizServiceImpl implements QuizService {
         orderBy('id')
       );
       const querySnapshot = await getDocs(q);
-      
+
       return querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
@@ -131,7 +131,7 @@ class QuizServiceImpl implements QuizService {
         orderBy('level')
       );
       const querySnapshot = await getDocs(q);
-      
+
       return querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
@@ -147,21 +147,21 @@ class QuizServiceImpl implements QuizService {
       // Récupérer directement le document quiz sans les questions pour éviter la boucle infinie
       const docRef = doc(db, QUIZZES_COLLECTION, quizId);
       const docSnap = await getDoc(docRef);
-      
+
       if (!docSnap.exists()) return [];
-      
+
       const quizData = docSnap.data();
       const questionIds = quizData.questions?.map((q: any) => q.id) || [];
       console.log("questionIds", questionIds)
       const questions: Question[] = [];
-      
+
       for (const questionId of questionIds) {
         const question = await this.getQuestion(questionId);
         if (question) {
           questions.push(question);
         }
       }
-      
+
       return questions;
     } catch (error) {
       console.error('Error getting questions by quiz ID:', error);
@@ -172,36 +172,39 @@ class QuizServiceImpl implements QuizService {
   // Quiz retrieval
   async getQuiz(id: string): Promise<Quiz | null> {
     try {
-      console.log('🔍 Recherche du quiz avec ID:', id);
-      
-      // Rechercher par la propriété 'id' au lieu de l'ID du document
-      const quizzesRef = collection(db, QUIZZES_COLLECTION);
-      const q = query(quizzesRef, where("id", "==", id));
-      
-      const querySnapshot = await getDocs(q);
-      console.log('📄 Nombre de documents trouvés:', querySnapshot.docs.length);
-      
-      if (!querySnapshot.empty) {
-        const doc = querySnapshot.docs[0]; // Prendre le premier document trouvé
-        const quizData = doc.data();
-        console.log('📊 Données du quiz trouvé:', quizData);
-        
-        // Fetch questions for this quiz
-        const questions = await this.getQuestionsByQuizId(doc.id);
-        console.log('✅ Questions chargées:', questions.length);
-        
-        const quiz = { 
-          id: doc.id, 
-          ...quizData,
-          questions 
-        } as Quiz;
-        
-        console.log('🎯 Quiz complet retourné:', quiz.title);
-        return quiz;
+      // 1. Récupérer le quiz
+      const docRef = doc(db, QUIZZES_COLLECTION, id);
+      const quizSnap = await getDoc(docRef);
+
+      if (!quizSnap.exists()) {
+        throw new Error('Quiz non trouvé');
       }
-      
-      console.log('❌ Aucun quiz trouvé avec la propriété id:', id);
-      return null;
+      const quizData = quizSnap.data();
+
+      // 2. Récupérer les questions associées (via questionIds)
+      const questionIds: string[] = quizData.questionIds || [];
+
+      if (questionIds.length === 0) {
+        return { id: quizSnap.id, questions: [], ...quizData } as any;
+      }
+
+      // Firestore limite à 10 éléments max avec where 'in'
+      // Si plus de 10, il faudra faire plusieurs requêtes (pagination)
+      const chunkSize = 10;
+      const questions: any[] = [];
+
+      for (let i = 0; i < questionIds.length; i += chunkSize) {
+        const chunk = questionIds.slice(i, i + chunkSize);
+
+        const q = query(collection(db, 'questions'), where('__name__', 'in', chunk));
+        const querySnapshot = await getDocs(q);
+
+        querySnapshot.forEach((doc) => {
+          questions.push({ id: doc.id, ...doc.data() });
+        });
+      }
+
+      return { id: quizSnap.id, ...quizData, questions } as any;
     } catch (error) {
       console.error('💥 Erreur lors de la récupération du quiz:', error);
       throw new Error('Failed to get quiz');
@@ -212,24 +215,24 @@ class QuizServiceImpl implements QuizService {
     try {
       const q = query(collection(db, QUIZZES_COLLECTION), orderBy('id'));
       const querySnapshot = await getDocs(q);
-      
+
       const quizzes: Quiz[] = [];
       for (const doc of querySnapshot.docs) {
         const quizData = doc.data();
-        
+
         // Récupérer le nombre de questions depuis le document quiz
         const questionCount = quizData.questions?.length || 0;
-        
+
         // Créer un tableau avec le bon nombre d'éléments pour que .length fonctionne
         const questionsArray = Array(questionCount).fill(null);
-        
+
         quizzes.push({
           id: doc.id,
           ...quizData,
           questions: questionsArray // Tableau avec la bonne longueur
         } as any);
       }
-      
+
       return quizzes;
     } catch (error) {
       console.error('Error getting all quizzes:', error);
@@ -245,24 +248,24 @@ class QuizServiceImpl implements QuizService {
         orderBy('id')
       );
       const querySnapshot = await getDocs(q);
-      
+
       const quizzes: Quiz[] = [];
       for (const doc of querySnapshot.docs) {
         const quizData = doc.data();
-        
+
         // Récupérer le nombre de questions depuis le document quiz
         const questionCount = quizData.questions?.length || 0;
-        
+
         // Créer un tableau avec le bon nombre d'éléments pour que .length fonctionne
         const questionsArray = Array(questionCount).fill(null);
-        
+
         quizzes.push({
           id: doc.id,
           ...quizData,
           questions: questionsArray // Tableau avec la bonne longueur
         } as any);
       }
-      
+
       return quizzes;
     } catch (error) {
       console.error('Error getting quizzes by category:', error);
@@ -278,7 +281,7 @@ class QuizServiceImpl implements QuizService {
         orderBy('id')
       );
       const querySnapshot = await getDocs(q);
-      
+
       const quizzes: Quiz[] = [];
       for (const doc of querySnapshot.docs) {
         const quizData = doc.data();
@@ -289,7 +292,7 @@ class QuizServiceImpl implements QuizService {
           questions
         } as Quiz);
       }
-      
+
       return quizzes;
     } catch (error) {
       console.error('Error getting quizzes by level:', error);
@@ -305,24 +308,24 @@ class QuizServiceImpl implements QuizService {
         orderBy('level')
       );
       const querySnapshot = await getDocs(q);
-      
+
       const quizzes: Quiz[] = [];
       for (const doc of querySnapshot.docs) {
         const quizData = doc.data();
-        
+
         // Récupérer le nombre de questions depuis le document quiz
         const questionCount = quizData.questions?.length || 0;
-        
+
         // Créer un tableau avec le bon nombre d'éléments pour que .length fonctionne
         const questionsArray = Array(questionCount).fill(null);
-        
+
         quizzes.push({
           id: doc.id,
           ...quizData,
           questions: questionsArray // Tableau avec la bonne longueur
         } as any);
       }
-      
+
       return quizzes;
     } catch (error) {
       console.error('Error getting available quizzes:', error);
@@ -339,24 +342,24 @@ class QuizServiceImpl implements QuizService {
         orderBy('level')
       );
       const querySnapshot = await getDocs(q);
-      
+
       const quizzes: Quiz[] = [];
       for (const doc of querySnapshot.docs) {
         const quizData = doc.data();
-        
+
         // Récupérer le nombre de questions depuis le document quiz
         const questionCount = quizData.questions?.length || 0;
-        
+
         // Créer un tableau avec le bon nombre d'éléments pour que .length fonctionne
         const questionsArray = Array(questionCount).fill(null);
-        
+
         quizzes.push({
           id: doc.id,
           ...quizData,
           questions: questionsArray // Tableau avec la bonne longueur
         } as any);
       }
-      
+
       return quizzes;
     } catch (error) {
       console.error('Error getting quizzes by category and level:', error);

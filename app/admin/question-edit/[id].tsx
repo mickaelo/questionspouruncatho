@@ -33,6 +33,7 @@ export default function QuestionEditScreen() {
   const [isSaving, setIsSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [newOption, setNewOption] = useState('');
+  const [newSentence, setNewSentence] = useState('');
 
   // Vérifier si l'utilisateur est admin
   const isAdmin = user?.type?.includes('admin');
@@ -71,7 +72,11 @@ export default function QuestionEditScreen() {
           correctAnswer: foundQuestion.correctAnswer,
           questionType: foundQuestion.questionType,
           author: foundQuestion.author,
-          reference: foundQuestion.reference
+          reference: foundQuestion.reference,
+          sentences: foundQuestion.sentences ? [...foundQuestion.sentences] : [],
+          correctOrder: foundQuestion.correctOrder ? [...foundQuestion.correctOrder] : [],
+          associationPairs: foundQuestion.associationPairs ? [...foundQuestion.associationPairs] : [],
+          multipleCorrectAnswers: foundQuestion.multipleCorrectAnswers
         });
       }
     } else if (isNewQuestion) {
@@ -87,7 +92,11 @@ export default function QuestionEditScreen() {
         correctAnswer: 0,
         questionType: 'multiple-choice',
         author: '',
-        reference: ''
+        reference: '',
+        sentences: [],
+        correctOrder: [],
+        associationPairs: [],
+        multipleCorrectAnswers: false
       });
     }
   }, [id, questions, isNewQuestion]);
@@ -121,34 +130,46 @@ export default function QuestionEditScreen() {
   }, [question, editedQuestion, isNewQuestion]);
 
   const handleSave = async () => {
-    if (!editedQuestion.question || !editedQuestion.category) {
-      Alert.alert('Erreur', 'Veuillez remplir au moins la question et la catégorie');
-      return;
-    }
+   
 
-    if (!editedQuestion.options || editedQuestion.options.length < 2) {
-      Alert.alert('Erreur', 'Veuillez ajouter au moins 2 options');
-      return;
-    }
-
-    if (editedQuestion.options.some(option => !option.trim())) {
-      Alert.alert('Erreur', 'Veuillez remplir toutes les options');
-      return;
-    }
+  
 
     setIsSaving(true);
     try {
       if (isNewQuestion) {
-        await createQuestion(editedQuestion as Omit<Question, 'id'>);
+        console.log(editedQuestion)
+        const questionData: Omit<Question, 'id'> = {
+          question: editedQuestion.question!,
+          category: editedQuestion.category!,
+          difficulty: editedQuestion.difficulty || 'moyen',
+          level: editedQuestion.level || 1,
+          points: editedQuestion.points || 10,
+          explanation: editedQuestion.explanation || '',
+          options: editedQuestion.options || [],
+          correctAnswer: editedQuestion.correctAnswer || 0,
+          questionType: editedQuestion.questionType || 'multiple-choice',
+          author: editedQuestion.author || '',
+          reference: editedQuestion.reference || '',
+          sentences: editedQuestion.sentences || [],
+          correctOrder: editedQuestion.correctOrder || [],
+          associationPairs: editedQuestion.associationPairs || [],
+          multipleCorrectAnswers: editedQuestion.multipleCorrectAnswers || false
+        };
+
+        console.log('🔄 Création de la question:', questionData);
+        const questionId = await createQuestion(questionData);
+        console.log('✅ Question créée avec succès, ID:', questionId);
         Alert.alert('Succès', 'Question créée avec succès');
       } else if (question) {
+        console.log('🔄 Mise à jour de la question:', question.id, editedQuestion);
         await updateQuestion(question.id, editedQuestion);
+        console.log('✅ Question mise à jour avec succès');
         Alert.alert('Succès', 'Question mise à jour avec succès');
       }
       router.back();
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde:', error);
-      Alert.alert('Erreur', 'Impossible de sauvegarder la question');
+      console.error('❌ Erreur lors de la sauvegarde:', error);
+      Alert.alert('Erreur', 'Impossible de sauvegarder la question. Vérifiez votre connexion Firebase.');
     } finally {
       setIsSaving(false);
     }
@@ -156,46 +177,78 @@ export default function QuestionEditScreen() {
 
   const handleAddOption = () => {
     if (newOption.trim()) {
-      setEditedQuestion(prev => ({
-        ...prev,
-        options: [...(prev.options || []), newOption.trim()]
-      }));
+      setEditedQuestion({
+        ...editedQuestion,
+        options: [...(editedQuestion.options || []), newOption.trim()]
+      });
       setNewOption('');
     }
   };
 
   const handleRemoveOption = (index: number) => {
-    if (editedQuestion.options && editedQuestion.options.length > 2) {
-      const newOptions = [...editedQuestion.options];
-      newOptions.splice(index, 1);
-      
-      // Ajuster la réponse correcte si nécessaire
-      let newCorrectAnswer = editedQuestion.correctAnswer || 0;
-      if (index === newCorrectAnswer) {
-        newCorrectAnswer = 0;
-      } else if (index < newCorrectAnswer) {
-        newCorrectAnswer--;
-      }
-      
-      setEditedQuestion(prev => ({
-        ...prev,
-        options: newOptions,
-        correctAnswer: newCorrectAnswer
-      }));
-    } else {
-      Alert.alert('Erreur', 'Une question doit avoir au moins 2 options');
-    }
+    const updatedOptions = [...(editedQuestion.options || [])];
+    updatedOptions.splice(index, 1);
+    setEditedQuestion({ ...editedQuestion, options: updatedOptions });
   };
 
   const handleUpdateOption = (index: number, value: string) => {
-    if (editedQuestion.options) {
-      const newOptions = [...editedQuestion.options];
-      newOptions[index] = value;
-      setEditedQuestion(prev => ({
-        ...prev,
-        options: newOptions
-      }));
+    const updatedOptions = [...(editedQuestion.options || [])];
+    updatedOptions[index] = value;
+    setEditedQuestion({ ...editedQuestion, options: updatedOptions });
+  };
+
+  const handleAddSentence = () => {
+    if (newSentence.trim()) {
+      const updatedSentences = [...(editedQuestion.sentences || []), newSentence.trim()];
+      setEditedQuestion({
+        ...editedQuestion,
+        sentences: updatedSentences,
+        correctOrder: Array.from({ length: updatedSentences.length }, (_, i) => i)
+      });
+      setNewSentence('');
     }
+  };
+
+  const handleRemoveSentence = (index: number) => {
+    const updatedSentences = [...(editedQuestion.sentences || [])];
+    updatedSentences.splice(index, 1);
+    
+    // Mettre à jour l'ordre correct
+    const updatedCorrectOrder = (editedQuestion.correctOrder || [])
+      .filter(orderIndex => orderIndex !== index)
+      .map(orderIndex => orderIndex > index ? orderIndex - 1 : orderIndex);
+    
+    setEditedQuestion({ 
+      ...editedQuestion, 
+      sentences: updatedSentences,
+      correctOrder: updatedCorrectOrder
+    });
+  };
+
+  const handleUpdateSentence = (index: number, value: string) => {
+    const updatedSentences = [...(editedQuestion.sentences || [])];
+    updatedSentences[index] = value;
+    setEditedQuestion({ ...editedQuestion, sentences: updatedSentences });
+  };
+
+  const handleMoveSentence = (fromIndex: number, toIndex: number) => {
+    const updatedSentences = [...(editedQuestion.sentences || [])];
+    const [movedSentence] = updatedSentences.splice(fromIndex, 1);
+    updatedSentences.splice(toIndex, 0, movedSentence);
+    
+    // Mettre à jour l'ordre correct
+    const updatedCorrectOrder = [...(editedQuestion.correctOrder || [])];
+    const movedOrderIndex = updatedCorrectOrder.indexOf(fromIndex);
+    if (movedOrderIndex !== -1) {
+      updatedCorrectOrder.splice(movedOrderIndex, 1);
+      updatedCorrectOrder.splice(toIndex, 0, fromIndex);
+    }
+    
+    setEditedQuestion({ 
+      ...editedQuestion, 
+      sentences: updatedSentences,
+      correctOrder: updatedCorrectOrder
+    });
   };
 
   if (!isAdmin) {
@@ -404,68 +457,125 @@ export default function QuestionEditScreen() {
           </ThemedView>
 
           {/* Options */}
-          <ThemedView style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            <View style={styles.cardHeader}>
-              <MaterialIcons name="list" size={24} color={colors.primary} />
-              <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>
-                Options de réponse
-              </ThemedText>
-            </View>
-            
-            <View style={styles.optionsContainer}>
-              {editedQuestion.options?.map((option, index) => (
-                <View key={index} style={styles.optionItem}>
-                  <TouchableOpacity
-                    style={[
-                      styles.optionRadio,
-                      { 
-                        backgroundColor: editedQuestion.correctAnswer === index ? colors.primary : colors.background,
-                        borderColor: colors.border
-                      }
-                    ]}
-                    onPress={() => setEditedQuestion({ ...editedQuestion, correctAnswer: index })}
-                  >
-                    {editedQuestion.correctAnswer === index && (
-                      <MaterialIcons name="check" size={16} color={colors.background} />
-                    )}
-                  </TouchableOpacity>
-                  
-                  <TextInput
-                    style={[styles.optionInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
-                    placeholder={`Option ${index + 1}`}
-                    placeholderTextColor={colors.text + '80'}
-                    value={option}
-                    onChangeText={(text) => handleUpdateOption(index, text)}
-                  />
-                  
-                  {editedQuestion.options && editedQuestion.options.length > 2 && (
+          {editedQuestion.questionType === 'multiple-choice' && (
+            <ThemedView style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              <View style={styles.cardHeader}>
+                <MaterialIcons name="list" size={24} color={colors.primary} />
+                <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>
+                  Options
+                </ThemedText>
+              </View>
+              
+              <View style={styles.optionsContainer}>
+                {(editedQuestion.options || []).map((option, index) => (
+                  <View key={index} style={styles.optionRow}>
+                    <TextInput
+                      style={[styles.optionInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                      placeholder={`Option ${index + 1}`}
+                      placeholderTextColor={colors.text + '80'}
+                      value={option}
+                      onChangeText={(text) => handleUpdateOption(index, text)}
+                    />
                     <TouchableOpacity
-                      style={[styles.removeOptionButton, { backgroundColor: colors.error }]}
+                      style={[styles.removeButton, { backgroundColor: colors.error }]}
                       onPress={() => handleRemoveOption(index)}
                     >
-                      <MaterialIcons name="close" size={16} color={colors.background} />
+                      <MaterialIcons name="delete" size={16} color={colors.background} />
                     </TouchableOpacity>
-                  )}
+                  </View>
+                ))}
+                
+                <View style={styles.addOptionRow}>
+                  <TextInput
+                    style={[styles.optionInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                    placeholder="Nouvelle option..."
+                    placeholderTextColor={colors.text + '80'}
+                    value={newOption}
+                    onChangeText={setNewOption}
+                  />
+                  <TouchableOpacity
+                    style={[styles.addOptionButton, { backgroundColor: colors.primary }]}
+                    onPress={handleAddOption}
+                  >
+                    <MaterialIcons name="add" size={16} color={colors.background} />
+                  </TouchableOpacity>
                 </View>
-              ))}
-              
-              <View style={styles.addOptionContainer}>
-                <TextInput
-                  style={[styles.addOptionInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
-                  placeholder="Nouvelle option"
-                  placeholderTextColor={colors.text + '80'}
-                  value={newOption}
-                  onChangeText={setNewOption}
-                />
-                <TouchableOpacity
-                  style={[styles.addOptionButton, { backgroundColor: colors.primary }]}
-                  onPress={handleAddOption}
-                >
-                  <MaterialIcons name="add" size={16} color={colors.background} />
-                </TouchableOpacity>
               </View>
-            </View>
-          </ThemedView>
+            </ThemedView>
+          )}
+
+          {/* Phrases pour réorganisation */}
+          {editedQuestion.questionType === 'sentence-reorder' && (
+            <ThemedView style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              <View style={styles.cardHeader}>
+                <MaterialIcons name="sort" size={24} color={colors.primary} />
+                <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>
+                  Phrases à réorganiser
+                </ThemedText>
+              </View>
+              
+              <View style={styles.sentencesContainer}>
+                {(editedQuestion.sentences || []).map((sentence, index) => (
+                  <View key={index} style={styles.sentenceRow}>
+                    <View style={styles.sentenceNumber}>
+                      <ThemedText style={[styles.sentenceNumberText, { color: colors.tint }]}>
+                        {index + 1}
+                      </ThemedText>
+                    </View>
+                    <TextInput
+                      style={[styles.sentenceInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                      placeholder={`Phrase ${index + 1}`}
+                      placeholderTextColor={colors.text + '80'}
+                      value={sentence}
+                      onChangeText={(text) => handleUpdateSentence(index, text)}
+                      multiline
+                    />
+                    <View style={styles.sentenceControls}>
+                      {index > 0 && (
+                        <TouchableOpacity
+                          style={[styles.moveButton, { backgroundColor: colors.primary }]}
+                          onPress={() => handleMoveSentence(index, index - 1)}
+                        >
+                          <MaterialIcons name="keyboard-arrow-up" size={16} color={colors.background} />
+                        </TouchableOpacity>
+                      )}
+                      {index < (editedQuestion.sentences?.length || 0) - 1 && (
+                        <TouchableOpacity
+                          style={[styles.moveButton, { backgroundColor: colors.primary }]}
+                          onPress={() => handleMoveSentence(index, index + 1)}
+                        >
+                          <MaterialIcons name="keyboard-arrow-down" size={16} color={colors.background} />
+                        </TouchableOpacity>
+                      )}
+                      <TouchableOpacity
+                        style={[styles.removeButton, { backgroundColor: colors.error }]}
+                        onPress={() => handleRemoveSentence(index)}
+                      >
+                        <MaterialIcons name="delete" size={16} color={colors.background} />
+                      </TouchableOpacity>
+                    </View>
+                  </View>
+                ))}
+                
+                <View style={styles.addSentenceRow}>
+                  <TextInput
+                    style={[styles.sentenceInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                    placeholder="Nouvelle phrase..."
+                    placeholderTextColor={colors.text + '80'}
+                    value={newSentence}
+                    onChangeText={setNewSentence}
+                    multiline
+                  />
+                  <TouchableOpacity
+                    style={[styles.addSentenceButton, { backgroundColor: colors.primary }]}
+                    onPress={handleAddSentence}
+                  >
+                    <MaterialIcons name="add" size={16} color={colors.background} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </ThemedView>
+          )}
 
           {/* Explication */}
           <ThemedView style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
@@ -559,39 +669,37 @@ const styles = StyleSheet.create({
       height: 2,
     },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 4,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   headerContent: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    width: '100%',
+    justifyContent: 'space-between',
   },
   backButton: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
   },
   backButtonText: {
     fontSize: 16,
     fontWeight: '600',
-    marginLeft: 8,
   },
   title: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: 'bold',
-    flex: 1,
-    textAlign: 'center',
   },
   saveButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
-    borderRadius: 8,
     gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: 8,
   },
   saveButtonText: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: '600',
   },
   loadingContainer: {
@@ -599,26 +707,55 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 8,
   },
-  card: {
-    borderRadius: 12,
+  centerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
+  },
+  errorText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 16,
+  },
+  errorDescription: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginTop: 8,
+  },
+  loadingText: {
+    fontSize: 16,
+    marginTop: 16,
+  },
+  backLink: {
+    fontSize: 16,
+    marginTop: 16,
+    textDecorationLine: 'underline',
+  },
+  card: {
+    padding: 20,
+    borderRadius: 12,
     borderWidth: 1,
   },
   cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 12,
     marginBottom: 16,
   },
   cardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginLeft: 10,
+    fontSize: 16,
+    fontWeight: '600',
   },
   formGrid: {
     gap: 16,
   },
+  formRow: {
+    flexDirection: 'row',
+    gap: 16,
+  },
   formGroup: {
-    marginBottom: 12,
+    flex: 1,
   },
   label: {
     fontSize: 14,
@@ -633,16 +770,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   textArea: {
-    height: 100,
+    minHeight: 80,
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 12,
+    paddingVertical: 12,
     fontSize: 16,
-    paddingTop: 10,
-  },
-  formRow: {
-    flexDirection: 'row',
-    gap: 12,
+    textAlignVertical: 'top',
   },
   difficultyButtons: {
     flexDirection: 'row',
@@ -652,7 +786,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: 8,
+    borderRadius: 6,
     borderWidth: 1,
     alignItems: 'center',
   },
@@ -663,18 +797,10 @@ const styles = StyleSheet.create({
   optionsContainer: {
     gap: 12,
   },
-  optionItem: {
+  optionRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-  },
-  optionRadio: {
-    width: 24,
-    height: 24,
-    borderRadius: 12,
-    borderWidth: 2,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   optionInput: {
     flex: 1,
@@ -684,53 +810,66 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     fontSize: 16,
   },
-  removeOptionButton: {
+  removeButton: {
     padding: 8,
     borderRadius: 6,
   },
-  addOptionContainer: {
+  addOptionRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
     marginTop: 8,
   },
-  addOptionInput: {
-    flex: 1,
-    height: 48,
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    fontSize: 16,
-  },
   addOptionButton: {
     padding: 12,
     borderRadius: 8,
   },
-  centerContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  sentencesContainer: {
+    gap: 12,
+  },
+  sentenceRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+  },
+  sentenceNumber: {
+    width: 30,
     alignItems: 'center',
-    padding: 20,
+    justifyContent: 'center',
+    marginTop: 8,
   },
-  errorText: {
-    fontSize: 18,
+  sentenceNumberText: {
+    fontSize: 16,
     fontWeight: 'bold',
-    marginTop: 16,
-    textAlign: 'center',
   },
-  errorDescription: {
-    fontSize: 14,
-    textAlign: 'center',
-    marginTop: 10,
-  },
-  loadingText: {
+  sentenceInput: {
+    flex: 1,
+    minHeight: 48,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
     fontSize: 16,
-    marginTop: 16,
+    paddingTop: 12,
+    paddingBottom: 12,
   },
-  backLink: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginTop: 20,
-    textDecorationLine: 'underline',
+  sentenceControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 8,
+  },
+  moveButton: {
+    padding: 8,
+    borderRadius: 6,
+  },
+  addSentenceRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginTop: 8,
+  },
+  addSentenceButton: {
+    padding: 12,
+    borderRadius: 8,
   },
 }); 

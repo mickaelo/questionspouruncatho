@@ -83,7 +83,7 @@ export default function QuizManagementScreen() {
   if (!isAdmin) {
     return (
       <ThemedView style={[styles.container, { backgroundColor: colors.background }]}>
-        <ScrollView 
+        <ScrollView
           contentContainerStyle={[
             styles.contentContainer,
             {
@@ -106,29 +106,17 @@ export default function QuizManagementScreen() {
     );
   }
 
-  const handleDeleteQuiz = (quiz: Quiz) => {
-    Alert.alert(
-      'Supprimer le quiz',
-      `Êtes-vous sûr de vouloir supprimer "${quiz.title}" ?`,
-      [
-        { text: 'Annuler', style: 'cancel' },
-        { 
-          text: 'Supprimer', 
-          style: 'destructive',
-          onPress: async () => {
-            showLoading({ duration: 1000 });
-            try {
-              await deleteQuiz(quiz.id);
-              Alert.alert('Succès', 'Quiz supprimé avec succès');
-            } catch (error) {
-              Alert.alert('Erreur', 'Impossible de supprimer le quiz');
-            } finally {
-              hideLoading();
-            }
-          }
-        }
-      ]
-    );
+  const handleDeleteQuiz = async (quiz: Quiz) => {
+
+    showLoading({ duration: 1000 });
+    try {
+      await deleteQuiz(quiz.id);
+      Alert.alert('Succès', 'Quiz supprimé avec succès');
+    } catch (error) {
+      Alert.alert('Erreur', 'Impossible de supprimer le quiz');
+    } finally {
+      hideLoading();
+    }
   };
 
   const handleEditQuiz = (quiz: Quiz) => {
@@ -161,26 +149,26 @@ export default function QuizManagementScreen() {
 
   const handleManageQuestions = (quiz: Quiz) => {
     console.log('📝 Ouverture du sélecteur de questions pour:', quiz.title);
-    
+
     // Extraire les IDs des questions actuelles du quiz
     const questionIds = quiz.questions.map(q => {
       if (typeof q === 'string') return q;
       if (typeof q === 'object' && q.id) return q.id;
       return null;
     }).filter(id => id !== null) as string[];
-    
+
     console.log('📋 Questions actuelles du quiz:', questionIds);
-    
+
     setSelectedQuestions(questionIds);
     setShowQuestionSelector(quiz.id);
   };
 
   const handleSaveQuestions = async () => {
     if (!showQuestionSelector) return;
-    
+
     setIsAssigningQuestions(true);
     showLoading({ duration: 2000 });
-    
+
     try {
       console.log('🔄 Assignation des questions en cours...', {
         quizId: showQuestionSelector,
@@ -189,23 +177,23 @@ export default function QuizManagementScreen() {
       });
 
       await updateQuizQuestions(showQuestionSelector, selectedQuestions);
-      
+
       console.log('✅ Questions assignées avec succès à Firebase');
-      
+
       // Rafraîchir les données pour voir les changements immédiatement
       await refreshQuizzes();
-      
+
       setShowQuestionSelector(null);
       setSelectedQuestions([]);
-      
+
       Alert.alert(
-        'Succès', 
+        'Succès',
         `${selectedQuestions.length} question(s) assignée(s) avec succès au quiz !`
       );
     } catch (error) {
       console.error('❌ Erreur lors de l\'assignation des questions:', error);
       Alert.alert(
-        'Erreur', 
+        'Erreur',
         'Impossible d\'assigner les questions. Vérifiez votre connexion Firebase.'
       );
     } finally {
@@ -216,16 +204,16 @@ export default function QuizManagementScreen() {
 
   const toggleQuestionSelection = (questionId: string) => {
     setSelectedQuestions(prev => {
-      const newSelection = prev.includes(questionId) 
+      const newSelection = prev.includes(questionId)
         ? prev.filter(id => id !== questionId)
         : [...prev, questionId];
-      
+
       console.log('🔄 Sélection mise à jour:', {
         questionId,
         action: prev.includes(questionId) ? 'désélectionnée' : 'sélectionnée',
         totalSelected: newSelection.length
       });
-      
+
       return newSelection;
     });
   };
@@ -248,14 +236,14 @@ export default function QuizManagementScreen() {
               Retour
             </ThemedText>
           </TouchableOpacity>
-          
+
           <ThemedText type="title" style={[styles.title, { color: colors.text }]}>
             Gestion des Quiz
           </ThemedText>
-          
+
           <TouchableOpacity
             style={[styles.addButton, { backgroundColor: colors.primary }]}
-            onPress={() => setShowAddForm(true)}
+            onPress={() => router.push('/admin/quiz-create')}
           >
             <MaterialIcons name="add" size={20} color={colors.background} />
             <ThemedText style={[styles.addButtonText, { color: colors.background }]}>
@@ -265,7 +253,7 @@ export default function QuizManagementScreen() {
         </View>
       </ThemedView>
 
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[
           styles.contentContainer,
@@ -348,17 +336,17 @@ export default function QuizManagementScreen() {
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={[styles.actionButton, { backgroundColor: colors.error }]}
-                      onPress={() => handleDeleteQuiz(quiz)}
+                      onPress={async () => await handleDeleteQuiz(quiz)}
                     >
                       <MaterialIcons name="delete" size={16} color={colors.background} />
                     </TouchableOpacity>
                   </View>
                 </View>
-                
+
                 <ThemedText style={[styles.quizDescription, { color: colors.secondary }]}>
                   {quiz.description}
                 </ThemedText>
-                
+
                 <View style={styles.quizMeta}>
                   <View style={styles.metaItem}>
                     <MaterialIcons name="category" size={14} color={colors.secondary} />

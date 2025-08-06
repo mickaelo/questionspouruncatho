@@ -157,10 +157,10 @@ export default function QuizScreen() {
     }
   };
 
-  const handleAnswer = (selectedAnswer: number, isCorrect: boolean) => {
+  const handleAnswer = (selectedAnswer: number | number[], isCorrect: boolean) => {
     const answer: Answer = {
       questionId: currentQuestion.id,
-      selectedAnswer,
+      selectedAnswer: Array.isArray(selectedAnswer) ? selectedAnswer[0] : selectedAnswer, // Garder la compatibilité avec l'interface existante
       isCorrect,
       timeSpent: startTime ? Math.floor((new Date().getTime() - startTime.getTime()) / 1000) : 0
     };

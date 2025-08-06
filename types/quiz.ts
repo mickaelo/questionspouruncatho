@@ -4,9 +4,9 @@ export interface Question {
   difficulty: 'facile' | 'moyen' | 'difficile';
   level: number; // Niveau de formation requis (1-5)
   question: string;
-  questionType: 'multiple-choice' | 'true-false' | 'image-recognition' | 'quote-completion';
+  questionType: 'multiple-choice' | 'true-false' | 'image-recognition' | 'quote-completion' | 'association' | 'sentence-reorder';
   options: string[];
-  correctAnswer: number;
+  correctAnswer: number | number[]; // number pour choix unique, number[] pour associations et réorganisation
   explanation: string;
   points: number;
   scripture?: string;
@@ -16,6 +16,41 @@ export interface Question {
   imageUrl?: string; // Pour les questions d'image à reconnaître
   quote?: string; // Pour les questions de citation à compléter
   partialQuote?: string; // Partie de la citation à compléter
+  
+  // Nouveaux champs pour les associations
+  associationPairs?: AssociationPair[]; // Pour les questions d'association
+  multipleCorrectAnswers?: boolean; // Pour les questions à choix multiples avec plusieurs réponses correctes
+  
+  // Nouveaux champs pour la réorganisation de phrases
+  sentences?: string[]; // Phrases à réorganiser
+  correctOrder?: number[]; // Ordre correct des phrases
+}
+
+export interface AssociationPair {
+  id: string;
+  leftItem: string;
+  rightItem: string;
+  isCorrect: boolean;
+}
+
+export interface AssociationQuestion extends Question {
+  questionType: 'association';
+  associationPairs: AssociationPair[];
+  correctAnswer: number[]; // Indices des paires correctes
+}
+
+export interface MultipleChoiceQuestion extends Question {
+  questionType: 'multiple-choice';
+  options: string[];
+  correctAnswer: number | number[]; // number pour une seule réponse, number[] pour plusieurs
+  multipleCorrectAnswers: boolean;
+}
+
+export interface SentenceReorderQuestion extends Question {
+  questionType: 'sentence-reorder';
+  sentences: string[];
+  correctOrder: number[]; // Ordre correct des phrases
+  correctAnswer: number[]; // Même chose que correctOrder pour la compatibilité
 }
 
 export interface Quiz {

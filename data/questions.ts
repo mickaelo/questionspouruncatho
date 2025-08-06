@@ -1632,6 +1632,80 @@ export const sampleQuestions: Question[] = [
     explanation: 'Saint Thomas d\'Aquin est surnommé "le Docteur Angélique" en raison de la pureté de sa doctrine et de sa vie.',
     points: 10,
     author: 'Saint Thomas d\'Aquin'
+  },
+  // Exemple de question d'association
+  {
+    id: 'association-1',
+    category: 'dogmes',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Associez chaque personne de la Trinité à sa caractéristique principale :',
+    questionType: 'association',
+    options: [],
+    correctAnswer: [0, 1, 2],
+    explanation: 'La Trinité est le mystère central de la foi chrétienne : un seul Dieu en trois personnes distinctes.',
+    points: 20,
+    associationPairs: [
+      {
+        id: 'pair-1',
+        leftItem: 'Le Père',
+        rightItem: 'Créateur',
+        isCorrect: true
+      },
+      {
+        id: 'pair-2',
+        leftItem: 'Le Fils',
+        rightItem: 'Rédempteur',
+        isCorrect: true
+      },
+      {
+        id: 'pair-3',
+        leftItem: 'Le Saint-Esprit',
+        rightItem: 'Sanctificateur',
+        isCorrect: true
+      }
+    ]
+  },
+  // Exemple de question à choix multiples avec plusieurs réponses
+  {
+    id: 'multiple-1',
+    category: 'dogmes',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Quels sont les attributs de Dieu ? (Sélectionnez toutes les bonnes réponses)',
+    questionType: 'multiple-choice',
+    options: [
+      'Omnipotent',
+      'Omniscient',
+      'Omniprésent',
+      'Temporal'
+    ],
+    correctAnswer: [0, 1, 2],
+    explanation: 'Dieu est omnipotent (tout-puissant), omniscient (tout-sachant) et omniprésent (présent partout). Il n\'est pas temporel car il existe en dehors du temps.',
+    points: 15,
+    multipleCorrectAnswers: true
+  },
+  // Exemple de question de réorganisation de phrases
+  {
+    id: 'reorder-1',
+    category: 'dogmes',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Remettez dans l\'ordre chronologique les étapes de la création selon la Genèse :',
+    questionType: 'sentence-reorder',
+    options: [],
+    correctAnswer: [0, 1, 2, 3, 4, 5],
+    explanation: 'La Genèse décrit la création en six jours, commençant par la lumière et se terminant par l\'homme.',
+    points: 20,
+    sentences: [
+      'Dieu dit : "Que la lumière soit" et la lumière fut.',
+      'Dieu sépara les eaux d\'en haut et d\'en bas.',
+      'Dieu fit apparaître la terre ferme et les mers.',
+      'Dieu créa les plantes et les arbres.',
+      'Dieu créa le soleil, la lune et les étoiles.',
+      'Dieu créa l\'homme à son image.'
+    ],
+    correctOrder: [0, 1, 2, 3, 4, 5]
   }
 ];
 

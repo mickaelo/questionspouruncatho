@@ -1,7 +1,6 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, addDoc, writeBatch, doc, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, getFirestore, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { sampleQuestions, sampleQuizzes } from '../data/questions';
-import { Question, Quiz } from '../types/quiz';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -28,15 +27,26 @@ async function populateDatabase() {
     // Vérifier si des données existent déjà
     console.log('📊 Vérification des données existantes...');
     
-    // Importer les questions
+    // Importer les questions EN PREMIER
     console.log(`📝 Import de ${sampleQuestions.length} questions...`);
     const questionIds = await importQuestions();
     console.log(`✅ ${questionIds.length} questions importées avec succès`);
     
-    // Importer les quiz
+    // Créer un mapping des anciens IDs vers les nouveaux IDs
+    const questionIdMapping = new Map<string, string>();
+    sampleQuestions.forEach((question, index) => {
+      questionIdMapping.set(question.id, questionIds[index]);
+    });
+    
+    console.log('🔗 Mapping des IDs de questions créé:', questionIdMapping.size, 'questions mappées');
+    
+    // Importer les quiz avec les références aux questions
     console.log(`📋 Import de ${sampleQuizzes.length} quiz...`);
-    const quizIds = await importQuizzes();
+    const quizIds = await importQuizzes(questionIdMapping);
     console.log(`✅ ${quizIds.length} quiz importés avec succès`);
+    
+    // Afficher un résumé détaillé
+    await showImportSummary(questionIds, quizIds, questionIdMapping);
     
     console.log('🎉 Population de la base de données terminée avec succès !');
     console.log(`📊 Résumé : ${questionIds.length} questions et ${quizIds.length} quiz importés`);
@@ -45,6 +55,66 @@ async function populateDatabase() {
     console.error('❌ Erreur lors de la population de la base de données:', error);
     throw error;
   }
+}
+
+async function showImportSummary(questionIds: string[], quizIds: string[], questionIdMapping: Map<string, string>) {
+  console.log('\n📊 RÉSUMÉ DE L\'IMPORTATION');
+  console.log('=' .repeat(50));
+  
+  // Statistiques des questions
+  const questionsByCategory: Record<string, number> = {};
+  sampleQuestions.forEach(question => {
+    questionsByCategory[question.category] = (questionsByCategory[question.category] || 0) + 1;
+  });
+  
+  console.log('\n📝 QUESTIONS IMPORTÉES:');
+  console.log(`  Total: ${questionIds.length}`);
+  Object.entries(questionsByCategory).forEach(([category, count]) => {
+    console.log(`  ${category}: ${count}`);
+  });
+  
+  // Statistiques des quiz
+  const quizzesByCategory: Record<string, number> = {};
+  const quizzesByLevel: Record<number, number> = {};
+  
+  sampleQuizzes.forEach(quiz => {
+    quizzesByCategory[quiz.category] = (quizzesByCategory[quiz.category] || 0) + 1;
+    quizzesByLevel[quiz.level] = (quizzesByLevel[quiz.level] || 0) + 1;
+  });
+  
+  console.log('\n📋 QUIZ IMPORTÉS:');
+  console.log(`  Total: ${quizIds.length}`);
+  Object.entries(quizzesByCategory).forEach(([category, count]) => {
+    console.log(`  ${category}: ${count}`);
+  });
+  
+  console.log('\n📊 QUIZ PAR NIVEAU:');
+  Object.entries(quizzesByLevel).forEach(([level, count]) => {
+    console.log(`  Niveau ${level}: ${count}`);
+  });
+  
+  // Vérification des références
+  console.log('\n🔗 VÉRIFICATION DES RÉFÉRENCES:');
+  let totalReferences = 0;
+  let validReferences = 0;
+  
+  sampleQuizzes.forEach(quiz => {
+    if (quiz.questions && Array.isArray(quiz.questions)) {
+      quiz.questions.forEach(question => {
+        totalReferences++;
+        const questionId = typeof question === 'string' ? question : question.id;
+        if (questionIdMapping.has(questionId)) {
+          validReferences++;
+        }
+      });
+    }
+  });
+  
+  console.log(`  Références totales: ${totalReferences}`);
+  console.log(`  Références valides: ${validReferences}`);
+  console.log(`  Taux de réussite: ${((validReferences / totalReferences) * 100).toFixed(1)}%`);
+  
+  console.log('\n' + '=' .repeat(50));
 }
 
 async function importQuestions(): Promise<string[]> {
@@ -68,7 +138,7 @@ async function importQuestions(): Promise<string[]> {
   return questionIds;
 }
 
-async function importQuizzes(): Promise<string[]> {
+async function importQuizzes(questionIdMapping: Map<string, string>): Promise<string[]> {
   const batch = writeBatch(db);
   const quizIds: string[] = [];
 
@@ -77,8 +147,42 @@ async function importQuizzes(): Promise<string[]> {
 
   for (const quiz of quizzesToImport) {
     const docRef = doc(collection(db, QUIZZES_COLLECTION));
+    
+    // Convertir les références aux questions en IDs de documents
+    let questionIds: string[] = [];
+    let missingQuestions: string[] = [];
+    
+    if (quiz.questions && Array.isArray(quiz.questions)) {
+      questionIds = quiz.questions.map(question => {
+        if (typeof question === 'string') {
+          // Si c'est déjà un ID (string)
+          const mappedId = questionIdMapping.get(question);
+          if (!mappedId) {
+            missingQuestions.push(question);
+          }
+          return mappedId || question;
+        } else if (typeof question === 'object' && question.id) {
+          // Si c'est un objet Question avec un ID
+          const mappedId = questionIdMapping.get(question.id);
+          if (!mappedId) {
+            missingQuestions.push(question.id);
+          }
+          return mappedId || question.id;
+        }
+        return null;
+      }).filter(id => id !== null) as string[];
+    }
+    
+    if (missingQuestions.length > 0) {
+      console.warn(`⚠️ Quiz "${quiz.title}": Questions manquantes:`, missingQuestions);
+    }
+    
+    console.log(`🔗 Quiz "${quiz.title}": ${questionIds.length} questions assignées`);
+    
     batch.set(docRef, {
       ...quiz,
+      questions: questionIds, // Remplacer par les IDs des questions
+      questionIds: questionIds, // Ajouter aussi questionIds pour compatibilité
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
@@ -192,4 +296,5 @@ if (require.main === module) {
   }
 }
 
-export { populateDatabase, clearDatabase, showStatistics }; 
+export { clearDatabase, populateDatabase, showStatistics };
+

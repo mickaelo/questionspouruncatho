@@ -93,6 +93,7 @@ export default function QuestionManagementScreen() {
   };
 
   const handleEditQuestion = (question: Question) => {
+    console.log(question)
     router.push(`/admin/question-edit/${question.id}` as any);
   };
 

@@ -60,15 +60,28 @@ class QuizAdminServiceImpl implements QuizAdminService {
   // Question management
   async createQuestion(question: Omit<Question, 'id'>): Promise<string> {
     try {
-      const docRef = await addDoc(collection(db, QUESTIONS_COLLECTION), {
+      console.log('🔄 Service: Création de question en cours...', question);
+      
+      // Validation des données requises
+      if (!question.question || !question.category) {
+        throw new Error('Question et catégorie sont requises');
+      }
+
+      const questionData = {
         ...question,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp()
-      });
+      };
+
+      console.log('🔄 Service: Données de la question à sauvegarder:', questionData);
+      
+      const docRef = await addDoc(collection(db, QUESTIONS_COLLECTION), questionData);
+      
+      console.log('✅ Service: Question créée avec succès, ID:', docRef.id);
       return docRef.id;
     } catch (error) {
-      console.error('Error creating question:', error);
-      throw new Error('Failed to create question');
+      console.error('❌ Service: Erreur lors de la création de la question:', error);
+      throw new Error(`Failed to create question: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 
@@ -180,16 +193,8 @@ class QuizAdminServiceImpl implements QuizAdminService {
 
   async updateQuiz(id: string, quiz: Partial<Quiz>): Promise<void> {
     try {
-      // Rechercher le document par la propriété id
-      const quizzesRef = collection(db, QUIZZES_COLLECTION);
-      const q = query(quizzesRef, where("id", "==", id));
-      const querySnapshot = await getDocs(q);
-      
-      if (querySnapshot.empty) {
-        throw new Error(`Quiz with id ${id} not found`);
-      }
-      
-      const docRef = querySnapshot.docs[0].ref;
+      const docRef = doc(db, QUIZZES_COLLECTION, id);
+   
       await updateDoc(docRef, {
         ...quiz,
         updatedAt: serverTimestamp()
@@ -203,15 +208,7 @@ class QuizAdminServiceImpl implements QuizAdminService {
   async updateQuizQuestions(id: string, questionIds: string[]): Promise<void> {
     try {
       // Rechercher le document par la propriété id
-      const quizzesRef = collection(db, QUIZZES_COLLECTION);
-      const q = query(quizzesRef, where("id", "==", id));
-      const querySnapshot = await getDocs(q);
-      
-      if (querySnapshot.empty) {
-        throw new Error(`Quiz with id ${id} not found`);
-      }
-      
-      const docRef = querySnapshot.docs[0].ref;
+      const docRef = doc(db, QUIZZES_COLLECTION, id);
       await updateDoc(docRef, {
         questionIds: questionIds,
         updatedAt: serverTimestamp()
@@ -225,16 +222,12 @@ class QuizAdminServiceImpl implements QuizAdminService {
   async deleteQuiz(id: string): Promise<void> {
     try {
       // Rechercher le document par la propriété id
-      const quizzesRef = collection(db, QUIZZES_COLLECTION);
-      const q = query(quizzesRef, where("id", "==", id));
-      const querySnapshot = await getDocs(q);
-      
-      if (querySnapshot.empty) {
-        throw new Error(`Quiz with id ${id} not found`);
-      }
-      
-      const docRef = querySnapshot.docs[0].ref;
+      const docRef = doc(db, QUIZZES_COLLECTION, id);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
       await deleteDoc(docRef);
+      }
     } catch (error) {
       console.error('Error deleting quiz:', error);
       throw new Error('Failed to delete quiz');
