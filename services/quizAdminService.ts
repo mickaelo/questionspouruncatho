@@ -37,7 +37,7 @@ export interface QuizAdminService {
   getQuiz(id: string): Promise<Quiz | null>;
   getAllQuizzes(): Promise<Quiz[]>;
   getQuizzesByCategory(category: string): Promise<Quiz[]>;
-  getQuizzesByLevel(level: number): Promise<Quiz[]>;
+  getQuizzesByCourse(level: number): Promise<Quiz[]>;
 
   // Bulk operations
   importQuestionsFromData(questions: Omit<Question, 'id'>[]): Promise<string[]>;
@@ -289,7 +289,7 @@ class QuizAdminServiceImpl implements QuizAdminService {
     }
   }
 
-  async getQuizzesByLevel(level: number): Promise<Quiz[]> {
+  async getQuizzesByCourse(level: number): Promise<Quiz[]> {
     try {
       const q = query(
         collection(db, QUIZZES_COLLECTION),

@@ -37,7 +37,7 @@ export default function TabLayout() {
       {isWeb && <WebTabBar />}
       
       {isWeb ? (
-        <View style={{ position: 'absolute', left: '12%', right: 0, top: 0, bottom: 0 }}>
+        <View style={{ position: 'absolute', left: '15%', right: 0, top: 0, bottom: 0 }}>
           <Tabs
             screenOptions={{
               tabBarActiveTintColor: colors.primary,
@@ -78,23 +78,10 @@ export default function TabLayout() {
             <Tabs.Screen
               name="levels"
               options={{
-                title: 'Niveaux',
+                title: 'Parcours',
                 tabBarIcon: ({ color, focused }) => (
                   <MaterialIcons 
                     name="star" 
-                    size={24} 
-                    color={color} 
-                  />
-                ),
-              }}
-            />
-            <Tabs.Screen
-              name="progress"
-              options={{
-                title: 'Progression',
-                tabBarIcon: ({ color, focused }) => (
-                  <MaterialIcons 
-                    name="trending-up" 
                     size={24} 
                     color={color} 
                   />
@@ -108,6 +95,19 @@ export default function TabLayout() {
                 tabBarIcon: ({ color, focused }) => (
                   <MaterialIcons 
                     name="person" 
+                    size={24} 
+                    color={color} 
+                  />
+                ),
+              }}
+            />
+            <Tabs.Screen
+              name="settings"
+              options={{
+                title: 'Paramètres',
+                tabBarIcon: ({ color, focused }) => (
+                  <MaterialIcons 
+                    name="settings" 
                     size={24} 
                     color={color} 
                   />
@@ -181,23 +181,10 @@ export default function TabLayout() {
           <Tabs.Screen
             name="levels"
             options={{
-              title: 'Niveaux',
+              title: 'Parcours',
               tabBarIcon: ({ color, focused }) => (
                 <MaterialIcons 
                   name="star" 
-                  size={24} 
-                  color={color} 
-                />
-              ),
-            }}
-          />
-          <Tabs.Screen
-            name="progress"
-            options={{
-              title: 'Progression',
-              tabBarIcon: ({ color, focused }) => (
-                <MaterialIcons 
-                  name="trending-up" 
                   size={24} 
                   color={color} 
                 />
@@ -211,6 +198,19 @@ export default function TabLayout() {
               tabBarIcon: ({ color, focused }) => (
                 <MaterialIcons 
                   name="person" 
+                  size={24} 
+                  color={color} 
+                />
+              ),
+            }}
+          />
+          <Tabs.Screen
+            name="settings"
+            options={{
+              title: 'Paramètres',
+              tabBarIcon: ({ color, focused }) => (
+                <MaterialIcons 
+                  name="settings" 
                   size={24} 
                   color={color} 
                 />

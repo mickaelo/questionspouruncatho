@@ -1,9 +1,9 @@
-import { Level, LevelContent } from '../types/quiz';
+import { Course, CourseContent } from '../types/quiz';
 
-export const formationLevels: Level[] = [
+export const formationCourses: Course[] = [
   {
     id: 1,
-    name: "Découverte / Premiers pas dans la foi",
+    title: "Découverte / Premiers pas dans la foi",
     color: "#4CAF50", // 🟢 Vert
     description: "Premiers pas dans la foi chrétienne pour les nouveaux venus",
     targetAudience: [
@@ -28,7 +28,7 @@ export const formationLevels: Level[] = [
   },
   {
     id: 2,
-    name: "Fondamentaux de la foi catholique",
+    title: "Fondamentaux de la foi catholique",
     color: "#2196F3", // 🔵 Bleu
     description: "Apprentissage des bases de la doctrine catholique",
     targetAudience: [
@@ -52,7 +52,7 @@ export const formationLevels: Level[] = [
   },
   {
     id: 3,
-    name: "Vie chrétienne engagée",
+    title: "Vie chrétienne engagée",
     color: "#FFC107", // 🟡 Jaune
     description: "Approfondissement de la vie spirituelle et de la pratique",
     targetAudience: [
@@ -76,7 +76,7 @@ export const formationLevels: Level[] = [
   },
   {
     id: 4,
-    name: "Formation théologique et doctrinale",
+    title: "Formation théologique et doctrinale",
     color: "#F44336", // 🔴 Rouge
     description: "Formation avancée en théologie et doctrine catholique",
     targetAudience: [
@@ -100,7 +100,7 @@ export const formationLevels: Level[] = [
   },
   {
     id: 5,
-    name: "Vie consacrée / Discernement vocationnel",
+    title: "Vie consacrée / Discernement vocationnel",
     color: "#9E9E9E", // ⚪ Gris
     description: "Formation pour le discernement vocationnel et la vie consacrée",
     targetAudience: [
@@ -122,8 +122,9 @@ export const formationLevels: Level[] = [
   }
 ];
 
-export const levelContents: LevelContent[] = [
+export const courseContents: CourseContent[] = [
   {
+    id: 1,
     level: 1,
     title: "Découverte / Premiers pas dans la foi",
     description: "Commencez votre voyage spirituel avec les bases de la foi chrétienne",
@@ -142,12 +143,12 @@ export const levelContents: LevelContent[] = [
       "Le signe de croix, le Notre Père, Je vous salue Marie",
       "Premiers textes bibliques (Genèse, Évangile de Luc)"
     ],
-    sampleQuizzes: [
+    quizzes: [
       "Jésus-Christ : Fils de Dieu",
       "Les bases de la prière",
       "Premiers pas dans la Bible"
     ],
-    sampleChallenges: [
+    challenges: [
       "Prier 5 minutes par jour",
       "Lire un passage biblique quotidien",
       "Apprendre le signe de croix"
@@ -155,6 +156,7 @@ export const levelContents: LevelContent[] = [
     prerequisites: []
   },
   {
+    id: 2,
     level: 2,
     title: "Fondamentaux de la foi catholique",
     description: "Découvrez les fondements de la doctrine catholique",
@@ -172,12 +174,12 @@ export const levelContents: LevelContent[] = [
       "Les Béatitudes",
       "Introduction au Catéchisme de l'Église Catholique"
     ],
-    sampleQuizzes: [
+    quizzes: [
       "Les sacrements de l'Église",
       "Les commandements de Dieu",
       "Le Credo de Nicée-Constantinople"
     ],
-    sampleChallenges: [
+    challenges: [
       "Étudier un sacrement par semaine",
       "Mémoriser les 10 commandements",
       "Participer aux fêtes liturgiques"
@@ -185,6 +187,7 @@ export const levelContents: LevelContent[] = [
     prerequisites: ["Niveau 1 terminé"]
   },
   {
+    id: 3,
     level: 3,
     title: "Vie chrétienne engagée",
     description: "Approfondissez votre vie spirituelle et votre pratique",
@@ -202,12 +205,12 @@ export const levelContents: LevelContent[] = [
       "Vertus cardinales et théologales",
       "Discernement chrétien"
     ],
-    sampleQuizzes: [
+    quizzes: [
       "La Lectio Divina",
       "Le sacrement de réconciliation",
       "Le chapelet et le rosaire"
     ],
-    sampleChallenges: [
+    challenges: [
       "Pratiquer la Lectio Divina quotidiennement",
       "Se confesser régulièrement",
       "Réciter le chapelet chaque jour"
@@ -215,6 +218,7 @@ export const levelContents: LevelContent[] = [
     prerequisites: ["Niveau 2 terminé"]
   },
   {
+    id: 4,
     level: 4,
     title: "Formation théologique et doctrinale",
     description: "Formation avancée en théologie et doctrine catholique",
@@ -232,12 +236,12 @@ export const levelContents: LevelContent[] = [
       "Lecture guidée de documents comme Dei Verbum, Lumen Gentium, Evangelii Gaudium",
       "Éthique catholique, morale sociale"
     ],
-    sampleQuizzes: [
+    quizzes: [
       "Histoire de l'Église primitive",
       "La Trinité divine",
       "Les conciles œcuméniques"
     ],
-    sampleChallenges: [
+    challenges: [
       "Étudier un document conciliaire",
       "Lire les Pères de l'Église",
       "Approfondir un aspect de la théologie"
@@ -245,6 +249,7 @@ export const levelContents: LevelContent[] = [
     prerequisites: ["Niveau 3 terminé"]
   },
   {
+    id: 5,
     level: 5,
     title: "Vie consacrée / Discernement vocationnel",
     description: "Formation pour le discernement vocationnel et la vie consacrée",
@@ -260,12 +265,12 @@ export const levelContents: LevelContent[] = [
       "Liturgie des Heures",
       "Spiritualités catholiques (franciscaine, bénédictine, ignatienne…)"
     ],
-    sampleQuizzes: [
+    quizzes: [
       "Les vocations dans l'Église",
       "La théologie du corps",
       "Les vœux religieux"
     ],
-    sampleChallenges: [
+    challenges: [
       "Pratiquer la Liturgie des Heures",
       "Découvrir une spiritualité particulière",
       "Accompagnement vocationnel"
@@ -273,6 +278,7 @@ export const levelContents: LevelContent[] = [
     prerequisites: ["Niveau 4 terminé"]
   },
   {
+    id: 6,
     level: 6,
     title: "Parcours Saint Thomas d'Aquin",
     description: "Découverte approfondie de la pensée du Docteur Angélique",
@@ -293,14 +299,14 @@ export const levelContents: LevelContent[] = [
       "La fin dernière de l'homme",
       "La méthode scolastique"
     ],
-    sampleQuizzes: [
+    quizzes: [
       "Introduction à Saint Thomas d'Aquin",
       "Dieu et son existence",
       "La Trinité selon Sait Thomas",
       "Les vertus selon Saint Thomas",
       "La loi et la morale"
     ],
-    sampleChallenges: [
+    challenges: [
       "Lire un passage de la Somme théologique",
       "Méditer sur les 5 voies de Saint Thomas",
       "Pratiquer une vertu cardinale",
@@ -310,31 +316,31 @@ export const levelContents: LevelContent[] = [
   }
 ];
 
-export function getLevelById(id: number): Level | undefined {
-  return formationLevels.find(level => level.id === id);
+export function getCourseById(id: number): Course | undefined {
+  return formationCourses.find(course => course.id === id);
 }
 
-export function getLevelContentById(id: number): LevelContent | undefined {
-  return levelContents.find(level => level.level === id);
+export function getCourseContentById(id: number): CourseContent | undefined {
+  return courseContents.find(course => course.id === id);
 }
 
-export function getNextLevel(currentLevel: number): Level | undefined {
-  return formationLevels.find(level => level.id === currentLevel + 1);
+export function getNextCourse(currentCourse: number): Course | undefined {
+  return formationCourses.find(course => course.id === currentCourse + 1);
 }
 
-export function canAccessLevel(userLevel: number, targetLevel: number): boolean {
-  return userLevel >= targetLevel;
+export function canAccessCourse(userLevel: number, targetCourse: number): boolean {
+  return userLevel >= targetCourse;
 }
 
-export function getLevelProgress(userPoints: number, userQuizzes: number, userBadges: number, targetLevel: Level): {
+export function getCourseProgress(userPoints: number, userQuizzes: number, userBadges: number, targetCourse: Course): {
   pointsProgress: number;
   quizzesProgress: number;
   badgesProgress: number;
   overallProgress: number;
 } {
-  const pointsProgress = Math.min((userPoints / targetLevel.requiredPoints) * 100, 100);
-  const quizzesProgress = Math.min((userQuizzes / targetLevel.requiredQuizzes) * 100, 100);
-  const badgesProgress = Math.min((userBadges / targetLevel.requiredBadges) * 100, 100);
+  const pointsProgress = Math.min((userPoints / targetCourse.requiredPoints) * 100, 100);
+  const quizzesProgress = Math.min((userQuizzes / targetCourse.requiredQuizzes) * 100, 100);
+  const badgesProgress = Math.min((userBadges / targetCourse.requiredBadges) * 100, 100);
   
   const overallProgress = (pointsProgress + quizzesProgress + badgesProgress) / 3;
   

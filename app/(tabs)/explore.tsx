@@ -1,13 +1,14 @@
+import { useQuizDataContext } from '@/components/QuizDataProvider';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from '@/constants/Colors';
-import { categoryIcons, categoryNames, getAvailableQuizzes } from '@/data/questions';
+import { categoryIcons, categoryNames } from '@/data/questions';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -24,6 +25,32 @@ export default function CategoriesScreen() {
   // Get user level (default to 1 if not available)
   const userLevel = 1; // TODO: Get from user progress
 
+  // Utiliser le contexte QuizData
+  const { quizzes, isLoading, error } = useQuizDataContext();
+  
+  // État pour stocker le nombre de quiz par catégorie
+  const [quizCounts, setQuizCounts] = useState<Record<string, number>>({});
+
+  // Calculer le nombre de quiz par catégorie
+  useEffect(() => {
+    if (quizzes.length > 0) {
+      const counts: Record<string, number> = {};
+      
+      // Filtrer les quiz selon le niveau utilisateur et le statut admin
+      const availableQuizzes = isAdmin 
+        ? quizzes 
+        : quizzes.filter(quiz => quiz.level <= userLevel);
+      
+      // Compter les quiz par catégorie
+      availableQuizzes.forEach(quiz => {
+        const category = quiz.category;
+        counts[category] = (counts[category] || 0) + 1;
+      });
+      
+      setQuizCounts(counts);
+    }
+  }, [quizzes, userLevel, isAdmin]);
+
   const handleCategoryPress = (category: string) => {
     router.push({
       pathname: '/category/[id]',
@@ -32,8 +59,7 @@ export default function CategoriesScreen() {
   };
 
   const getQuizCount = (category: string) => {
-    const availableQuizzes = getAvailableQuizzes(userLevel, isAdmin);
-    return availableQuizzes.filter(quiz => quiz.category === category).length;
+    return quizCounts[category] || 0;
   };
 
   return (
@@ -84,36 +110,39 @@ export default function CategoriesScreen() {
           Quiz populaires
         </ThemedText>
 
-        {getAvailableQuizzes(userLevel, isAdmin).slice(0, 3).map((quiz) => (
-          <TouchableOpacity
-            key={quiz.id}
-            style={[styles.popularQuiz, { backgroundColor: colors.card, borderColor: colors.border }]}
-            onPress={() => router.push({
-              pathname: '/quiz/[id]',
-              params: { id: quiz.id }
-            })}
-          >
-            <View style={styles.quizInfo}>
-              <ThemedText type="subtitle" style={[styles.quizTitle, { color: colors.text }]}>
-                {quiz.title}
-              </ThemedText>
-              <ThemedText style={[styles.quizDescription, { color: colors.text }]}>
-                {quiz.description}
-              </ThemedText>
-              <View style={styles.quizMeta}>
-                <ThemedText style={[styles.quizMetaText, { color: colors.primary }]}>
-                  {quiz.questions.length} questions
+        {quizzes
+          .filter(quiz => isAdmin || quiz.level <= userLevel)
+          .slice(0, 3)
+          .map((quiz) => (
+            <TouchableOpacity
+              key={quiz.id}
+              style={[styles.popularQuiz, { backgroundColor: colors.card, borderColor: colors.border }]}
+              onPress={() => router.push({
+                pathname: '/quiz/[id]',
+                params: { id: quiz.id }
+              })}
+            >
+              <View style={styles.quizInfo}>
+                <ThemedText type="subtitle" style={[styles.quizTitle, { color: colors.text }]}>
+                  {quiz.title}
                 </ThemedText>
-                {quiz.timeLimit && (
+                <ThemedText style={[styles.quizDescription, { color: colors.text }]}>
+                  {quiz.description}
+                </ThemedText>
+                <View style={styles.quizMeta}>
                   <ThemedText style={[styles.quizMetaText, { color: colors.primary }]}>
-                    {quiz.timeLimit} min
+                    {quiz.questions.length} questions
                   </ThemedText>
-                )}
+                  {quiz.timeLimit && (
+                    <ThemedText style={[styles.quizMetaText, { color: colors.primary }]}>
+                      {quiz.timeLimit} min
+                    </ThemedText>
+                  )}
+                </View>
               </View>
-            </View>
-            <IconSymbol name="chevron.right" size={20} color={colors.primary} />
-          </TouchableOpacity>
-        ))}
+              <IconSymbol name="chevron.right" size={20} color={colors.primary} />
+            </TouchableOpacity>
+          ))}
       </ThemedView>
     </ScrollView>
   );

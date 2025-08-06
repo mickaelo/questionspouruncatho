@@ -4,7 +4,7 @@ export interface Question {
   difficulty: 'facile' | 'moyen' | 'difficile';
   level: number; // Niveau de formation requis (1-5)
   question: string;
-  questionType: 'multiple-choice' | 'true-false' | 'image-recognition' | 'quote-completion' | 'association' | 'sentence-reorder';
+  questionType: 'multiple-choice' | 'true-false' | 'image-recognition' | 'quote-completion' | 'association' | 'sentence-reorder' | 'crossword';
   options: string[];
   correctAnswer: number | number[]; // number pour choix unique, number[] pour associations et réorganisation
   explanation: string;
@@ -24,6 +24,9 @@ export interface Question {
   // Nouveaux champs pour la réorganisation de phrases
   sentences?: string[]; // Phrases à réorganiser
   correctOrder?: number[]; // Ordre correct des phrases
+  
+  // Nouveaux champs pour les mots fléchés
+  crosswordData?: CrosswordData; // Pour les questions de mots fléchés
 }
 
 export interface AssociationPair {
@@ -31,6 +34,44 @@ export interface AssociationPair {
   leftItem: string;
   rightItem: string;
   isCorrect: boolean;
+}
+
+export interface CrosswordData {
+  grid: { [key: string]: CrosswordCell }; // Grille de mots fléchés (clé: "row,col")
+  clues: CrosswordClue[]; // Définitions des mots
+  words: CrosswordWord[]; // Liste des mots à trouver
+  gridSize: { rows: number; cols: number }; // Taille de la grille
+}
+
+export interface CrosswordCell {
+  letter?: string; // Lettre dans la cellule (optionnel si vide)
+  isBlack: boolean; // Si c'est une cellule noire (bloquée)
+  number?: number | null; // Numéro de la définition
+  wordIds: string[]; // IDs des mots qui passent par cette cellule
+  row: number;
+  col: number;
+}
+
+export interface CrosswordClue {
+  id: string;
+  number: number;
+  wordId: string;
+  definition: string;
+  direction: 'horizontal' | 'vertical';
+  row: number;
+  col: number;
+  length: number;
+}
+
+export interface CrosswordWord {
+  id: string;
+  word: string;
+  definition: string;
+  direction: 'horizontal' | 'vertical';
+  row: number;
+  col: number;
+  length: number;
+  isFound: boolean;
 }
 
 export interface AssociationQuestion extends Question {
@@ -51,6 +92,12 @@ export interface SentenceReorderQuestion extends Question {
   sentences: string[];
   correctOrder: number[]; // Ordre correct des phrases
   correctAnswer: number[]; // Même chose que correctOrder pour la compatibilité
+}
+
+export interface CrosswordQuestion extends Question {
+  questionType: 'crossword';
+  crosswordData: CrosswordData;
+  correctAnswer: number[]; // Indices des mots trouvés (compatibilité avec l'interface Question)
 }
 
 export interface Quiz {
@@ -207,9 +254,9 @@ export interface FidelityScore {
 }
 
 // Nouveaux types pour le système de niveaux
-export interface Level {
+export interface Course {
   id: number;
-  name: string;
+  title: string;
   color: string;
   description: string;
   targetAudience: string[];
@@ -222,7 +269,7 @@ export interface Level {
   challenges: SpiritualChallenge[];
 }
 
-export interface LevelRequirement {
+export interface CourseRequirement {
   type: 'points' | 'quizzes' | 'badges' | 'streak' | 'challenges';
   value: number;
   category?: string;
@@ -232,21 +279,23 @@ export interface FormationProgress {
   currentLevel: number;
   levelProgress: number; // Pourcentage de progression dans le niveau actuel
   completedLevels: number[];
-  levelRequirements: LevelRequirement[];
-  nextLevelRequirements: LevelRequirement[];
+  levelRequirements: CourseRequirement[];
+  nextLevelRequirements: CourseRequirement[];
   levelStartDate: Date;
   estimatedCompletionDate?: Date;
 }
 
-export interface LevelContent {
+export interface CourseContent {
+  id: number;
   level: number;
   title: string;
+  userLevel?: number;
   description: string;
   color: string;
   icon: string;
   targetAudience: string[];
   contentTypes: string[];
-  sampleQuizzes: string[];
-  sampleChallenges: string[];
+  quizzes: string[];
+  challenges: string[];
   prerequisites: string[];
 } 

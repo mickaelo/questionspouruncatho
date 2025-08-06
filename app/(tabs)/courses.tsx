@@ -1,8 +1,8 @@
-import { LevelCard } from '@/components/LevelCard';
+import { CourseCard } from '@/components/CourseCard';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { canAccessLevel, getLevelProgress, levelContents } from '@/data/levels';
+import { canAccessCourse, courseContents, getCourseProgress } from '@/data/courses';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useUserProgress } from '@/hooks/useUserProgress';
@@ -44,7 +44,7 @@ export default function LevelsScreen() {
           <MaterialIcons name="school" size={32} color={colors.primary} />
           <View style={styles.headerText}>
             <ThemedText type="title" style={[styles.title, { color: colors.text }]}>
-              Niveaux de Formation
+              Parcours de Formation
             </ThemedText>
             <ThemedText style={[styles.subtitle, { color: colors.text }]}>
               Parcourez votre cheminement spirituel
@@ -102,7 +102,7 @@ export default function LevelsScreen() {
         </View>
       </ThemedView>
 
-      {/* Niveaux de formation */}
+      {/* Parcours de formation */}
       <ThemedView style={styles.section}>
         <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
           Parcours de Formation
@@ -112,11 +112,11 @@ export default function LevelsScreen() {
         </ThemedText>
       </ThemedView>
 
-      {/* Liste des niveaux */}
+      {/* Liste des parcours */}
       <View style={styles.levelsContainer}>
-        {levelContents.map((level) => {
-          const isUnlocked = canAccessLevel(userLevel, level.level);
-          const progress = isUnlocked ? getLevelProgress(
+        {courseContents.map((level) => {
+          const isUnlocked = canAccessCourse(userLevel, level.level);
+          const progress = isUnlocked ? getCourseProgress(
             userPoints, 
             userQuizzes, 
             userBadges, 
@@ -128,9 +128,9 @@ export default function LevelsScreen() {
           ) : undefined;
 
           return (
-            <LevelCard
+            <CourseCard
               key={level.level}
-              level={level}
+              course={level}
               userLevel={userLevel}
               userPoints={userPoints}
               userQuizzes={userQuizzes}
@@ -150,7 +150,7 @@ export default function LevelsScreen() {
             Comment progresser ?
           </ThemedText>
           <ThemedText style={[styles.infoText, { color: colors.text }]}>
-            Complétez des quiz, gagnez des points et débloquez des badges pour accéder aux niveaux supérieurs. 
+            Complétez des quiz, gagnez des points et débloquez des badges pour accéder aux parcours supérieurs. 
             Chaque niveau vous offre un contenu adapté à votre progression spirituelle.
           </ThemedText>
         </View>

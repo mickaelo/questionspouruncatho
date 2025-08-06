@@ -1,4 +1,5 @@
 import { FailureAnimation } from '@/components/FailureAnimation';
+import { GlobalLoadingBar } from '@/components/GlobalLoadingBar';
 import { QuestionCard } from '@/components/QuestionCard';
 import { QuizCompletionScreen } from '@/components/QuizCompletionScreen';
 import { useQuizDataContext } from '@/components/QuizDataProvider';
@@ -97,21 +98,7 @@ export default function QuizScreen() {
   // Gérer le cas où le quiz n'est pas encore chargé
   if (!quiz) {
     return (
-      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-        <ThemedText style={[styles.errorText, { color: colors.error }]}>
-          Quiz non trouvé
-        </ThemedText>
-        <TouchableOpacity 
-          style={[styles.retryButton, { backgroundColor: colors.tint }]}
-          onPress={() => {
-            router.replace(`/quiz/${id}`);
-          }}
-        >
-          <ThemedText style={[styles.retryButtonText, { color: 'white' }]}>
-            Retour à l'accueil
-          </ThemedText>
-        </TouchableOpacity>
-      </SafeAreaView>
+      <GlobalLoadingBar />
     );
   }
 

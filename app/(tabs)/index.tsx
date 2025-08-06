@@ -99,126 +99,184 @@ export default function HomeScreen() {
         { 
           backgroundColor: colors.background,
           paddingTop: Platform.OS === 'android' ? insets.top : 0,
+          // Ajouter un padding à droite sur le web pour compenser la largeur du menu de gauche
+          paddingRight: Platform.OS === 'web' ? '15%' : 0,
+          paddingLeft: Platform.OS === 'web' ? '15%' : 0,
         }
       ]}
       contentContainerStyle={{
         paddingBottom: Platform.OS === 'android' ? 150 : 60, // Espace pour la barre de navigation
       }}
     >
-
-      {/* Header avec progression utilisateur */}
-      <ThemedView style={[
-        styles.header, 
-        { 
-          backgroundColor: colors.card, 
-          borderColor: colors.border,
-          marginTop: Platform.OS === 'android' ? 0 : 16, // Pas de marge en haut sur Android
-        }
-      ]}>
-
-        <View style={styles.userInfo}>
-          <ThemedText style={[styles.level, { color: colors.primary }]}>
-            {getLevelTitle(progress.level)} - Niveau {progress.level}
-          </ThemedText>
-          
-          {/* Barre de progression vers le prochain niveau */}
-          <View style={styles.progressBarContainer}>
-            <View style={styles.progressBarBackground}>
-              <View 
-                style={[
-                  styles.progressBarFill, 
-                  { 
-                    width: `${Math.min((progress.totalPoints % 1000) / 10, 100)}%`,
-                    backgroundColor: colors.primary 
-                  }
-                ]} 
-              />
-            </View>
-            <ThemedText style={[styles.progressText, { color: colors.text }]}>
-              {progress.totalPoints % 1000}/1000 points vers le niveau {progress.level + 1}
-            </ThemedText>
-          </View>
-        </View>
-
-        {/* <View style={styles.statsContainer}>
-          <View style={[styles.statItem, { backgroundColor: 'rgba(218, 165, 32, 0.1)' }]}>
-            <IconSymbol name="star.fill" size={20} color={colors.secondary} />
-            <ThemedText style={[styles.statValue, { color: colors.text }]}>{progress.totalPoints}</ThemedText>
-            <ThemedText style={[styles.statLabel, { color: colors.text }]}>Points</ThemedText>
+      {/* Layout en deux colonnes sur le web uniquement */}
+      {isWeb ? (
+        <View style={styles.webLayout}>
+          {/* Colonne de gauche - Quiz */}
+          <View style={styles.leftColumn}>
+            {/* Section Quiz disponibles */}
+            <ThemedView style={styles.section}>
+              {availableQuizzes.length > 0 ? (
+                availableQuizzes.map((quiz: Quiz, index: number) => (
+                  <QuizCard
+                    key={quiz.id}
+                    quiz={quiz}
+                    onPress={handleQuizPress}
+                    completed={progress.completedQuizzes.includes(quiz.id)}
+                    score={progress.completedQuizzes.includes(quiz.id) ? 85 : undefined}
+                    index={index}
+                  />
+                ))
+              ) : (
+                <View style={styles.emptyContainer}>
+                  <IconSymbol name="questionmark.circle" size={48} color={colors.text} />
+                  <ThemedText style={[styles.emptyText, { color: colors.text }]}>
+                    Aucun quiz disponible pour votre niveau
+                  </ThemedText>
+                </View>
+              )}
+            </ThemedView>
           </View>
 
-          <View style={[styles.statItem, { backgroundColor: 'rgba(255, 140, 0, 0.1)' }]}>
-            <IconSymbol name="flame.fill" size={20} color={colors.warning} />
-            <ThemedText style={[styles.statValue, { color: colors.text }]}>{progress.streak}</ThemedText>
-            <ThemedText style={[styles.statLabel, { color: colors.text }]}>Jours</ThemedText>
-          </View>
-
-          <View style={[styles.statItem, { backgroundColor: 'rgba(76, 175, 80, 0.1)' }]}>
-            <IconSymbol name="checkmark.circle.fill" size={20} color={colors.success} />
-            <ThemedText style={[styles.statValue, { color: colors.text }]}>{progress.completedQuizzes.length}</ThemedText>
-            <ThemedText style={[styles.statLabel, { color: colors.text }]}>Quiz</ThemedText>
-          </View>
-        </View> */}
-      </ThemedView>
-
-      {/* Section Quiz disponibles */}
-      <ThemedView style={styles.section}>
-        <View style={styles.sectionHeader}>
-          <View style={styles.sectionTitleContainer}>
-            <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-              Quiz disponibles
-            </ThemedText>
-          </View>
-          <TouchableOpacity onPress={() => router.push('/explore')}>
-            <ThemedText style={[styles.seeAll, { color: colors.primary }]}>
-              Voir tout
-            </ThemedText>
-          </TouchableOpacity>
-        </View>
-
-        {availableQuizzes.length > 0 ? (
-          availableQuizzes.map((quiz: Quiz, index: number) => (
-            <QuizCard
-              key={quiz.id}
-              quiz={quiz}
-              onPress={handleQuizPress}
-              completed={progress.completedQuizzes.includes(quiz.id)}
-              score={progress.completedQuizzes.includes(quiz.id) ? 85 : undefined}
-              index={index}
-            />
-          ))
-        ) : (
-          <View style={styles.emptyContainer}>
-            <IconSymbol name="questionmark.circle" size={48} color={colors.text} />
-            <ThemedText style={[styles.emptyText, { color: colors.text }]}>
-              Aucun quiz disponible pour votre niveau
-            </ThemedText>
-          </View>
-        )}
-      </ThemedView>
-
-      {/* Section Défis quotidiens */}
-      <ThemedView style={styles.section}>
-        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-          Défi du jour
-        </ThemedText>
-
-        <TouchableOpacity
-          style={[styles.dailyChallenge, { backgroundColor: colors.card, borderColor: colors.border }]}
-          onPress={() => router.push('/explore')}
-        >
-          <View style={styles.challengeContent}>
-            <IconSymbol name="target" size={24} color={colors.primary} />
-            <View style={styles.challengeText}>
-              <ThemedText type="subtitle" style={{ color: colors.text }}>Quiz sur les Saints</ThemedText>
-              <ThemedText style={[styles.challengeDescription, { color: colors.text }]}>
-                Testez vos connaissances sur les saints de l'Église catholique
+          {/* Colonne de droite - Progression (uniquement sur le web) */}
+          <View style={styles.rightColumn}>
+            <ThemedView style={[styles.progressCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              <ThemedText type="subtitle" style={[styles.progressCardTitle, { color: colors.text }]}>
+                Votre progression
               </ThemedText>
-            </View>
+              
+              <View style={styles.userInfo}>
+                <ThemedText style={[styles.level, { color: colors.primary }]}>
+                  {getLevelTitle(progress.level)} - Niveau {progress.level}
+                </ThemedText>
+                
+                {/* Barre de progression vers le prochain niveau */}
+                <View style={styles.progressBarContainer}>
+                  <View style={styles.progressBarBackground}>
+                    <View 
+                      style={[
+                        styles.progressBarFill, 
+                        { 
+                          width: `${Math.min((progress.totalPoints % 1000) / 10, 100)}%`,
+                          backgroundColor: colors.primary 
+                        }
+                      ]} 
+                    />
+                  </View>
+                  <ThemedText style={[styles.progressText, { color: colors.text }]}>
+                    {progress.totalPoints % 1000}/1000 points vers le niveau {progress.level + 1}
+                  </ThemedText>
+                </View>
+              </View>
+            </ThemedView>
+
+            {/* Section Défis quotidiens */}
+            <ThemedView style={[styles.progressCard, { backgroundColor: colors.card, borderColor: colors.border, marginTop: 16 }]}>
+              <ThemedText type="subtitle" style={[styles.progressCardTitle, { color: colors.text }]}>
+                Défi du jour
+              </ThemedText>
+
+              <TouchableOpacity
+                style={[styles.dailyChallenge, { backgroundColor: colors.card, borderColor: colors.border }]}
+                onPress={() => router.push('/explore')}
+              >
+                <View style={styles.challengeContent}>
+                  <IconSymbol name="target" size={24} color={colors.primary} />
+                  <View style={styles.challengeText}>
+                    <ThemedText type="subtitle" style={{ color: colors.text }}>Quiz sur les Saints</ThemedText>
+                    <ThemedText style={[styles.challengeDescription, { color: colors.text }]}>
+                      Testez vos connaissances sur les saints de l'Église catholique
+                    </ThemedText>
+                  </View>
+                </View>
+                <IconSymbol name="chevron.right" size={20} color={colors.primary} />
+              </TouchableOpacity>
+            </ThemedView>
           </View>
-          <IconSymbol name="chevron.right" size={20} color={colors.primary} />
-        </TouchableOpacity>
-      </ThemedView>
+        </View>
+      ) : (
+        /* Layout mobile - Structure originale */
+        <View>
+          {/* Header avec progression utilisateur (mobile uniquement) */}
+          <ThemedView style={[
+            styles.header, 
+            { 
+              backgroundColor: colors.card, 
+              borderColor: colors.border,
+              marginTop: Platform.OS === 'android' ? 0 : 16, // Pas de marge en haut sur Android
+            }
+          ]}>
+            <View style={styles.userInfo}>
+              <ThemedText style={[styles.level, { color: colors.primary }]}>
+                {getLevelTitle(progress.level)} - Niveau {progress.level}
+              </ThemedText>
+              
+              {/* Barre de progression vers le prochain niveau */}
+              <View style={styles.progressBarContainer}>
+                <View style={styles.progressBarBackground}>
+                  <View 
+                    style={[
+                      styles.progressBarFill, 
+                      { 
+                        width: `${Math.min((progress.totalPoints % 1000) / 10, 100)}%`,
+                        backgroundColor: colors.primary 
+                      }
+                    ]} 
+                  />
+                </View>
+                <ThemedText style={[styles.progressText, { color: colors.text }]}>
+                  {progress.totalPoints % 1000}/1000 points vers le niveau {progress.level + 1}
+                </ThemedText>
+              </View>
+            </View>
+          </ThemedView>
+
+          {/* Section Quiz disponibles */}
+          <ThemedView style={styles.section}>
+            {availableQuizzes.length > 0 ? (
+              availableQuizzes.map((quiz: Quiz, index: number) => (
+                <QuizCard
+                  key={quiz.id}
+                  quiz={quiz}
+                  onPress={handleQuizPress}
+                  completed={progress.completedQuizzes.includes(quiz.id)}
+                  score={progress.completedQuizzes.includes(quiz.id) ? 85 : undefined}
+                  index={index}
+                />
+              ))
+            ) : (
+              <View style={styles.emptyContainer}>
+                <IconSymbol name="questionmark.circle" size={48} color={colors.text} />
+                <ThemedText style={[styles.emptyText, { color: colors.text }]}>
+                  Aucun quiz disponible pour votre niveau
+                </ThemedText>
+              </View>
+            )}
+          </ThemedView>
+
+          {/* Section Défis quotidiens */}
+          <ThemedView style={styles.section}>
+            <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
+              Défi du jour
+            </ThemedText>
+
+            <TouchableOpacity
+              style={[styles.dailyChallenge, { backgroundColor: colors.card, borderColor: colors.border }]}
+              onPress={() => router.push('/explore')}
+            >
+              <View style={styles.challengeContent}>
+                <IconSymbol name="target" size={24} color={colors.primary} />
+                <View style={styles.challengeText}>
+                  <ThemedText type="subtitle" style={{ color: colors.text }}>Quiz sur les Saints</ThemedText>
+                  <ThemedText style={[styles.challengeDescription, { color: colors.text }]}>
+                    Testez vos connaissances sur les saints de l'Église catholique
+                  </ThemedText>
+                </View>
+              </View>
+              <IconSymbol name="chevron.right" size={20} color={colors.primary} />
+            </TouchableOpacity>
+          </ThemedView>
+        </View>
+      )}
     </ScrollView>
   );
 }
@@ -350,8 +408,6 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   progressCard: {
-    flex: 1,
-    alignItems: 'center',
     padding: 20,
     borderRadius: 16,
     borderWidth: 1,
@@ -365,9 +421,9 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   progressCardTitle: {
-    marginTop: 8,
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
   progressBarContainer: {
     marginTop: 12,
@@ -447,6 +503,18 @@ const styles = StyleSheet.create({
   welcomeText: {
     fontSize: 14,
     opacity: 0.8,
+  },
+  webLayout: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  leftColumn: {
+    flex: 2,
+    paddingRight: 16,
+  },
+  rightColumn: {
+    flex: 1,
+    paddingLeft: 16,
   },
 
 });

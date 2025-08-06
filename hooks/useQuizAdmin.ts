@@ -34,7 +34,8 @@ export interface QuizAdminActions {
   getQuiz: (id: string) => Promise<Quiz | null>;
   refreshQuizzes: () => Promise<void>;
   getQuizzesByCategory: (category: string) => Promise<Quiz[]>;
-  getQuizzesByLevel: (level: number) => Promise<Quiz[]>;
+  getQuizzesByCourse: (level: number) => Promise<Quiz[]>;
+  getAvailableQuizzes: () => Promise<Quiz[]>;
   
   // Bulk operations
   importQuestionsFromData: (questions: Omit<Question, 'id'>[]) => Promise<string[]>;
@@ -287,14 +288,25 @@ export const useQuizAdmin = (): QuizAdminState & QuizAdminActions => {
     }
   }, [setError]);
 
-  const getQuizzesByLevel = useCallback(async (level: number): Promise<Quiz[]> => {
+  const getQuizzesByCourse = useCallback(async (level: number): Promise<Quiz[]> => {
     setError(null);
     
     try {
-      return await quizAdminService.getQuizzesByLevel(level);
+      return await quizAdminService.getQuizzesByCourse(level);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to get quizzes by level');
       throw error;
+    }
+  }, [setError]);
+
+  const getAvailableQuizzes = useCallback(async (): Promise<Quiz[]> => {
+    setError(null);
+    
+    try {
+      return await quizAdminService.getAllQuizzes();
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Failed to get available quizzes');
+      return [];
     }
   }, [setError]);
 
@@ -394,7 +406,8 @@ export const useQuizAdmin = (): QuizAdminState & QuizAdminActions => {
     getQuiz,
     refreshQuizzes,
     getQuizzesByCategory,
-    getQuizzesByLevel,
+    getQuizzesByCourse,
+    getAvailableQuizzes,
     importQuestionsFromData,
     importQuizzesFromData,
     deleteAllQuestions,

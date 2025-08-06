@@ -28,7 +28,7 @@ export interface QuizDataActions {
   getQuiz: (id: string) => Promise<Quiz | null>;
   refreshQuizzes: () => Promise<void>;
   getQuizzesByCategory: (category: string) => Promise<Quiz[]>;
-  getQuizzesByLevel: (level: number) => Promise<Quiz[]>;
+  getQuizzesByCourse: (level: number) => Promise<Quiz[]>;
   getAvailableQuizzes: (userLevel: number) => Promise<Quiz[]>;
   getQuizzesByCategoryAndLevel: (category: string, userLevel: number) => Promise<Quiz[]>;
   
@@ -179,9 +179,9 @@ export const useQuizData = (): QuizDataState & QuizDataActions => {
     }
   }, [setError]);
 
-  const getQuizzesByLevel = useCallback(async (level: number): Promise<Quiz[]> => {
+  const getQuizzesByCourse = useCallback(async (level: number): Promise<Quiz[]> => {
     try {
-      return await quizService.getQuizzesByLevel(level);
+      return await quizService.getQuizzesByCourse(level);
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to get quizzes by level');
       return [];
@@ -230,7 +230,7 @@ export const useQuizData = (): QuizDataState & QuizDataActions => {
     getQuiz,
     refreshQuizzes,
     getQuizzesByCategory,
-    getQuizzesByLevel,
+    getQuizzesByCourse,
     getAvailableQuizzes,
     getQuizzesByCategoryAndLevel,
     refreshStatistics,

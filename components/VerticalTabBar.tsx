@@ -22,14 +22,19 @@ const tabs = [
     icon: 'grid-on',
   },
   {
-    name: 'progress',
-    title: 'Progression',
-    icon: 'bar-chart',
+    name: 'level',
+    title: 'Parcours',
+    icon: 'stars',
   },
   {
     name: 'profile',
     title: 'Profil',
     icon: 'person',
+  },
+  {
+    name: 'settings',
+    title: 'Paramètres',
+    icon: 'settings',
   },
 ];
 

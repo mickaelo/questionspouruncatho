@@ -71,7 +71,7 @@ Les méthodes suivantes ont été optimisées pour éviter les requêtes multipl
 
 - `getAllQuizzes()`
 - `getQuizzesByCategory()`
-- `getQuizzesByLevel()`
+- `getQuizzesByCourse()`
 - `getAvailableQuizzes()`
 - `getQuizzesByCategoryAndLevel()`
 

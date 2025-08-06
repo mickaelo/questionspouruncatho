@@ -56,10 +56,12 @@ export default function RootLayout() {
               <Stack.Screen name="quiz/[id]" options={{ title: 'Modifier la question', headerShown: false }} />
               <Stack.Screen name="quiz-result" options={{ headerShown: false }} />
               <Stack.Screen name="category/[id]" options={{ headerShown: false }} />
-              <Stack.Screen name="level/[id]" options={{ headerShown: false }} />
+              <Stack.Screen name="course/[id]" options={{ headerShown: false }} />
               <Stack.Screen name="admin" options={{ headerShown: false }} />
               <Stack.Screen name="admin/quiz-management" options={{ headerShown: false }} />
               <Stack.Screen name="admin/quiz-edit/[id]" options={{ headerShown: false }} />
+              <Stack.Screen name="admin/course-management" options={{ headerShown: false }} />
+              <Stack.Screen name="admin/course-edit/[id]" options={{ headerShown: false }} />  
               <Stack.Screen name="admin/question-management" options={{ headerShown: false }} />
               <Stack.Screen name="admin/question-edit/[id]" options={{ title: 'Modifier la question', headerShown: false }} />
               <Stack.Screen name="+not-found" />

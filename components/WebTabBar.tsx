@@ -20,19 +20,19 @@ const tabs = [
     icon: 'category',
   },
   {
-    name: 'levels',
-    title: 'Niveaux',
+    name: 'courses',
+    title: 'Parcours',
     icon: 'star',
-  },
-  {
-    name: 'progress',
-    title: 'Progression',
-    icon: 'trending-up',
   },
   {
     name: 'profile',
     title: 'Profil',
     icon: 'person',
+  },
+  {
+    name: 'settings',
+    title: 'Paramètres',
+    icon: 'settings',
   },
   {
     name: 'admin',
@@ -90,7 +90,7 @@ export function WebTabBar() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.card, borderRightColor: colors.border }]}>
+    <View style={[styles.container, { backgroundColor: colors.menu, borderRightColor: colors.border }]}>
       {/* Logo/Titre */}
       <View style={styles.logoContainer}>
         <Image 
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     bottom: 0,
-    width: '12%',
+    width: '15%',
     height: '100vh' as any,
     borderRightWidth: 1,
     flexDirection: 'column',
@@ -207,8 +207,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   logoImage: {
-    width: 48,
-    height: 48,
+    width: 100,
+    height: 100,
     marginBottom: 8,
   },
   logoText: {

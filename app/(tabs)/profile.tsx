@@ -1,15 +1,18 @@
+import { BadgeCard } from '@/components/BadgeCard';
+import { ChallengeCard } from '@/components/ChallengeCard';
 import { CORSErrorModal } from '@/components/CORSErrorModal';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { sampleUserProfile } from '@/data/gamification';
+import { sampleUserProfile, spiritualChallenges } from '@/data/gamification';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useUserProgress } from '@/hooks/useUserProgress';
 import { showAlert, showConfirmAlert } from '@/utils/alert';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Switch, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
@@ -18,12 +21,29 @@ export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === 'web';
   const { user, isAuthenticated, logout, loginWithGoogle } = useAuth();
-  const [notifications, setNotifications] = useState(sampleUserProfile.preferences.notifications);
-  const [sound, setSound] = useState(sampleUserProfile.preferences.sound);
-  const [hapticFeedback, setHapticFeedback] = useState(sampleUserProfile.preferences.hapticFeedback);
-  const [familyMode, setFamilyMode] = useState(sampleUserProfile.familyMode);
+  const { userProgress, isLoading } = useUserProgress();
   const [showCORSError, setShowCORSError] = useState(false);
   const [corsErrorMessage, setCorsErrorMessage] = useState('');
+  const [activeTab, setActiveTab] = useState<'overview' | 'badges' | 'challenges' | 'fidelity'>('overview');
+
+  // Utiliser les vraies données de progression ou des valeurs par défaut
+  const progressData = userProgress || {
+    totalPoints: 0,
+    level: 1,
+    streak: 0,
+    completedQuizzes: [],
+    fidelityScore: {
+      prayerScore: 0,
+      readingScore: 0,
+      quizScore: 0,
+      totalScore: 0,
+      lastUpdated: new Date()
+    }
+  };
+
+  // Utiliser des badges par défaut pour l'instant
+  const unlockedBadges: any[] = [];
+  const availableBadges: any[] = [];
 
   const formatDate = (date: Date | any) => {
     // Vérifier si date est un objet Date valide
@@ -54,6 +74,195 @@ export default function ProfileScreen() {
     // Fallback si la date n'est pas valide
     return 'Date inconnue';
   };
+
+  const renderOverview = () => (
+    <View>
+      {/* Statistiques générales */}
+      <ThemedView style={[styles.statsCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
+          Statistiques générales
+        </ThemedText>
+        
+        <View style={styles.statsGrid}>
+          <View style={styles.statItem}>
+            <MaterialIcons name="star" size={24} color={colors.secondary} />
+            <ThemedText style={[styles.statValue, { color: colors.text }]}>
+              {progressData.totalPoints}
+            </ThemedText>
+            <ThemedText style={[styles.statLabel, { color: colors.text }]}>Points totaux</ThemedText>
+          </View>
+          
+          <View style={styles.statItem}>
+            <MaterialIcons name="trending-up" size={24} color={colors.primary} />
+            <ThemedText style={[styles.statValue, { color: colors.text }]}>
+              {progressData.level}
+            </ThemedText>
+            <ThemedText style={[styles.statLabel, { color: colors.text }]}>Niveau</ThemedText>
+          </View>
+          
+          <View style={styles.statItem}>
+            <MaterialIcons name="local-fire-department" size={24} color={colors.warning} />
+            <ThemedText style={[styles.statValue, { color: colors.text }]}>
+              {progressData.streak}
+            </ThemedText>
+            <ThemedText style={[styles.statLabel, { color: colors.text }]}>Jours consécutifs</ThemedText>
+          </View>
+          
+          <View style={styles.statItem}>
+            <MaterialIcons name="quiz" size={24} color={colors.success} />
+            <ThemedText style={[styles.statValue, { color: colors.text }]}>
+              {progressData.completedQuizzes.length}
+            </ThemedText>
+            <ThemedText style={[styles.statLabel, { color: colors.text }]}>Quiz complétés</ThemedText>
+          </View>
+        </View>
+      </ThemedView>
+
+      {/* Score de fidélité */}
+      <ThemedView style={[styles.fidelityCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
+          Score de fidélité
+        </ThemedText>
+        
+        <View style={styles.fidelityScore}>
+          <View style={styles.fidelityMain}>
+            <ThemedText style={[styles.fidelityTotal, { color: colors.primary }]}>
+              {progressData.fidelityScore.totalScore}%
+            </ThemedText>
+            <ThemedText style={[styles.fidelityLabel, { color: colors.text }]}>
+              Score global
+            </ThemedText>
+          </View>
+          
+          <View style={styles.fidelityBreakdown}>
+            <View style={styles.fidelityItem}>
+              <MaterialIcons name="schedule" size={16} color={colors.primary} />
+              <ThemedText style={[styles.fidelityText, { color: colors.text }]}>
+                Prière: {progressData.fidelityScore.prayerScore}%
+              </ThemedText>
+            </View>
+            <View style={styles.fidelityItem}>
+              <MaterialIcons name="menu-book" size={16} color={colors.secondary} />
+              <ThemedText style={[styles.fidelityText, { color: colors.text }]}>
+                Lecture: {progressData.fidelityScore.readingScore}%
+              </ThemedText>
+            </View>
+            <View style={styles.fidelityItem}>
+              <MaterialIcons name="quiz" size={16} color={colors.success} />
+              <ThemedText style={[styles.fidelityText, { color: colors.text }]}>
+                Quiz: {progressData.fidelityScore.quizScore}%
+              </ThemedText>
+            </View>
+          </View>
+        </View>
+      </ThemedView>
+    </View>
+  );
+
+  const renderBadges = () => (
+    <View>
+      <ThemedView style={styles.section}>
+        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
+          Badges débloqués ({unlockedBadges.length})
+        </ThemedText>
+        {unlockedBadges.map((badge) => (
+          <BadgeCard
+            key={badge.id}
+            badge={badge}
+            isUnlocked={true}
+          />
+        ))}
+      </ThemedView>
+
+      <ThemedView style={styles.section}>
+        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
+          Badges disponibles ({availableBadges.length})
+        </ThemedText>
+        {availableBadges.map((badge) => (
+          <BadgeCard
+            key={badge.id}
+            badge={badge}
+            isUnlocked={false}
+            showProgress={true}
+            progress={Math.random() * 100} // Simulation de progression
+          />
+        ))}
+      </ThemedView>
+    </View>
+  );
+
+  const renderChallenges = () => (
+    <View>
+      <ThemedView style={styles.section}>
+        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
+          Défis spirituels
+        </ThemedText>
+        {spiritualChallenges.map((challenge) => (
+          <ChallengeCard
+            key={challenge.id}
+            challenge={challenge}
+          />
+        ))}
+      </ThemedView>
+    </View>
+  );
+
+  const renderFidelity = () => (
+    <View>
+      <ThemedView style={[styles.fidelityCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
+          Score de fidélité détaillé
+        </ThemedText>
+        
+        <View style={styles.fidelityDetailed}>
+          <View style={styles.fidelityMain}>
+            <ThemedText style={[styles.fidelityTotal, { color: colors.primary }]}>
+              {progressData.fidelityScore.totalScore}%
+            </ThemedText>
+            <ThemedText style={[styles.fidelityLabel, { color: colors.text }]}>
+              Score global de fidélité
+            </ThemedText>
+          </View>
+          
+          <View style={styles.fidelityBreakdown}>
+            <View style={[styles.fidelityItem, { backgroundColor: `${colors.primary}10` }]}>
+              <MaterialIcons name="schedule" size={20} color={colors.primary} />
+              <View style={styles.fidelityItemInfo}>
+                <ThemedText style={[styles.fidelityItemTitle, { color: colors.text }]}>
+                  Prière quotidienne
+                </ThemedText>
+                <ThemedText style={[styles.fidelityItemScore, { color: colors.primary }]}>
+                  {progressData.fidelityScore.prayerScore}%
+                </ThemedText>
+              </View>
+            </View>
+            <View style={[styles.fidelityItem, { backgroundColor: `${colors.secondary}10` }]}>
+              <MaterialIcons name="menu-book" size={20} color={colors.secondary} />
+              <View style={styles.fidelityItemInfo}>
+                <ThemedText style={[styles.fidelityItemTitle, { color: colors.text }]}>
+                  Lecture spirituelle
+                </ThemedText>
+                <ThemedText style={[styles.fidelityItemScore, { color: colors.secondary }]}>
+                  {progressData.fidelityScore.readingScore}%
+                </ThemedText>
+              </View>
+            </View>
+            <View style={[styles.fidelityItem, { backgroundColor: `${colors.success}10` }]}>
+              <MaterialIcons name="quiz" size={20} color={colors.success} />
+              <View style={styles.fidelityItemInfo}>
+                <ThemedText style={[styles.fidelityItemTitle, { color: colors.text }]}>
+                  Participation aux quiz
+                </ThemedText>
+                <ThemedText style={[styles.fidelityItemScore, { color: colors.success }]}>
+                  {progressData.fidelityScore.quizScore}%
+                </ThemedText>
+              </View>
+            </View>
+          </View>
+        </View>
+      </ThemedView>
+    </View>
+  );
 
   return (
     <ScrollView 
@@ -152,160 +361,57 @@ export default function ProfileScreen() {
       </ThemedView>
 
       {/* Mode familial */}
-      {familyMode && (
-        <ThemedView style={styles.section}>
-          <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-            Mode familial
-          </ThemedText>
-          
-          {/* Profils enfants */}
-          {familyMode && sampleUserProfile.childrenProfiles?.map((child) => (
-            <TouchableOpacity
-              key={child.id}
-              style={[styles.childItem, { backgroundColor: colors.card, borderColor: colors.border }]}
-              onPress={() => {
-                showAlert('Profil enfant', `Profil de ${child.name} - À implémenter`);
-              }}
-            >
-              <View style={styles.childInfo}>
-                <View style={[styles.childAvatar, { backgroundColor: `${colors.primary}20` }]}>
-                  <ThemedText style={styles.childAvatarText}>
-                    {child.name.charAt(0)}
-                  </ThemedText>
-                </View>
-                <View style={styles.childText}>
-                  <ThemedText style={[styles.childName, { color: colors.text }]}>
-                    {child.name}
-                  </ThemedText>
-                  <ThemedText style={[styles.childAge, { color: colors.text }]}>
-                    {child.age} ans
-                  </ThemedText>
-                </View>
-              </View>
-              <MaterialIcons name="chevron-right" size={20} color={colors.text} />
-            </TouchableOpacity>
-          ))}
+      {/* familyMode is removed, so this section is removed */}
 
-          {/* Ajouter un enfant */}
-          {familyMode && (
-            <TouchableOpacity
-              style={[styles.childItem, { backgroundColor: colors.card, borderColor: colors.border }]}
-              onPress={() => {
-                showAlert('Ajouter un enfant', 'Page d\'ajout d\'enfant - À implémenter');
-              }}
-            >
-              <View style={styles.childInfo}>
-                <View style={[styles.childAvatar, { backgroundColor: `${colors.primary}20` }]}>
-                  <MaterialIcons name="add" size={20} color={colors.primary} />
-                </View>
-                <View style={styles.childText}>
-                  <ThemedText style={[styles.childName, { color: colors.text }]}>
-                    Ajouter un enfant
-                  </ThemedText>
-                  <ThemedText style={[styles.childAge, { color: colors.text }]}>
-                    Nouveau profil
-                  </ThemedText>
-                </View>
-              </View>
-              <MaterialIcons name="chevron-right" size={20} color={colors.text} />
-            </TouchableOpacity>
-          )}
-        </ThemedView>
-      )}
-
-      {/* Paramètres de l'application */}
+      {/* Section Progression */}
       <ThemedView style={styles.section}>
-        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-          Paramètres de l'application
-        </ThemedText>
+        {/* Onglets de progression */}
+        <ThemedView style={styles.tabsContainer}>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'overview' && { backgroundColor: colors.primary }]}
+            onPress={() => setActiveTab('overview')}
+          >
+            <ThemedText style={[styles.tabText, { color: activeTab === 'overview' ? colors.background : colors.text }]}>
+              Vue d'ensemble
+            </ThemedText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'badges' && { backgroundColor: colors.primary }]}
+            onPress={() => setActiveTab('badges')}
+          >
+            <ThemedText style={[styles.tabText, { color: activeTab === 'badges' ? colors.background : colors.text }]}>
+              Badges
+            </ThemedText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'challenges' && { backgroundColor: colors.primary }]}
+            onPress={() => setActiveTab('challenges')}
+          >
+            <ThemedText style={[styles.tabText, { color: activeTab === 'challenges' ? colors.background : colors.text }]}>
+              Défis
+            </ThemedText>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.tab, activeTab === 'fidelity' && { backgroundColor: colors.primary }]}
+            onPress={() => setActiveTab('fidelity')}
+          >
+            <ThemedText style={[styles.tabText, { color: activeTab === 'fidelity' ? colors.background : colors.text }]}>
+              Fidélité
+            </ThemedText>
+          </TouchableOpacity>
+        </ThemedView>
 
-        <View style={styles.settingsList}>
-          <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            <View style={styles.settingInfo}>
-              <MaterialIcons name="notifications" size={20} color={colors.primary} />
-              <View style={styles.settingText}>
-                <ThemedText style={[styles.settingTitle, { color: colors.text }]}>
-                  Notifications
-                </ThemedText>
-                <ThemedText style={[styles.settingDescription, { color: colors.text }]}>
-                  Recevoir des rappels pour les quiz et défis
-                </ThemedText>
-              </View>
-            </View>
-            <Switch
-              value={notifications}
-              onValueChange={setNotifications}
-              trackColor={{ false: colors.border, true: colors.primary }}
-              thumbColor={colors.background}
-            />
-          </View>
-
-          <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            <View style={styles.settingInfo}>
-              <MaterialIcons name="volume-up" size={20} color={colors.secondary} />
-              <View style={styles.settingText}>
-                <ThemedText style={[styles.settingTitle, { color: colors.text }]}>
-                  Sons
-                </ThemedText>
-                <ThemedText style={[styles.settingDescription, { color: colors.text }]}>
-                  Activer les effets sonores
-                </ThemedText>
-              </View>
-            </View>
-            <Switch
-              value={sound}
-              onValueChange={setSound}
-              trackColor={{ false: colors.border, true: colors.secondary }}
-              thumbColor={colors.background}
-            />
-          </View>
-
-          <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            <View style={styles.settingInfo}>
-              <MaterialIcons name="vibration" size={20} color={colors.warning} />
-              <View style={styles.settingText}>
-                <ThemedText style={[styles.settingTitle, { color: colors.text }]}>
-                  Retour haptique
-                </ThemedText>
-                <ThemedText style={[styles.settingDescription, { color: colors.text }]}>
-                  Vibrations lors des interactions
-                </ThemedText>
-              </View>
-            </View>
-            <Switch
-              value={hapticFeedback}
-              onValueChange={setHapticFeedback}
-              trackColor={{ false: colors.border, true: colors.warning }}
-              thumbColor={colors.background}
-            />
-          </View>
-
-          <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            <View style={styles.settingInfo}>
-              <MaterialIcons name="family-restroom" size={20} color={colors.success} />
-              <View style={styles.settingText}>
-                <ThemedText style={[styles.settingTitle, { color: colors.text }]}>
-                  Mode familial
-                </ThemedText>
-                <ThemedText style={[styles.settingDescription, { color: colors.text }]}>
-                  Gérer les profils des enfants
-                </ThemedText>
-              </View>
-            </View>
-            <Switch
-              value={familyMode}
-              onValueChange={setFamilyMode}
-              trackColor={{ false: colors.border, true: colors.success }}
-              thumbColor={colors.background}
-            />
-          </View>
-        </View>
+        {/* Contenu des onglets de progression */}
+        {activeTab === 'overview' && renderOverview()}
+        {activeTab === 'badges' && renderBadges()}
+        {activeTab === 'challenges' && renderChallenges()}
+        {activeTab === 'fidelity' && renderFidelity()}
       </ThemedView>
 
-      {/* Actions */}
+      {/* Actions rapides */}
       <ThemedView style={styles.section}>
         <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-          Actions
+          Actions rapides
         </ThemedText>
 
         <View style={styles.actionsList}>
@@ -329,6 +435,25 @@ export default function ProfileScreen() {
               <MaterialIcons name="chevron-right" size={20} color={colors.text} />
             </TouchableOpacity>
           )}
+
+          {/* Lien vers les paramètres */}
+          <TouchableOpacity
+            style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
+            onPress={() => router.push('/settings' as any)}
+          >
+            <View style={styles.actionInfo}>
+              <MaterialIcons name="settings" size={20} color={colors.primary} />
+              <View style={styles.actionText}>
+                <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                  Paramètres
+                </ThemedText>
+                <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
+                  Gérer les paramètres de l'application et votre compte
+                </ThemedText>
+              </View>
+            </View>
+            <MaterialIcons name="chevron-right" size={20} color={colors.text} />
+          </TouchableOpacity>
 
           {/* Bouton de test Google OAuth */}
           <TouchableOpacity
@@ -358,90 +483,6 @@ export default function ProfileScreen() {
               </View>
             </View>
             <MaterialIcons name="chevron-right" size={20} color="#4285F4" />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
-            onPress={() => {
-              // TODO: Implémenter la page d'édition de profil
-              showAlert('Éditer le profil', 'Page d\'édition de profil - À implémenter');
-            }}
-          >
-            <View style={styles.actionInfo}>
-              <MaterialIcons name="edit" size={20} color={colors.primary} />
-              <View style={styles.actionText}>
-                <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
-                  Éditer le profil
-                </ThemedText>
-                <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
-                  Modifier vos informations personnelles
-                </ThemedText>
-              </View>
-            </View>
-            <MaterialIcons name="chevron-right" size={20} color={colors.text} />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
-            onPress={() => {
-              // TODO: Implémenter l'export des données
-              showAlert('Exporter les données', 'Page d\'export des données - À implémenter');
-            }}
-          >
-            <View style={styles.actionInfo}>
-              <MaterialIcons name="download" size={20} color={colors.primary} />
-              <View style={styles.actionText}>
-                <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
-                  Exporter mes données
-                </ThemedText>
-                <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
-                  Télécharger vos données personnelles
-                </ThemedText>
-              </View>
-            </View>
-            <MaterialIcons name="chevron-right" size={20} color={colors.text} />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
-            onPress={() => {
-              // TODO: Implémenter la page d'aide
-              showAlert('Aide et support', 'Page d\'aide et support - À implémenter');
-            }}
-          >
-            <View style={styles.actionInfo}>
-              <MaterialIcons name="help" size={20} color={colors.primary} />
-              <View style={styles.actionText}>
-                <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
-                  Aide et support
-                </ThemedText>
-                <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
-                  Centre d'aide et contact
-                </ThemedText>
-              </View>
-            </View>
-            <MaterialIcons name="chevron-right" size={20} color={colors.text} />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
-            onPress={() => {
-              // TODO: Implémenter la page à propos
-              showAlert('À propos', 'Page à propos - À implémenter');
-            }}
-          >
-            <View style={styles.actionInfo}>
-              <MaterialIcons name="info" size={20} color={colors.primary} />
-              <View style={styles.actionText}>
-                <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
-                  À propos
-                </ThemedText>
-                <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
-                  Informations sur l'application
-                </ThemedText>
-              </View>
-            </View>
-            <MaterialIcons name="chevron-right" size={20} color={colors.text} />
           </TouchableOpacity>
         </View>
       </ThemedView>
@@ -583,85 +624,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 18,
     marginBottom: 16,
-  },
-  familyMembers: {
-    gap: 12,
-    marginBottom: 16,
-  },
-  familyMemberCard: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-  },
-  childAvatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  childAvatarText: {
-    fontSize: 24,
-  },
-  childInfo: {
-    flex: 1,
-  },
-  childName: {
-    fontSize: 16,
-    marginBottom: 2,
-  },
-  childAge: {
-    fontSize: 14,
-    opacity: 0.8,
-    marginBottom: 2,
-  },
-  childPoints: {
-    fontSize: 12,
     fontWeight: '600',
-  },
-  addChildButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 16,
-    borderRadius: 12,
-  },
-  addChildText: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginLeft: 8,
-  },
-  settingsList: {
-    gap: 12,
-  },
-  settingItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    borderRadius: 12,
-    borderWidth: 1,
-  },
-  settingInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  settingText: {
-    marginLeft: 12,
-    flex: 1,
-  },
-  settingTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 2,
-  },
-  settingDescription: {
-    fontSize: 14,
-    opacity: 0.8,
   },
   actionsList: {
     gap: 12,
@@ -732,20 +695,122 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     marginLeft: 4,
   },
-  childItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 16,
-    borderRadius: 12,
+  statsCard: {
+    padding: 20,
+    margin: 16,
+    borderRadius: 16,
     borderWidth: 1,
-    marginBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
   },
-  childInfo: {
+  statsGrid: {
     flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 16,
+  },
+  statItem: {
     alignItems: 'center',
   },
-  childText: {
-    marginLeft: 12,
+  statValue: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginTop: 8,
+  },
+  statLabel: {
+    fontSize: 14,
+    opacity: 0.8,
+  },
+  fidelityCard: {
+    padding: 20,
+    margin: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  fidelityScore: {
+    marginTop: 16,
+  },
+  fidelityMain: {
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  fidelityTotal: {
+    fontSize: 36,
+    fontWeight: 'bold',
+  },
+  fidelityLabel: {
+    fontSize: 14,
+    opacity: 0.8,
+  },
+  fidelityBreakdown: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  fidelityItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 12,
+    backgroundColor: '#F0F0F0', // Light grey background for breakdown items
+  },
+  fidelityItemInfo: {
+    marginLeft: 8,
+  },
+  fidelityItemTitle: {
+    fontSize: 12,
+    opacity: 0.8,
+  },
+  fidelityItemScore: {
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  fidelityText: {
+    fontSize: 12,
+    opacity: 0.8,
+  },
+  fidelityDetailed: {
+    marginTop: 16,
+  },
+  tabsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginBottom: 16,
+    backgroundColor: '#E0E0E0', // Light grey background for tabs
+    borderRadius: 12,
+    paddingVertical: 4,
+  },
+  tab: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: 8,
+    borderRadius: 10,
+  },
+  tabText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  seeAll: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
   },
 }); 

@@ -3,7 +3,6 @@ import {
   doc,
   getDoc,
   getDocs,
-  orderBy,
   query,
   where
 } from 'firebase/firestore';
@@ -27,7 +26,7 @@ export interface QuizService {
   getQuiz(id: string): Promise<Quiz | null>;
   getAllQuizzes(): Promise<Quiz[]>;
   getQuizzesByCategory(category: string): Promise<Quiz[]>;
-  getQuizzesByLevel(level: number): Promise<Quiz[]>;
+  getQuizzesByCourse(level: number): Promise<Quiz[]>;
   getAvailableQuizzes(userLevel: number): Promise<Quiz[]>;
   getQuizzesByCategoryAndLevel(category: string, userLevel: number): Promise<Quiz[]>;
 
@@ -72,13 +71,16 @@ class QuizServiceImpl implements QuizService {
 
   async getAllQuestions(): Promise<Question[]> {
     try {
-      const q = query(collection(db, QUESTIONS_COLLECTION), orderBy('id'));
+      const q = query(collection(db, QUESTIONS_COLLECTION));
       const querySnapshot = await getDocs(q);
 
-      return querySnapshot.docs.map(doc => ({
+      const questions = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       })) as Question[];
+
+      // Trier les questions par ID côté client
+      return questions.sort((a, b) => a.id.localeCompare(b.id));
     } catch (error) {
       console.error('Error getting all questions:', error);
       throw new Error('Failed to get questions');
@@ -87,17 +89,20 @@ class QuizServiceImpl implements QuizService {
 
   async getQuestionsByCategory(category: string): Promise<Question[]> {
     try {
+      // Utiliser seulement le filtre where sans orderBy pour éviter l'erreur d'index
       const q = query(
         collection(db, QUESTIONS_COLLECTION),
-        where('category', '==', category),
-        orderBy('id')
+        where('category', '==', category)
       );
       const querySnapshot = await getDocs(q);
 
-      return querySnapshot.docs.map(doc => ({
+      const questions = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       })) as Question[];
+
+      // Trier les questions par ID côté client
+      return questions.sort((a, b) => a.id.localeCompare(b.id));
     } catch (error) {
       console.error('Error getting questions by category:', error);
       throw new Error('Failed to get questions by category');
@@ -106,17 +111,20 @@ class QuizServiceImpl implements QuizService {
 
   async getQuestionsByDifficulty(difficulty: string): Promise<Question[]> {
     try {
+      // Utiliser seulement le filtre where sans orderBy pour éviter l'erreur d'index
       const q = query(
         collection(db, QUESTIONS_COLLECTION),
-        where('difficulty', '==', difficulty),
-        orderBy('id')
+        where('difficulty', '==', difficulty)
       );
       const querySnapshot = await getDocs(q);
 
-      return querySnapshot.docs.map(doc => ({
+      const questions = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       })) as Question[];
+
+      // Trier les questions par ID côté client
+      return questions.sort((a, b) => a.id.localeCompare(b.id));
     } catch (error) {
       console.error('Error getting questions by difficulty:', error);
       throw new Error('Failed to get questions by difficulty');
@@ -125,17 +133,25 @@ class QuizServiceImpl implements QuizService {
 
   async getQuestionsByLevel(level: number): Promise<Question[]> {
     try {
+      // Utiliser seulement le filtre where sans orderBy pour éviter l'erreur d'index
       const q = query(
         collection(db, QUESTIONS_COLLECTION),
-        where('level', '<=', level),
-        orderBy('level')
+        where('level', '<=', level)
       );
       const querySnapshot = await getDocs(q);
 
-      return querySnapshot.docs.map(doc => ({
+      const questions = querySnapshot.docs.map(doc => ({
         id: doc.id,
         ...doc.data()
       })) as Question[];
+
+      // Trier les questions par niveau puis par ID côté client
+      return questions.sort((a, b) => {
+        if (a.level !== b.level) {
+          return a.level - b.level;
+        }
+        return a.id.localeCompare(b.id);
+      });
     } catch (error) {
       console.error('Error getting questions by level:', error);
       throw new Error('Failed to get questions by level');
@@ -213,7 +229,7 @@ class QuizServiceImpl implements QuizService {
 
   async getAllQuizzes(): Promise<Quiz[]> {
     try {
-      const q = query(collection(db, QUIZZES_COLLECTION), orderBy('id'));
+      const q = query(collection(db, QUIZZES_COLLECTION));
       const querySnapshot = await getDocs(q);
 
       const quizzes: Quiz[] = [];
@@ -233,7 +249,8 @@ class QuizServiceImpl implements QuizService {
         } as any);
       }
 
-      return quizzes;
+      // Trier les quiz par ID côté client
+      return quizzes.sort((a, b) => a.id.localeCompare(b.id));
     } catch (error) {
       console.error('Error getting all quizzes:', error);
       throw new Error('Failed to get quizzes');
@@ -242,10 +259,10 @@ class QuizServiceImpl implements QuizService {
 
   async getQuizzesByCategory(category: string): Promise<Quiz[]> {
     try {
+      // Utiliser seulement le filtre where sans orderBy pour éviter l'erreur d'index
       const q = query(
         collection(db, QUIZZES_COLLECTION),
-        where('category', '==', category),
-        orderBy('id')
+        where('category', '==', category)
       );
       const querySnapshot = await getDocs(q);
 
@@ -266,34 +283,48 @@ class QuizServiceImpl implements QuizService {
         } as any);
       }
 
-      return quizzes;
+      // Trier les quiz par ID côté client si nécessaire
+      return quizzes.sort((a, b) => a.id.localeCompare(b.id));
     } catch (error) {
       console.error('Error getting quizzes by category:', error);
       throw new Error('Failed to get quizzes by category');
     }
   }
 
-  async getQuizzesByLevel(level: number): Promise<Quiz[]> {
+  async getQuizzesByCourse(level: number): Promise<Quiz[]> {
     try {
+      // Utiliser seulement le filtre where sans orderBy pour éviter l'erreur d'index
       const q = query(
         collection(db, QUIZZES_COLLECTION),
-        where('level', '==', level),
-        orderBy('id')
+        where('level', '==', level)
       );
       const querySnapshot = await getDocs(q);
 
       const quizzes: Quiz[] = [];
       for (const doc of querySnapshot.docs) {
         const quizData = doc.data();
-        const questions = await this.getQuestionsByQuizId(doc.id);
+        
+        // Vérifier que les données ne sont pas null
+        if (!quizData) {
+          console.warn('Quiz data is null for doc:', doc.id);
+          continue;
+        }
+        
+        // Récupérer le nombre de questions depuis le document quiz
+        const questionCount = quizData.questions?.length || 0;
+
+        // Créer un tableau avec le bon nombre d'éléments pour que .length fonctionne
+        const questionsArray = Array(questionCount).fill(null);
+
         quizzes.push({
           id: doc.id,
           ...quizData,
-          questions
+          questions: questionsArray // Tableau avec la bonne longueur
         } as Quiz);
       }
 
-      return quizzes;
+      // Trier les quiz par ID côté client si nécessaire
+      return quizzes.sort((a, b) => a.id.localeCompare(b.id));
     } catch (error) {
       console.error('Error getting quizzes by level:', error);
       throw new Error('Failed to get quizzes by level');
@@ -302,10 +333,10 @@ class QuizServiceImpl implements QuizService {
 
   async getAvailableQuizzes(userLevel: number): Promise<Quiz[]> {
     try {
+      // Utiliser seulement le filtre where sans orderBy pour éviter l'erreur d'index
       const q = query(
         collection(db, QUIZZES_COLLECTION),
-        where('level', '<=', userLevel),
-        orderBy('level')
+        where('level', '<=', userLevel)
       );
       const querySnapshot = await getDocs(q);
 
@@ -326,7 +357,13 @@ class QuizServiceImpl implements QuizService {
         } as any);
       }
 
-      return quizzes;
+      // Trier les quiz par niveau puis par ID côté client
+      return quizzes.sort((a, b) => {
+        if (a.level !== b.level) {
+          return a.level - b.level;
+        }
+        return a.id.localeCompare(b.id);
+      });
     } catch (error) {
       console.error('Error getting available quizzes:', error);
       throw new Error('Failed to get available quizzes');
@@ -335,11 +372,11 @@ class QuizServiceImpl implements QuizService {
 
   async getQuizzesByCategoryAndLevel(category: string, userLevel: number): Promise<Quiz[]> {
     try {
+      // Utiliser seulement les filtres where sans orderBy pour éviter l'erreur d'index
       const q = query(
         collection(db, QUIZZES_COLLECTION),
         where('category', '==', category),
-        where('level', '<=', userLevel),
-        orderBy('level')
+        where('level', '<=', userLevel)
       );
       const querySnapshot = await getDocs(q);
 
@@ -360,7 +397,13 @@ class QuizServiceImpl implements QuizService {
         } as any);
       }
 
-      return quizzes;
+      // Trier les quiz par niveau puis par ID côté client
+      return quizzes.sort((a, b) => {
+        if (a.level !== b.level) {
+          return a.level - b.level;
+        }
+        return a.id.localeCompare(b.id);
+      });
     } catch (error) {
       console.error('Error getting quizzes by category and level:', error);
       throw new Error('Failed to get quizzes by category and level');

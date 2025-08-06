@@ -20,6 +20,31 @@ const db = getFirestore(app);
 const QUESTIONS_COLLECTION = 'questions';
 const QUIZZES_COLLECTION = 'quizzes';
 
+// Fonction pour nettoyer les données avant l'import
+function cleanDataForFirestore(data: any): any {
+  if (data === null || data === undefined) {
+    return null;
+  }
+  
+  if (Array.isArray(data)) {
+    return data.map(item => cleanDataForFirestore(item));
+  }
+  
+  if (typeof data === 'object') {
+    const cleaned: any = {};
+    for (const [key, value] of Object.entries(data)) {
+      if (value !== undefined) {
+        cleaned[key] = cleanDataForFirestore(value);
+      } else {
+        cleaned[key] = null;
+      }
+    }
+    return cleaned;
+  }
+  
+  return data;
+}
+
 async function populateDatabase() {
   console.log('🚀 Début de la population de la base de données...');
   
@@ -126,8 +151,12 @@ async function importQuestions(): Promise<string[]> {
 
   for (const question of questionsToImport) {
     const docRef = doc(collection(db, QUESTIONS_COLLECTION));
+    
+    // Nettoyer les données avant l'import
+    const cleanedQuestion = cleanDataForFirestore(question);
+    
     batch.set(docRef, {
-      ...question,
+      ...cleanedQuestion,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
@@ -179,10 +208,15 @@ async function importQuizzes(questionIdMapping: Map<string, string>): Promise<st
     
     console.log(`🔗 Quiz "${quiz.title}": ${questionIds.length} questions assignées`);
     
-    batch.set(docRef, {
+    // Nettoyer les données avant l'import
+    const cleanedQuiz = cleanDataForFirestore({
       ...quiz,
       questions: questionIds, // Remplacer par les IDs des questions
       questionIds: questionIds, // Ajouter aussi questionIds pour compatibilité
+    });
+    
+    batch.set(docRef, {
+      ...cleanedQuiz,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });

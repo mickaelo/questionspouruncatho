@@ -186,6 +186,21 @@ export default function AdminScreen() {
 
             <TouchableOpacity
               style={[styles.actionCard, { backgroundColor: colors.card, borderColor: colors.border }]}
+              onPress={() => router.push('/admin/course-management' as any)}
+            >
+              <View style={styles.actionIcon}>
+                <MaterialIcons name="school" size={32} color={colors.success} />
+              </View>
+              <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                Gestion des Parcours
+              </ThemedText>
+              <ThemedText style={[styles.actionDescription, { color: colors.secondary }]}>
+                Gérer les niveaux de formation
+              </ThemedText>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[styles.actionCard, { backgroundColor: colors.card, borderColor: colors.border }]}
               onPress={() => {
                 showAlert(
                   'Fonctionnalité à venir',
@@ -194,7 +209,7 @@ export default function AdminScreen() {
               }}
             >
               <View style={styles.actionIcon}>
-                <MaterialIcons name="analytics" size={32} color={colors.success} />
+                <MaterialIcons name="analytics" size={32} color={colors.secondary} />
               </View>
               <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
                 Statistiques Avancées

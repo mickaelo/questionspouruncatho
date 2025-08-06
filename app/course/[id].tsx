@@ -3,28 +3,70 @@ import { QuizCard } from '@/components/QuizCard';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { sampleQuizzes, sampleSpiritualChallenges } from '@/data/gamification';
-import { getLevelById, getLevelContentById } from '@/data/levels';
-import { getQuizzesByLevel } from '@/data/questions';
+import { getCourseById, getCourseContentById } from '@/data/courses';
+import { spiritualChallenges } from '@/data/gamification';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useQuizData } from '@/hooks/useQuizData';
+import { Quiz } from '@/types/quiz';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router, useLocalSearchParams } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
-export default function LevelDetailScreen() {
+export default function CourseDetailScreen() {
   const { id } = useLocalSearchParams();
   const { user, isAuthenticated } = useAuth();
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
   const isWeb = Platform.OS === 'web';
+  const { getQuizzesByCourse } = useQuizData();
 
-  const levelId = parseInt(id as string);
-  const levelContent = getLevelContentById(levelId);
-  const level = getLevelById(levelId);
+  // Vérifier que l'ID est valide
+  const courseId = id ? parseInt(id as string) : null;
+  const courseContent = courseId ? getCourseContentById(courseId) : undefined;
+  const course = courseId ? getCourseById(courseId) : undefined;
 
-  if (!levelContent || !level) {
+  // État pour les quiz du niveau
+  const [courseQuizzes, setCourseQuizzes] = useState<Quiz[]>([]);
+  const [isLoadingQuizzes, setIsLoadingQuizzes] = useState(true);
+
+  // Check if user is admin
+  const isAdmin = isAuthenticated && user?.type?.includes('admin');
+  
+  // Get user course (default to 1 if not available)
+  const userLevel = 1; // TODO: Get from user progress
+
+  // Charger les quiz du niveau depuis Firebase
+  useEffect(() => {
+    const loadCourseQuizzes = async () => {
+      if (!courseId) {
+        setCourseQuizzes([]);
+        setIsLoadingQuizzes(false);
+        return;
+      }
+
+      try {
+        setIsLoadingQuizzes(true);
+        const quizzes = await getQuizzesByCourse(courseId);
+        setCourseQuizzes(quizzes || []);
+      } catch (error) {
+        console.error('Erreur lors du chargement des quiz du niveau:', error);
+        setCourseQuizzes([]);
+      } finally {
+        setIsLoadingQuizzes(false);
+      }
+    };
+
+    loadCourseQuizzes();
+  }, [courseId, getQuizzesByCourse]);
+
+  // Filtrer les défis pour ce niveau
+  const courseChallenges = spiritualChallenges.filter(challenge => 
+    challenge.title.toLowerCase().includes(courseContent?.title?.toLowerCase() || '')
+  );
+
+  if (!courseContent || !course) {
     return (
       <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
         <ThemedView style={styles.errorContainer}>
@@ -49,18 +91,6 @@ export default function LevelDetailScreen() {
     );
   }
 
-  // Check if user is admin
-  const isAdmin = isAuthenticated && user?.type?.includes('admin');
-  
-  // Get user level (default to 1 if not available)
-  const userLevel = 1; // TODO: Get from user progress
-  
-  // Filtrer les quiz et défis pour ce niveau
-  const levelQuizzes = getQuizzesByLevel(levelId, userLevel, isAdmin);
-  const levelChallenges = sampleSpiritualChallenges.filter(challenge => 
-    challenge.title.toLowerCase().includes(levelContent.title.toLowerCase())
-  );
-
   return (
     <ScrollView 
       style={[
@@ -80,17 +110,17 @@ export default function LevelDetailScreen() {
           <MaterialIcons name="arrow-back" size={24} color={colors.primary} />
         </TouchableOpacity>
         <View style={styles.headerContent}>
-          <View style={[styles.levelIcon, { backgroundColor: `${levelContent.color}20` }]}>
-            <ThemedText style={[styles.icon, { color: levelContent.color }]}>
-              {levelContent.icon}
+          <View style={[styles.courseIcon, { backgroundColor: `${courseContent.color}20` }]}>
+            <ThemedText style={[styles.icon, { color: courseContent.color }]}>
+              {courseContent.icon}
             </ThemedText>
           </View>
           <View style={styles.headerText}>
             <ThemedText type="title" style={[styles.title, { color: colors.text }]}>
-              {levelContent.title}
+              {courseContent.title}
             </ThemedText>
             <ThemedText style={[styles.subtitle, { color: colors.text }]}>
-              Niveau {levelContent.level}
+              Niveau {courseContent.level}
             </ThemedText>
           </View>
         </View>
@@ -99,7 +129,7 @@ export default function LevelDetailScreen() {
       {/* Description du niveau */}
       <ThemedView style={[styles.descriptionCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
         <ThemedText style={[styles.description, { color: colors.text }]}>
-          {levelContent.description}
+          {courseContent.description}
         </ThemedText>
       </ThemedView>
 
@@ -109,7 +139,7 @@ export default function LevelDetailScreen() {
           Public cible
         </ThemedText>
         <View style={styles.audienceList}>
-          {levelContent.targetAudience.map((audience, index) => (
+          {courseContent.targetAudience.map((audience, index) => (
             <View key={index} style={styles.audienceItem}>
               <MaterialIcons name="person" size={20} color={colors.primary} />
               <ThemedText style={[styles.audienceText, { color: colors.text }]}>
@@ -126,7 +156,7 @@ export default function LevelDetailScreen() {
           Contenus de formation
         </ThemedText>
         <View style={styles.contentList}>
-          {levelContent.contentTypes.map((content, index) => (
+          {courseContent.contentTypes.map((content, index) => (
             <View key={index} style={styles.contentItem}>
               <MaterialIcons name="book" size={20} color={colors.primary} />
               <ThemedText style={[styles.contentText, { color: colors.text }]}>
@@ -140,12 +170,26 @@ export default function LevelDetailScreen() {
       {/* Quiz du niveau */}
       <ThemedView style={styles.section}>
         <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-          Quiz disponibles ({levelQuizzes.length})
+          Quiz disponibles ({courseQuizzes.length})
         </ThemedText>
-        {levelQuizzes.length > 0 ? (
+        {isLoadingQuizzes ? (
+          <ThemedView style={[styles.loadingState, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <MaterialIcons name="hourglass-empty" size={48} color={colors.secondary} />
+            <ThemedText style={[styles.loadingText, { color: colors.secondary }]}>
+              Chargement des quiz...
+            </ThemedText>
+          </ThemedView>
+        ) : courseQuizzes.length > 0 ? (
           <View style={styles.quizList}>
-            {levelQuizzes.map((quiz) => (
-              <QuizCard key={quiz.id} quiz={quiz} />
+            {courseQuizzes.map((quiz: Quiz) => (
+              <QuizCard 
+                key={quiz.id} 
+                quiz={quiz} 
+                onPress={() => router.push({
+                  pathname: '/quiz/[id]',
+                  params: { id: quiz.id }
+                })}
+              />
             ))}
           </View>
         ) : (
@@ -164,11 +208,11 @@ export default function LevelDetailScreen() {
       {/* Défis spirituels */}
       <ThemedView style={styles.section}>
         <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-          Défis spirituels ({levelChallenges.length})
+          Défis spirituels ({courseChallenges.length})
         </ThemedText>
-        {levelChallenges.length > 0 ? (
+        {courseChallenges.length > 0 ? (
           <View style={styles.challengeList}>
-            {levelChallenges.map((challenge) => (
+            {courseChallenges.map((challenge) => (
               <ChallengeCard key={challenge.id} challenge={challenge} />
             ))}
           </View>
@@ -186,13 +230,13 @@ export default function LevelDetailScreen() {
       </ThemedView>
 
       {/* Prérequis */}
-      {levelContent.prerequisites.length > 0 && (
+      {courseContent.prerequisites.length > 0 && (
         <ThemedView style={styles.section}>
           <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
             Prérequis
           </ThemedText>
           <View style={styles.prerequisitesList}>
-            {levelContent.prerequisites.map((prerequisite, index) => (
+            {courseContent.prerequisites.map((prerequisite, index) => (
               <View key={index} style={styles.prerequisiteItem}>
                 <MaterialIcons name="check-circle" size={20} color={colors.success} />
                 <ThemedText style={[styles.prerequisiteText, { color: colors.text }]}>
@@ -209,11 +253,11 @@ export default function LevelDetailScreen() {
         <View style={styles.actionButtons}>
           <TouchableOpacity
             style={[styles.actionButton, { backgroundColor: colors.primary }]}
-            onPress={() => router.push('/(tabs)/levels')}
+            onPress={() => router.push('/(tabs)/courses')}
           >
             <MaterialIcons name="school" size={20} color={colors.background} />
             <ThemedText style={[styles.actionButtonText, { color: colors.background }]}>
-              Voir tous les niveaux
+              Voir tous les parcours
             </ThemedText>
           </TouchableOpacity>
           <TouchableOpacity
@@ -251,7 +295,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flex: 1,
   },
-  levelIcon: {
+  courseIcon: {
     width: 56,
     height: 56,
     borderRadius: 28,
@@ -385,5 +429,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 24,
+  },
+  backButtonText: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  loadingState: {
+    padding: 32,
+    borderRadius: 12,
+    borderWidth: 1,
+    alignItems: 'center',
+  },
+  loadingText: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginTop: 16,
+    marginBottom: 8,
   },
 }); 

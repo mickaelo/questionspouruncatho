@@ -1,14 +1,13 @@
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { Level, LevelContent } from '@/types/quiz';
+import { Course, CourseContent } from '@/types/quiz';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { router } from 'expo-router';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from './ThemedText';
 
-interface LevelCardProps {
-  level: Level | LevelContent;
+interface CourseCardProps {
+  course: Course | CourseContent;
   userLevel: number;
   userPoints: number;
   userQuizzes: number;
@@ -22,34 +21,41 @@ interface LevelCardProps {
   };
 }
 
-export function LevelCard({ 
-  level, 
-  userLevel, 
-  userPoints, 
-  userQuizzes, 
-  userBadges, 
-  isUnlocked, 
-  progress 
-}: LevelCardProps) {
+export function CourseCard({
+  course,
+  userLevel,
+  userPoints,
+  userQuizzes,
+  userBadges,
+  isUnlocked,
+  progress
+}: CourseCardProps) {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
 
+  // Vérification de sécurité
+  if (!course) {
+    return null;
+  }
+
   const handlePress = () => {
     if (isUnlocked) {
-      router.push(`/level/${level.id || (level as LevelContent).level}`);
+      // router.push(`/course/${course.id}`);
     }
   };
 
-  const isCurrentLevel = userLevel === (level.id || (level as LevelContent).level);
-  const isCompleted = userLevel > (level.id || (level as LevelContent).level);
+  // Utiliser level pour CourseContent et id pour Course
+  const courseLevel = (course as any).level || course.id;
+  const isCurrentCourse = userLevel === courseLevel;
+  const isCompleted = userLevel > courseLevel;
 
   return (
     <TouchableOpacity
       style={[
         styles.container,
-        { 
+        {
           backgroundColor: colors.card,
-          borderColor: isCurrentLevel ? level.color : colors.border,
+          borderColor: isCurrentCourse ? course.color : colors.border,
           opacity: isUnlocked ? 1 : 0.6
         }
       ]}
@@ -59,30 +65,30 @@ export function LevelCard({
     >
       {/* Header avec icône et titre */}
       <View style={styles.header}>
-        <View style={[styles.iconContainer, { backgroundColor: `${level.color}20` }]}>
-          <ThemedText style={[styles.icon, { color: level.color }]}>
-            {(level as LevelContent).icon || '📚'}
+        <View style={[styles.iconContainer, { backgroundColor: `${course.color}20` }]}>
+          <ThemedText style={[styles.icon, { color: course.color }]}>
+            {(course as CourseContent).icon || '📚'}
           </ThemedText>
         </View>
         <View style={styles.titleContainer}>
           <ThemedText type="subtitle" style={[styles.title, { color: colors.text }]}>
-            {(level as LevelContent).title || level.name}
+            {(course as CourseContent).title || course.title}
           </ThemedText>
-          <ThemedText style={[styles.levelNumber, { color: level.color }]}>
-            Niveau {level.id || (level as LevelContent).level}
+          <ThemedText style={[styles.courseNumber, { color: course.color }]}>
+            Niveau {courseLevel}
           </ThemedText>
         </View>
         {isCompleted && (
-          <MaterialIcons name="check-circle" size={24} color={level.color} />
+          <MaterialIcons name="check-circle" size={24} color={course.color} />
         )}
-        {isCurrentLevel && (
-          <MaterialIcons name="play-circle-outline" size={24} color={level.color} />
+        {isCurrentCourse && (
+          <MaterialIcons name="play-circle-outline" size={24} color={course.color} />
         )}
       </View>
 
       {/* Description */}
       <ThemedText style={[styles.description, { color: colors.text }]}>
-        {(level as LevelContent).description || level.description}
+        {(course as CourseContent).description || course.description}
       </ThemedText>
 
       {/* Public cible */}
@@ -91,14 +97,14 @@ export function LevelCard({
           Public cible :
         </ThemedText>
         <View style={styles.audienceList}>
-          {(level as LevelContent).targetAudience?.map((audience, index) => (
+          {(course as CourseContent).targetAudience?.map((audience, index) => (
             <View key={index} style={styles.audienceItem}>
               <MaterialIcons name="person" size={16} color={colors.primary} />
               <ThemedText style={[styles.audienceText, { color: colors.text }]}>
                 {audience}
               </ThemedText>
             </View>
-          )) || level.targetAudience?.map((audience, index) => (
+          )) || course.targetAudience?.map((audience, index) => (
             <View key={index} style={styles.audienceItem}>
               <MaterialIcons name="person" size={16} color={colors.primary} />
               <ThemedText style={[styles.audienceText, { color: colors.text }]}>
@@ -115,14 +121,14 @@ export function LevelCard({
           Contenus :
         </ThemedText>
         <View style={styles.contentList}>
-          {(level as LevelContent).contentTypes?.slice(0, 3).map((content, index) => (
+          {(course as CourseContent).contentTypes?.slice(0, 3).map((content, index) => (
             <View key={index} style={styles.contentItem}>
               <MaterialIcons name="book" size={16} color={colors.primary} />
               <ThemedText style={[styles.contentText, { color: colors.text }]}>
                 {content}
               </ThemedText>
             </View>
-          )) || level.contentTypes?.slice(0, 3).map((content, index) => (
+          )) || course.contentTypes?.slice(0, 3).map((content, index) => (
             <View key={index} style={styles.contentItem}>
               <MaterialIcons name="book" size={16} color={colors.primary} />
               <ThemedText style={[styles.contentText, { color: colors.text }]}>
@@ -130,9 +136,9 @@ export function LevelCard({
               </ThemedText>
             </View>
           ))}
-          {((level as LevelContent).contentTypes?.length || level.contentTypes?.length || 0) > 3 && (
+          {((course as CourseContent).contentTypes?.length || course.contentTypes?.length || 0) > 3 && (
             <ThemedText style={[styles.moreContent, { color: colors.primary }]}>
-              +{((level as LevelContent).contentTypes?.length || level.contentTypes?.length || 0) - 3} autres contenus
+              +{((course as CourseContent).contentTypes?.length || course.contentTypes?.length || 0) - 3} autres contenus
             </ThemedText>
           )}
         </View>
@@ -147,14 +153,14 @@ export function LevelCard({
             </ThemedText>
           </View>
           <View style={[styles.progressBar, { backgroundColor: colors.border }]}>
-            <View 
+            <View
               style={[
-                styles.progressFill, 
-                { 
-                  backgroundColor: level.color,
+                styles.progressFill,
+                {
+                  backgroundColor: course.color,
                   width: `${progress.overallProgress}%`
                 }
-              ]} 
+              ]}
             />
           </View>
           <View style={styles.progressDetails}>
@@ -229,7 +235,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 2,
   },
-  levelNumber: {
+  courseNumber: {
     fontSize: 14,
     fontWeight: '500',
   },

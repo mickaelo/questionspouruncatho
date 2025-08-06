@@ -4,6 +4,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Colors } from '../constants/Colors';
 import { useColorScheme } from '../hooks/useColorScheme';
 import { Question } from '../types/quiz';
+import { CrosswordClues } from './CrosswordClues';
+import { CrosswordGrid } from './CrosswordGrid';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 import { IconSymbol } from './ui/IconSymbol';
@@ -31,6 +33,8 @@ export function QuestionCard({
   const [showExplanationPopup, setShowExplanationPopup] = useState(false);
   const [showSkipPopup, setShowSkipPopup] = useState(false);
   const [skipped, setSkipped] = useState(false);
+  const [foundWords, setFoundWords] = useState<string[]>([]);
+  const [crosswordGrid, setCrosswordGrid] = useState<{ [key: string]: any }>({});
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
   const insets = useSafeAreaInsets();
@@ -98,14 +102,49 @@ export function QuestionCard({
           return [];
         }
       case 'association':
-        return question.associationPairs?.map(pair => `${pair.leftItem} → ${pair.rightItem}`) || [];
+        return question.associationPairs?.filter(pair => pair.isCorrect).map(pair => `${pair.leftItem} - ${pair.rightItem}`) || [];
       case 'sentence-reorder':
-        if (question.correctOrder && question.sentences) {
-          return question.correctOrder.map((index: number) => question.sentences?.[index] || '').filter(Boolean);
-        }
-        return question.sentences || [];
+        return question.sentences?.map((_, index) => question.sentences?.[index] || '').filter(Boolean) || [];
+      case 'crossword':
+        return question.crosswordData?.words?.map(word => word.word) || [];
       default:
         return [];
+    }
+  };
+
+  // Fonction pour gérer les mots trouvés dans les mots fléchés
+  const handleWordFound = (wordId: string, word: string) => {
+    if (!foundWords.includes(wordId)) {
+      const newFoundWords = [...foundWords, wordId];
+      setFoundWords(newFoundWords);
+      
+      // Vérifier si tous les mots sont trouvés
+      if (question.crosswordData?.words && newFoundWords.length === question.crosswordData.words.length) {
+        handleCrosswordComplete();
+      }
+    }
+  };
+
+  // Fonction pour gérer la completion des mots fléchés
+  const handleCrosswordComplete = () => {
+    setAnswered(true);
+    setShowExplanationPopup(true);
+    
+    setTimeout(() => {
+      const isCorrect = foundWords.length === (question.crosswordData?.words?.length || 0);
+      onAnswer(foundWords.map((_, index) => index), isCorrect);
+    }, 2000);
+  };
+
+  // Fonction pour gérer les changements de cellules dans les mots fléchés
+  const handleCellChange = (row: number, col: number, letter: string) => {
+    if (!question.crosswordData?.grid) return;
+    
+    const cellKey = `${row},${col}`;
+    const newGrid = { ...question.crosswordData.grid };
+    if (newGrid[cellKey]) {
+      newGrid[cellKey].letter = letter;
+      setCrosswordGrid(newGrid);
     }
   };
 
@@ -142,7 +181,7 @@ export function QuestionCard({
               onPress={handleAssociationSubmit}
             >
               <ThemedText style={[styles.validationButtonText, { color: colors.background }]}>
-                Valider les associations ({Object.keys(associationSelections).length}/{question.associationPairs?.length || 0})
+                Valider ({Object.keys(associationSelections).length}/{question.associationPairs?.length || 0})
               </ThemedText>
             </TouchableOpacity>
           );
@@ -157,7 +196,7 @@ export function QuestionCard({
             onPress={handleSentenceReorderSubmit}
           >
             <ThemedText style={[styles.validationButtonText, { color: colors.background }]}>
-              Valider l'ordre
+              Valider
             </ThemedText>
           </TouchableOpacity>
         );
@@ -233,11 +272,14 @@ export function QuestionCard({
         isCorrect = answerIndex === question.correctAnswer;
       }
 
+      setShowExplanationPopup(true);
+
       // Délai pour montrer la réponse correcte
       setTimeout(() => {
         onAnswer(answerIndex, isCorrect);
         setSelectedAnswers([]);
         setAnswered(false);
+        setShowExplanationPopup(false);
       }, 2000);
     }
   };
@@ -682,19 +724,75 @@ export function QuestionCard({
   };
 
   const renderSentenceReorderQuestion = () => {
-    if (!question.sentences || sentenceOrder.length === 0) return null;
+    if (!question.sentences || question.sentences.length === 0) {
+      return (
+        <View style={styles.errorContainer}>
+          <ThemedText style={[styles.errorText, { color: colors.error }]}>
+            Aucune phrase à réorganiser disponible.
+          </ThemedText>
+        </View>
+      );
+    }
+
+    // Initialiser l'ordre des phrases si pas encore fait
+    if (sentenceOrder.length === 0) {
+      const shuffledOrder = Array.from({ length: question.sentences.length }, (_, i) => i);
+      setSentenceOrder(shuffledOrder);
+    }
 
     return (
       <View style={styles.sentenceReorderContainer}>
-        <View style={styles.sentenceList}>
-          {sentenceOrder.map((sentenceIndex, index) => (
-            <SentenceReorderItem
-              key={`${sentenceIndex}-${index}`}
-              sentenceIndex={sentenceIndex}
-              index={index}
-              onMove={handleSentenceMove}
-            />
-          ))}
+        <ThemedText style={[styles.instructions, { color: colors.secondary }]}>
+          Utilisez les chevrons pour réorganiser les phrases dans le bon ordre
+        </ThemedText>
+        
+        {sentenceOrder.map((sentenceIndex, index) => (
+          <SentenceReorderItem
+            key={index}
+            sentenceIndex={sentenceIndex}
+            index={index}
+            onMove={handleSentenceMove}
+          />
+        ))}
+      </View>
+    );
+  };
+
+  const renderCrosswordQuestion = () => {
+    if (!question.crosswordData) {
+      return (
+        <View style={styles.errorContainer}>
+          <ThemedText style={[styles.errorText, { color: colors.error }]}>
+            Données de mots fléchés non disponibles.
+          </ThemedText>
+        </View>
+      );
+    }
+
+    const { grid, words, clues, gridSize } = question.crosswordData;
+
+    return (
+      <View style={styles.crosswordContainer}>
+        <ThemedText style={[styles.instructions, { color: colors.secondary }]}>
+          Complétez les mots fléchés en utilisant les définitions ci-dessous
+        </ThemedText>
+        
+        <CrosswordGrid
+          grid={grid}
+          gridSize={gridSize}
+          words={words}
+          clues={clues}
+          onWordFound={handleWordFound}
+          onCellChange={handleCellChange}
+          isEditable={!answered}
+        />
+        
+        <View style={styles.cluesContainer}>
+          <CrosswordClues
+            clues={clues}
+            words={words}
+            foundWords={foundWords}
+          />
         </View>
       </View>
     );
@@ -873,7 +971,8 @@ export function QuestionCard({
         {/* Rendu conditionnel selon le type de question */}
         {question.questionType === 'association' ? renderAssociationQuestion() :
           question.questionType === 'sentence-reorder' ? renderSentenceReorderQuestion() :
-            renderMultipleChoiceQuestion()}
+            question.questionType === 'crossword' ? renderCrosswordQuestion() :
+              renderMultipleChoiceQuestion()}
       </ScrollView>
 
       {/* Boutons de validation - Fixes en bas */}
@@ -1131,27 +1230,138 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   validationButtonContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 16,
-    backgroundColor: 'transparent',
-    zIndex: 1,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(0,0,0,0.1)',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    gap: 10,
   },
-  sentenceReorderInstructions: {
+  correctAnswerSection: {
+    marginBottom: 20,
+  },
+  correctAnswerTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  correctAnswerItem: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: '#f0f0f0',
+    borderRadius: 8,
+    marginBottom: 5,
+  },
+  correctAnswerText: {
+    fontSize: 14,
+  },
+  explanationSection: {
+    marginBottom: 20,
+  },
+  explanationTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  errorContainer: {
+    padding: 20,
+    borderRadius: 12,
+    backgroundColor: '#f9f9f9',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  errorText: {
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  crosswordContainer: {
+    marginTop: 20,
+  },
+  instructions: {
     fontSize: 14,
     marginBottom: 16,
     textAlign: 'center',
     fontStyle: 'italic',
   },
-  dropZoneIndicator: {
-    height: 3,
-    borderRadius: 2,
-    marginVertical: 4,
-    marginHorizontal: 8,
+  cluesContainer: {
+    marginTop: 20,
+  },
+  skipButton: {
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    alignItems: 'center',
+    ...(Platform.OS === 'web' ? {
+      boxShadow: '0 2px 3.84px rgba(0, 0, 0, 0.25)',
+    } : {
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
+      elevation: 5,
+    }),
+  },
+  skipButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  validationButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    gap: 10,
+  },
+  sentenceReorderItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    marginBottom: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+    backgroundColor: '#ffffff',
+    ...(Platform.OS === 'web' ? {
+      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    } : {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    }),
+  },
+  sentenceContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    marginRight: 12,
+  },
+  sentenceActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  chevronButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    ...(Platform.OS === 'web' ? {
+      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+    } : {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 1 },
+      shadowOpacity: 0.2,
+      shadowRadius: 2,
+      elevation: 2,
+    }),
+  },
+  chevronButtonDisabled: {
+    opacity: 0.3,
   },
   popupOverlay: {
     position: 'absolute',
@@ -1224,103 +1434,5 @@ const styles = StyleSheet.create({
   popupCloseButtonText: {
     fontSize: 16,
     fontWeight: '600',
-  },
-  sentenceReorderItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    marginBottom: 8,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    backgroundColor: '#ffffff',
-    ...(Platform.OS === 'web' ? {
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    } : {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.1,
-      shadowRadius: 4,
-      elevation: 2,
-    }),
-  },
-  sentenceContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-    marginRight: 12,
-  },
-  sentenceActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  chevronButton: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
-    ...(Platform.OS === 'web' ? {
-      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
-    } : {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 1 },
-      shadowOpacity: 0.2,
-      shadowRadius: 2,
-      elevation: 2,
-    }),
-  },
-  chevronButtonDisabled: {
-    opacity: 0.3,
-  },
-  skipButton: {
-    paddingVertical: 16,
-    paddingHorizontal: 20,
-    borderRadius: 12,
-    alignItems: 'center',
-    ...(Platform.OS === 'web' ? {
-      boxShadow: '0 2px 3.84px rgba(0, 0, 0, 0.25)',
-    } : {
-      shadowColor: '#000',
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 3.84,
-      elevation: 5,
-    }),
-  },
-  skipButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  validationButtonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    gap: 10,
-  },
-  correctAnswerSection: {
-    marginBottom: 15,
-  },
-  correctAnswerTitle: {
-    fontSize: 16,
-    marginBottom: 8,
-  },
-  correctAnswerItem: {
-    marginBottom: 4,
-  },
-  correctAnswerText: {
-    fontSize: 14,
-  },
-  explanationSection: {
-    marginBottom: 15,
-  },
-  explanationTitle: {
-    fontSize: 16,
-    marginBottom: 8,
   },
 }); 

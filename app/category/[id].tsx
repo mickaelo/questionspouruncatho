@@ -4,7 +4,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from '@/constants/Colors';
-import { categoryIcons, categoryNames, getAvailableQuizzes } from '@/data/questions';
+import { categoryIcons, categoryNames } from '@/data/questions';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Quiz } from '@/types/quiz';
@@ -18,7 +18,7 @@ export default function CategoryScreen() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
 
-  const { getQuizzesByCategory, isLoading, error } = useQuizDataContext();
+  const { getQuizzesByCategory, quizzes, isLoading, error } = useQuizDataContext();
   
   // Check if user is admin
   const isAdmin = isAuthenticated && user?.type?.includes('admin');
@@ -64,6 +64,17 @@ export default function CategoryScreen() {
       'prieres': 'Apprenez les prières traditionnelles et la spiritualité catholique.'
     };
     return descriptions[categoryId] || 'Explorez cette catégorie de la théologie catholique.';
+  };
+
+  // Obtenir les quiz recommandés depuis le contexte
+  const getRecommendedQuizzes = () => {
+    const availableQuizzes = isAdmin 
+      ? quizzes 
+      : quizzes.filter(quiz => quiz.level <= userLevel);
+    
+    return availableQuizzes
+      .filter(quiz => quiz.category !== id)
+      .slice(0, 2);
   };
 
   return (
@@ -123,34 +134,31 @@ export default function CategoryScreen() {
             Quiz recommandés
           </ThemedText>
           
-          {getAvailableQuizzes(userLevel, isAdmin)
-            .filter(quiz => quiz.category !== id)
-            .slice(0, 2)
-            .map((quiz) => (
-              <TouchableOpacity
-                key={quiz.id}
-                style={[styles.recommendationCard, { backgroundColor: colors.background, borderColor: colors.border }]}
-                onPress={() => handleQuizPress(quiz)}
-              >
-                <View style={styles.recommendationContent}>
-                  <ThemedText type="subtitle" style={styles.recommendationTitle}>
-                    {quiz.title}
+          {getRecommendedQuizzes().map((quiz) => (
+            <TouchableOpacity
+              key={quiz.id}
+              style={[styles.recommendationCard, { backgroundColor: colors.background, borderColor: colors.border }]}
+              onPress={() => handleQuizPress(quiz)}
+            >
+              <View style={styles.recommendationContent}>
+                <ThemedText type="subtitle" style={styles.recommendationTitle}>
+                  {quiz.title}
+                </ThemedText>
+                <ThemedText style={styles.recommendationDescription}>
+                  {quiz.description}
+                </ThemedText>
+                <View style={styles.recommendationMeta}>
+                  <ThemedText style={styles.recommendationMetaText}>
+                    {categoryNames[quiz.category]}
                   </ThemedText>
-                  <ThemedText style={styles.recommendationDescription}>
-                    {quiz.description}
+                  <ThemedText style={styles.recommendationMetaText}>
+                    • {quiz.questions.length} questions
                   </ThemedText>
-                  <View style={styles.recommendationMeta}>
-                    <ThemedText style={styles.recommendationMetaText}>
-                      {categoryNames[quiz.category]}
-                    </ThemedText>
-                    <ThemedText style={styles.recommendationMetaText}>
-                      • {quiz.questions.length} questions
-                    </ThemedText>
-                  </View>
                 </View>
-                <IconSymbol name="chevron.right" size={20} color={colors.tint} />
-              </TouchableOpacity>
-            ))}
+              </View>
+              <IconSymbol name="chevron.right" size={20} color={colors.tint} />
+            </TouchableOpacity>
+          ))}
         </View>
       </ThemedView>
     </ScrollView>
