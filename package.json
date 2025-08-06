@@ -9,7 +9,7 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "populate-db": "tsx scripts/populate-database.ts populate",
+    "populate-db": "tsx scripts/populate-database.ts",
     "clear-db": "tsx scripts/populate-database.ts clear",
     "db-stats": "tsx scripts/populate-database.ts stats",
     "saint-thomas-populate": "tsx scripts/populate-saint-thomas.ts populate",

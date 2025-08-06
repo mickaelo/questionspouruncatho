@@ -34,7 +34,7 @@ export default function CourseManagementScreen() {
   if (!isAdmin) {
     return (
       <ThemedView style={[styles.container, { backgroundColor: colors.background }]}>
-        <ScrollView 
+        <ScrollView
           contentContainerStyle={[
             styles.contentContainer,
             {
@@ -60,7 +60,7 @@ export default function CourseManagementScreen() {
   const handleEditCourse = (course: Course) => {
     router.push({
       pathname: '/admin/course-edit/[id]',
-      params: { id: course.id.toString() }
+      params: { id: course.id }
     });
   };
 
@@ -90,26 +90,39 @@ export default function CourseManagementScreen() {
     refreshCourses();
     refreshStatistics();
   };
+  const handleBackNavigation = () => {
+    try {
+      router.back();
+    } catch (error) {
+      console.error('❌ Erreur avec router.back():', error);
+      try {
+        router.push('/admin');
+      } catch (fallbackError) {
+        console.error('❌ Erreur avec fallback navigation:', fallbackError);
+        router.push('/');
+      }
+    }
+  };
 
   return (
     <ThemedView style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header fixe */}
       <ThemedView style={[styles.header, { backgroundColor: colors.card, borderBottomColor: colors.border }]}>
         <View style={styles.headerContent}>
-          <TouchableOpacity
+        <TouchableOpacity
             style={styles.backButton}
-            onPress={() => router.back()}
+            onPress={handleBackNavigation}
           >
-            <MaterialIcons title="arrow-back" size={24} color={colors.primary} />
+            <MaterialIcons name="arrow-back" size={24} color={colors.primary} />
             <ThemedText style={[styles.backButtonText, { color: colors.primary }]}>
               Retour
             </ThemedText>
           </TouchableOpacity>
-          
+
           <ThemedText type="title" style={[styles.title, { color: colors.text }]}>
             Gestion des Parcours
           </ThemedText>
-          
+
           <View style={styles.headerActions}>
             <TouchableOpacity
               style={[styles.headerButton, { backgroundColor: colors.primary }]}
@@ -117,7 +130,7 @@ export default function CourseManagementScreen() {
             >
               <MaterialIcons title="refresh" size={20} color={colors.background} />
             </TouchableOpacity>
-            
+
             <TouchableOpacity
               style={[styles.headerButton, { backgroundColor: colors.success }]}
               onPress={handleAddCourse}
@@ -128,7 +141,7 @@ export default function CourseManagementScreen() {
         </View>
       </ThemedView>
 
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[
           styles.contentContainer,
@@ -164,7 +177,7 @@ export default function CourseManagementScreen() {
                 Statistiques des Parcours
               </ThemedText>
             </View>
-            
+
             <View style={styles.statsGrid}>
               <View style={styles.statItem}>
                 <MaterialIcons title="layers" size={24} color={colors.primary} />
@@ -186,7 +199,7 @@ export default function CourseManagementScreen() {
                 Niveaux de Formation
               </ThemedText>
             </View>
-            
+
             {isLoading ? (
               <View style={styles.loadingContainer}>
                 <MaterialIcons title="hourglass-empty" size={48} color={colors.secondary} />
@@ -220,7 +233,7 @@ export default function CourseManagementScreen() {
                         </View>
                       </View>
                     </View>
-                    
+
                     <View style={styles.courseActions}>
                       <TouchableOpacity
                         style={[styles.actionButton, { backgroundColor: colors.primary }]}
@@ -228,7 +241,7 @@ export default function CourseManagementScreen() {
                       >
                         <MaterialIcons title="edit" size={16} color={colors.background} />
                       </TouchableOpacity>
-                      
+
                       <TouchableOpacity
                         style={[styles.actionButton, { backgroundColor: colors.error }]}
                         onPress={() => handleDeleteCourse(course)}

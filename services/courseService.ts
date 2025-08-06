@@ -5,7 +5,6 @@ import {
   doc,
   getDoc,
   getDocs,
-  orderBy,
   query,
   updateDoc
 } from 'firebase/firestore';
@@ -24,6 +23,7 @@ export interface CourseService {
   createCourse(course: Omit<Course, 'id'>): Promise<string>;
   updateCourse(id: string, course: Partial<Course>): Promise<void>;
   deleteCourse(id: string): Promise<void>;
+  deleteAllCourses(): Promise<void>;
   
   // Statistics
   getCourseStatistics(): Promise<{
@@ -40,7 +40,7 @@ class CourseServiceImpl implements CourseService {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
-        return { id: docSnap.id, ...docSnap.data() } as any;
+        return { id: docSnap.id, ...docSnap.data() } as Course;
       }
 
       return null;
@@ -52,16 +52,21 @@ class CourseServiceImpl implements CourseService {
 
   async getAllCourses(): Promise<Course[]> {
     try {
-      const q = query(collection(db, COURSES_COLLECTION), orderBy('id'));
+      const q = query(collection(db, COURSES_COLLECTION));
       const querySnapshot = await getDocs(q);
+      console.log('Documents trouvés:', querySnapshot.docs.length);
+      
+      const courses = querySnapshot.docs.map((doc, index) => {
+        const data = doc.data();
+        console.log('Document data:', data);
+        return {
+          id: index + 1, // Utiliser un ID numérique séquentiel
+          ...data
+        } as unknown as Course;
+      });
 
-      const courses = querySnapshot.docs.map(doc => ({
-        id: parseInt(doc.id),
-        ...doc.data()
-      })) as Course[];
-
-      // Trier les courses par ID côté client
-      return courses.sort((a, b) => a.id - b.id);
+      console.log('Cours mappés:', courses);
+      return courses;
     } catch (error) {
       console.error('Error getting all courses:', error);
       throw new Error('Failed to get courses');
@@ -98,6 +103,19 @@ class CourseServiceImpl implements CourseService {
     }
   }
 
+  async deleteAllCourses(): Promise<void> {
+    try {
+      const courses = await this.getAllCourses();
+      const deletePromises = courses.map(course => 
+        deleteDoc(doc(db, COURSES_COLLECTION, course.id.toString()))
+      );
+      await Promise.all(deletePromises);
+    } catch (error) {
+      console.error('Error deleting all courses:', error);
+      throw new Error('Failed to delete all courses');
+    }
+  }
+
   async getCourseStatistics(): Promise<{
     totalCourses: number;
     coursesByDifficulty: Record<number, number>;
@@ -121,6 +139,7 @@ class CourseServiceImpl implements CourseService {
       throw new Error('Failed to get course statistics');
     }
   }
+
 }
 
 export const courseService = new CourseServiceImpl(); 

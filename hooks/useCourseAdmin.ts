@@ -63,7 +63,7 @@ export const useCourseAdmin = (): CourseAdminState & CourseAdminActions => {
 
         const dataPromise = Promise.all([
           courseService.getAllCourses(),
-          courseService.getCourseStatistics()
+          // courseService.getCourseStatistics()
         ]);
 
         const [courses, statistics] = await Promise.race([dataPromise, timeoutPromise]) as [any, any];
@@ -71,7 +71,7 @@ export const useCourseAdmin = (): CourseAdminState & CourseAdminActions => {
         setState(prev => ({
           ...prev,
           courses,
-          statistics,
+          statistics: { totalCourses: courses.length, coursesByDifficulty: {} },
           isLoading: false
         }));
       } catch (error) {
@@ -143,7 +143,8 @@ export const useCourseAdmin = (): CourseAdminState & CourseAdminActions => {
     setError(null);
     
     try {
-      const statistics = await courseService.getCourseStatistics();
+      const courses = await courseService.getAllCourses();
+      const statistics = { totalCourses: courses.length, coursesByDifficulty: {} };
       setState(prev => ({ ...prev, statistics, isLoading: false }));
     } catch (error) {
       setError(error instanceof Error ? error.message : 'Failed to refresh statistics');

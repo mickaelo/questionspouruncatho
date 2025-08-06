@@ -255,7 +255,7 @@ export interface FidelityScore {
 
 // Nouveaux types pour le système de niveaux
 export interface Course {
-  id: number;
+  id: string;
   title: string;
   color: string;
   description: string;
