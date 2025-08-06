@@ -5,10 +5,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useQuizAdmin } from '@/hooks/useQuizAdmin';
 import { Question } from '@/types/quiz';
+import { showAlert } from '@/utils/alert';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Alert, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function QuestionEditScreen() {
@@ -34,6 +35,7 @@ export default function QuestionEditScreen() {
   const [hasChanges, setHasChanges] = useState(false);
   const [newOption, setNewOption] = useState('');
   const [newSentence, setNewSentence] = useState('');
+  const [newAssociationPair, setNewAssociationPair] = useState({ leftItem: '', rightItem: '' });
 
   // Vérifier si l'utilisateur est admin
   const isAdmin = user?.type?.includes('admin');
@@ -42,7 +44,7 @@ export default function QuestionEditScreen() {
 
   const handleBackNavigation = () => {
     if (hasChanges) {
-      Alert.alert(
+      showAlert(
         'Changements non sauvegardés',
         'Voulez-vous vraiment quitter sans sauvegarder ?',
         [
@@ -114,18 +116,24 @@ export default function QuestionEditScreen() {
         editedQuestion.correctAnswer !== question.correctAnswer ||
         editedQuestion.author !== question.author ||
         editedQuestion.reference !== question.reference ||
-        JSON.stringify(editedQuestion.options) !== JSON.stringify(question.options);
+        editedQuestion.questionType !== question.questionType ||
+        JSON.stringify(editedQuestion.options) !== JSON.stringify(question.options) ||
+        JSON.stringify(editedQuestion.sentences) !== JSON.stringify(question.sentences) ||
+        JSON.stringify(editedQuestion.associationPairs) !== JSON.stringify(question.associationPairs);
 
-      setHasChanges(hasQuestionChanges);
+      setHasChanges(!!hasQuestionChanges);
     } else if (isNewQuestion) {
       const hasNewQuestionChanges = 
         editedQuestion.question !== '' ||
         editedQuestion.category !== '' ||
         editedQuestion.explanation !== '' ||
         editedQuestion.author !== '' ||
-        editedQuestion.reference !== '';
+        editedQuestion.reference !== '' ||
+        (editedQuestion.options && editedQuestion.options.length > 0) ||
+        (editedQuestion.sentences && editedQuestion.sentences.length > 0) ||
+        (editedQuestion.associationPairs && editedQuestion.associationPairs.length > 0);
 
-      setHasChanges(hasNewQuestionChanges);
+      setHasChanges(!!hasNewQuestionChanges);
     }
   }, [question, editedQuestion, isNewQuestion]);
 
@@ -159,17 +167,17 @@ export default function QuestionEditScreen() {
         console.log('🔄 Création de la question:', questionData);
         const questionId = await createQuestion(questionData);
         console.log('✅ Question créée avec succès, ID:', questionId);
-        Alert.alert('Succès', 'Question créée avec succès');
+        showAlert('Succès', 'Question créée avec succès');
       } else if (question) {
         console.log('🔄 Mise à jour de la question:', question.id, editedQuestion);
         await updateQuestion(question.id, editedQuestion);
         console.log('✅ Question mise à jour avec succès');
-        Alert.alert('Succès', 'Question mise à jour avec succès');
+        showAlert('Succès', 'Question mise à jour avec succès');
       }
       router.back();
     } catch (error) {
       console.error('❌ Erreur lors de la sauvegarde:', error);
-      Alert.alert('Erreur', 'Impossible de sauvegarder la question. Vérifiez votre connexion Firebase.');
+      showAlert('Erreur', 'Impossible de sauvegarder la question. Vérifiez votre connexion Firebase.');
     } finally {
       setIsSaving(false);
     }
@@ -249,6 +257,38 @@ export default function QuestionEditScreen() {
       sentences: updatedSentences,
       correctOrder: updatedCorrectOrder
     });
+  };
+
+  // Fonctions pour gérer les paires d'association
+  const handleAddAssociationPair = () => {
+    if (newAssociationPair.leftItem.trim() && newAssociationPair.rightItem.trim()) {
+      const newPair = {
+        id: `pair_${Date.now()}`,
+        leftItem: newAssociationPair.leftItem.trim(),
+        rightItem: newAssociationPair.rightItem.trim(),
+        isCorrect: true
+      };
+      
+      const updatedPairs = [...(editedQuestion.associationPairs || []), newPair];
+      setEditedQuestion({
+        ...editedQuestion,
+        associationPairs: updatedPairs
+      });
+      
+      setNewAssociationPair({ leftItem: '', rightItem: '' });
+    }
+  };
+
+  const handleRemoveAssociationPair = (index: number) => {
+    const updatedPairs = [...(editedQuestion.associationPairs || [])];
+    updatedPairs.splice(index, 1);
+    setEditedQuestion({ ...editedQuestion, associationPairs: updatedPairs });
+  };
+
+  const handleUpdateAssociationPair = (index: number, field: 'leftItem' | 'rightItem', value: string) => {
+    const updatedPairs = [...(editedQuestion.associationPairs || [])];
+    updatedPairs[index] = { ...updatedPairs[index], [field]: value };
+    setEditedQuestion({ ...editedQuestion, associationPairs: updatedPairs });
   };
 
   if (!isAdmin) {
@@ -453,6 +493,33 @@ export default function QuestionEditScreen() {
                   />
                 </View>
               </View>
+
+              <View style={styles.formGroup}>
+                <ThemedText style={[styles.label, { color: colors.text }]}>
+                  Type de question
+                </ThemedText>
+                <View style={styles.questionTypeButtons}>
+                  {['multiple-choice', 'association', 'sentence-reorder'].map((type) => (
+                    <TouchableOpacity
+                      key={type}
+                      style={[
+                        styles.questionTypeButton,
+                        { 
+                          backgroundColor: editedQuestion.questionType === type ? colors.primary : colors.background,
+                          borderColor: colors.border
+                        }
+                      ]}
+                      onPress={() => setEditedQuestion({ ...editedQuestion, questionType: type as any })}
+                    >
+                      <ThemedText style={[styles.questionTypeButtonText, { color: editedQuestion.questionType === type ? colors.background : colors.text }]}>
+                        {type === 'multiple-choice' ? 'Choix multiple' : 
+                         type === 'association' ? 'Association' : 
+                         'Réorganisation'}
+                      </ThemedText>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              </View>
             </View>
           </ThemedView>
 
@@ -569,6 +636,74 @@ export default function QuestionEditScreen() {
                   <TouchableOpacity
                     style={[styles.addSentenceButton, { backgroundColor: colors.primary }]}
                     onPress={handleAddSentence}
+                  >
+                    <MaterialIcons name="add" size={16} color={colors.background} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </ThemedView>
+          )}
+
+          {/* Paires d'association */}
+          {editedQuestion.questionType === 'association' && (
+            <ThemedView style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              <View style={styles.cardHeader}>
+                <MaterialIcons name="link" size={24} color={colors.primary} />
+                <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>
+                  Paires d'association
+                </ThemedText>
+              </View>
+              
+              <View style={styles.associationContainer}>
+                {(editedQuestion.associationPairs || []).map((pair, index) => (
+                  <View key={pair.id || index} style={styles.associationRow}>
+                    <View style={styles.associationPair}>
+                      <TextInput
+                        style={[styles.associationInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                        placeholder="Élément de gauche"
+                        placeholderTextColor={colors.text + '80'}
+                        value={pair.leftItem}
+                        onChangeText={(text) => handleUpdateAssociationPair(index, 'leftItem', text)}
+                      />
+                      <MaterialIcons name="arrow-forward" size={20} color={colors.primary} />
+                      <TextInput
+                        style={[styles.associationInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                        placeholder="Élément de droite"
+                        placeholderTextColor={colors.text + '80'}
+                        value={pair.rightItem}
+                        onChangeText={(text) => handleUpdateAssociationPair(index, 'rightItem', text)}
+                      />
+                    </View>
+                    <TouchableOpacity
+                      style={[styles.removeButton, { backgroundColor: colors.error }]}
+                      onPress={() => handleRemoveAssociationPair(index)}
+                    >
+                      <MaterialIcons name="delete" size={16} color={colors.background} />
+                    </TouchableOpacity>
+                  </View>
+                ))}
+                
+                <View style={styles.addAssociationRow}>
+                  <View style={styles.associationPair}>
+                    <TextInput
+                      style={[styles.associationInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                      placeholder="Nouvel élément de gauche"
+                      placeholderTextColor={colors.text + '80'}
+                      value={newAssociationPair.leftItem}
+                      onChangeText={(text) => setNewAssociationPair({ ...newAssociationPair, leftItem: text })}
+                    />
+                    <MaterialIcons name="arrow-forward" size={20} color={colors.primary} />
+                    <TextInput
+                      style={[styles.associationInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                      placeholder="Nouvel élément de droite"
+                      placeholderTextColor={colors.text + '80'}
+                      value={newAssociationPair.rightItem}
+                      onChangeText={(text) => setNewAssociationPair({ ...newAssociationPair, rightItem: text })}
+                    />
+                  </View>
+                  <TouchableOpacity
+                    style={[styles.addAssociationButton, { backgroundColor: colors.primary }]}
+                    onPress={handleAddAssociationPair}
                   >
                     <MaterialIcons name="add" size={16} color={colors.background} />
                   </TouchableOpacity>
@@ -871,5 +1006,54 @@ const styles = StyleSheet.create({
   addSentenceButton: {
     padding: 12,
     borderRadius: 8,
+  },
+  associationContainer: {
+    gap: 12,
+  },
+  associationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 12,
+  },
+  associationPair: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    gap: 8,
+  },
+  associationInput: {
+    flex: 1,
+    height: 48,
+    borderWidth: 1,
+    borderRadius: 8,
+    paddingHorizontal: 12,
+    fontSize: 16,
+  },
+  addAssociationRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    marginTop: 8,
+  },
+  addAssociationButton: {
+    padding: 12,
+    borderRadius: 8,
+  },
+  questionTypeButtons: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  questionTypeButton: {
+    flex: 1,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 6,
+    borderWidth: 1,
+    alignItems: 'center',
+  },
+  questionTypeButtonText: {
+    fontSize: 14,
+    fontWeight: '500',
   },
 }); 

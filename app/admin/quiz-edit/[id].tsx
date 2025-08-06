@@ -5,10 +5,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useQuizAdmin } from '@/hooks/useQuizAdmin';
 import { Quiz } from '@/types/quiz';
+import { showAlert } from '@/utils/alert';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Alert, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function QuizEditScreen() {
@@ -43,7 +44,7 @@ export default function QuizEditScreen() {
 
   const handleBackNavigation = () => {
     if (hasChanges) {
-      Alert.alert(
+      showAlert(
         'Changements non sauvegardés',
         'Voulez-vous vraiment quitter sans sauvegarder ?',
         [
@@ -176,10 +177,10 @@ export default function QuizEditScreen() {
       }
 
       setHasChanges(false);
-      Alert.alert('Succès', 'Quiz mis à jour avec succès');
+      showAlert('Succès', 'Quiz mis à jour avec succès');
     } catch (error) {
       console.error('Erreur lors de la sauvegarde:', error);
-      Alert.alert('Erreur', 'Impossible de sauvegarder le quiz');
+      showAlert('Erreur', 'Impossible de sauvegarder le quiz');
     } finally {
       setIsSaving(false);
     }

@@ -410,4 +410,55 @@ export class UserProgressService {
       return 0;
     }
   }
+
+  // Récupérer les tentatives de quiz d'un utilisateur
+  static async getQuizAttempts(userId: string, quizId?: string): Promise<QuizAttempt[]> {
+    try {
+      const { collection, query, where, getDocs, orderBy, limit } = await import('firebase/firestore');
+      
+      let q = query(collection(db, 'quizAttempts'), where('userId', '==', userId));
+      
+      if (quizId) {
+        q = query(q, where('quizId', '==', quizId));
+      }
+      
+      q = query(q, orderBy('completedAt', 'desc'), limit(10));
+      
+      const querySnapshot = await getDocs(q);
+      const attempts: QuizAttempt[] = [];
+      
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        attempts.push({
+          id: doc.id,
+          userId: data.userId,
+          quizId: data.quizId,
+          score: data.score,
+          totalPoints: data.totalPoints,
+          percentage: data.percentage,
+          passed: data.passed,
+          timeSpent: data.timeSpent,
+          answers: data.answers || [],
+          completedAt: data.completedAt.toDate(),
+          livesUsed: data.livesUsed || 0,
+        });
+      });
+      
+      return attempts;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des tentatives de quiz:', error);
+      return [];
+    }
+  }
+
+  // Récupérer la dernière tentative d'un quiz spécifique
+  static async getLatestQuizAttempt(userId: string, quizId: string): Promise<QuizAttempt | null> {
+    try {
+      const attempts = await this.getQuizAttempts(userId, quizId);
+      return attempts.length > 0 ? attempts[0] : null;
+    } catch (error) {
+      console.error('Erreur lors de la récupération de la dernière tentative:', error);
+      return null;
+    }
+  }
 } 

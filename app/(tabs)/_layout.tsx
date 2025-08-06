@@ -1,6 +1,6 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { Tabs, router } from 'expo-router';
-import React, { useEffect } from 'react';
+import { Tabs } from 'expo-router';
+import React from 'react';
 import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -18,18 +18,18 @@ export default function TabLayout() {
   const insets = useSafeAreaInsets();
   const { isAuthenticated, isLoading } = useAuth();
 
-  // Protection d'authentification pour Android
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated && Platform.OS === 'android') {
-      console.log('📱 Android: Redirection vers la connexion depuis les tabs');
-      router.replace('/auth/login');
-    }
-  }, [isAuthenticated, isLoading]);
+  // // Protection d'authentification pour Android
+  // useEffect(() => {
+  //   if (!isLoading && !isAuthenticated && Platform.OS === 'android') {
+  //     console.log('📱 Android: Redirection vers la connexion depuis les tabs');
+  //     router.replace('/auth/login');
+  //   }
+  // }, [isAuthenticated, isLoading]);
 
-  // Si pas encore chargé ou pas connecté sur Android, ne pas afficher les tabs
-  if (Platform.OS === 'android' && (isLoading || !isAuthenticated)) {
-    return null;
-  }
+  // // Si pas encore chargé ou pas connecté sur Android, ne pas afficher les tabs
+  // if (Platform.OS === 'android' && (isLoading || !isAuthenticated)) {
+  //   return null;
+  // }
 
   return (
     <>

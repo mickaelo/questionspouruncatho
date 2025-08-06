@@ -5,10 +5,11 @@ import { Colors } from '@/constants/Colors';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useQuizAdmin } from '@/hooks/useQuizAdmin';
+import { showAlert, showConfirmAlert } from '@/utils/alert';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import React from 'react';
-import { Alert, Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function AdminScreen() {
@@ -186,10 +187,9 @@ export default function AdminScreen() {
             <TouchableOpacity
               style={[styles.actionCard, { backgroundColor: colors.card, borderColor: colors.border }]}
               onPress={() => {
-                Alert.alert(
+                showAlert(
                   'Fonctionnalité à venir',
-                  'Les statistiques détaillées seront bientôt disponibles.',
-                  [{ text: 'OK' }]
+                  'Les statistiques détaillées seront bientôt disponibles.'
                 );
               }}
             >
@@ -207,10 +207,9 @@ export default function AdminScreen() {
             <TouchableOpacity
               style={[styles.actionCard, { backgroundColor: colors.card, borderColor: colors.border }]}
               onPress={() => {
-                Alert.alert(
+                showAlert(
                   'Fonctionnalité à venir',
-                  'La gestion des utilisateurs sera bientôt disponible.',
-                  [{ text: 'OK' }]
+                  'La gestion des utilisateurs sera bientôt disponible.'
                 );
               }}
             >
@@ -239,13 +238,13 @@ export default function AdminScreen() {
               <TouchableOpacity
                 style={[styles.dangerButton, { backgroundColor: colors.error }]}
                 onPress={() => {
-                  Alert.alert(
+                  showConfirmAlert(
                     'Supprimer toutes les questions',
                     'Êtes-vous sûr de vouloir supprimer toutes les questions ? Cette action est irréversible.',
-                    [
-                      { text: 'Annuler', style: 'cancel' },
-                      { text: 'Supprimer', style: 'destructive', onPress: deleteAllQuestions }
-                    ]
+                    async () => {
+                      // Logique de suppression
+                      console.log('Suppression de toutes les questions');
+                    }
                   );
                 }}
               >
@@ -258,13 +257,13 @@ export default function AdminScreen() {
               <TouchableOpacity
                 style={[styles.dangerButton, { backgroundColor: colors.error }]}
                 onPress={() => {
-                  Alert.alert(
+                  showConfirmAlert(
                     'Supprimer tous les quiz',
                     'Êtes-vous sûr de vouloir supprimer tous les quiz ? Cette action est irréversible.',
-                    [
-                      { text: 'Annuler', style: 'cancel' },
-                      { text: 'Supprimer', style: 'destructive', onPress: deleteAllQuizzes }
-                    ]
+                    async () => {
+                      // Logique de suppression
+                      console.log('Suppression de tous les quiz');
+                    }
                   );
                 }}
               >

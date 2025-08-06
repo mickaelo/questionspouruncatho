@@ -6,10 +6,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useQuizAdmin } from '@/hooks/useQuizAdmin';
 import { Question } from '@/types/quiz';
+import { showAlert, showConfirmAlert } from '@/utils/alert';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Alert, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function QuestionManagementScreen() {
@@ -68,27 +69,20 @@ export default function QuestionManagementScreen() {
   });
 
   const handleDeleteQuestion = (question: Question) => {
-    Alert.alert(
+    showConfirmAlert(
       'Supprimer la question',
       `Êtes-vous sûr de vouloir supprimer cette question ?\n\n"${question.question.substring(0, 50)}${question.question.length > 50 ? '...' : ''}"`,
-      [
-        { text: 'Annuler', style: 'cancel' },
-        { 
-          text: 'Supprimer', 
-          style: 'destructive',
-          onPress: async () => {
-            showLoading({ duration: 1000 });
-            try {
-              await deleteQuestion(question.id);
-              Alert.alert('Succès', 'Question supprimée avec succès');
-            } catch (error) {
-              Alert.alert('Erreur', 'Impossible de supprimer la question');
-            } finally {
-              hideLoading();
-            }
-          }
+      async () => {
+        showLoading({ duration: 2000 });
+        try {
+          await deleteQuestion(question.id);
+          showAlert('Succès', 'Question supprimée avec succès');
+        } catch (error) {
+          showAlert('Erreur', 'Impossible de supprimer la question');
+        } finally {
+          hideLoading();
         }
-      ]
+      }
     );
   };
 
@@ -341,7 +335,7 @@ export default function QuestionManagementScreen() {
                     </ThemedText>
                   </View>
                   <View style={styles.metaItem}>
-                    <MaterialIcons name="points" size={14} color={colors.success} />
+                    <MaterialIcons name="star" size={14} color={colors.success} />
                     <ThemedText style={[styles.metaText, { color: colors.secondary }]}>
                       {question.points} pts
                     </ThemedText>

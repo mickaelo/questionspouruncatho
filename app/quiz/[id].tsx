@@ -3,7 +3,6 @@ import { QuestionCard } from '@/components/QuestionCard';
 import { QuizCompletionScreen } from '@/components/QuizCompletionScreen';
 import { useQuizDataContext } from '@/components/QuizDataProvider';
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Colors } from '@/constants/Colors';
 import { useLoadingBarContext } from '@/contexts/LoadingBarContext';
@@ -11,9 +10,11 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { useLives } from '@/hooks/useLives';
 import { useUserProgress } from '@/hooks/useUserProgress';
 import { Answer, Quiz } from '@/types/quiz';
+import { showAlert, showConfirmAlert } from '@/utils/alert';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function QuizScreen() {
   // Tous les hooks doivent être appelés en premier, avant toute logique conditionnelle
@@ -47,8 +48,6 @@ export default function QuizScreen() {
 
   // État pour le quiz
   const [quiz, setQuiz] = useState<Quiz | null>(null);
-
-  console.log(quiz);
 
   // Gérer l'affichage du loading bar global
   useEffect(() => {
@@ -98,7 +97,7 @@ export default function QuizScreen() {
   // Gérer le cas où le quiz n'est pas encore chargé
   if (!quiz) {
     return (
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <ThemedText style={[styles.errorText, { color: colors.error }]}>
           Quiz non trouvé
         </ThemedText>
@@ -112,13 +111,13 @@ export default function QuizScreen() {
             Retour à l'accueil
           </ThemedText>
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
 
   if (error) {
     return (
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <ThemedText style={[styles.errorText, { color: colors.error }]}>
           Erreur: {error}
         </ThemedText>
@@ -133,7 +132,7 @@ export default function QuizScreen() {
             Réessayer
           </ThemedText>
         </TouchableOpacity>
-      </View>
+      </SafeAreaView>
     );
   }
 
@@ -215,32 +214,13 @@ export default function QuizScreen() {
       );
     } catch (error) {
       console.error('Erreur lors de la sauvegarde de la progression:', error);
-      Alert.alert(
+      showAlert(
         'Erreur de sauvegarde',
-        'Votre progression n\'a pas pu être sauvegardée. Veuillez réessayer.',
-        [{ text: 'OK' }]
+        'Votre progression n\'a pas pu être sauvegardée. Veuillez réessayer.'
       );
     }
 
     setShowCompletionScreen(true);
-  };
-
-  const handleExit = () => {
-    Alert.alert(
-      'Quitter le quiz ?',
-      'Votre progression sera perdue.',
-      [
-        {
-          text: 'Annuler',
-          style: 'cancel'
-        },
-        {
-          text: 'Quitter',
-          style: 'destructive',
-          onPress: () => router.back()
-        }
-      ]
-    );
   };
 
   const handleLivesDepleted = () => {
@@ -263,45 +243,62 @@ export default function QuizScreen() {
   };
 
   const handleGoHome = () => {
-    setShowCompletionScreen(false);
-    router.replace('/');
+    router.push('/');
   };
 
   const handleRetry = () => {
-    setShowCompletionScreen(false);
+    // Réinitialiser le quiz
     setCurrentQuestionIndex(0);
-    setAnswers([]);
     setScore(0);
-    setQuizCompleted(false);
-    setStartTime(new Date());
-    setTimeRemaining(quiz.timeLimit ? quiz.timeLimit * 60 : undefined);
+    setShowCompletionScreen(false);
+    setShowFailureAnimation(false);
+    setCompletionData({
+      score: 0,
+      totalPoints: 0,
+      percentage: 0,
+      passed: false
+    });
+    // Les vies seront réinitialisées automatiquement par le hook useLives
+  };
+
+  const handleHomePress = () => {
+    showConfirmAlert(
+      'Quitter le quiz',
+      'Êtes-vous sûr de vouloir quitter le quiz ? Votre progression sera perdue.',
+      handleGoHome
+    );
   };
 
   if (!currentQuestion) {
     return (
-      <ThemedView style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <ThemedText>Quiz non trouvé</ThemedText>
-      </ThemedView>
+      </SafeAreaView>
     );
   }
 
   return (
-    <ThemedView style={styles.container}>
-      {/* Header avec navigation et timer */}
-      <View style={styles.header}>
-        <TouchableOpacity onPress={handleExit} style={styles.exitButton}>
-          <IconSymbol name="xmark" size={24} color={colors.text} />
+    <SafeAreaView style={styles.container}>
+      {/* Barre de progression et score en haut */}
+      <View style={[styles.topBar, { borderBottomColor: colors.border }]}>
+        {/* Bouton retour accueil */}
+        <TouchableOpacity
+          style={[styles.homeButton, { backgroundColor: colors.border }]}
+          onPress={handleHomePress}
+        >
+          <IconSymbol name="house.fill" size={16} color={colors.text} />
         </TouchableOpacity>
 
-        {/* Titre du quiz */}
-        <View style={styles.titleContainer}>
-          <ThemedText style={[styles.quizTitle, { color: colors.text }]}>
+        {/* Nom du quiz */}
+        <View style={styles.quizTitleContainer}>
+          <ThemedText style={[styles.quizTitle, { color: colors.text }]} numberOfLines={1}>
             {quiz.title}
           </ThemedText>
         </View>
 
+        {/* Barre de progression */}
         <View style={styles.progressContainer}>
-          <View style={styles.progressBar}>
+          <View style={[styles.progressBar, { backgroundColor: colors.border }]}>
             <View
               style={[
                 styles.progressFill,
@@ -312,28 +309,17 @@ export default function QuizScreen() {
               ]}
             />
           </View>
-          <ThemedText style={styles.progressText}>
+          <ThemedText style={[styles.progressText, { color: colors.text }]}>
             {currentQuestionIndex + 1} / {quiz.questions.length}
           </ThemedText>
         </View>
 
-        <View style={styles.headerRight}>
-          {/* Affichage des vies */}
-          <View style={styles.livesContainer}>
-            <IconSymbol name="heart.fill" size={16} color={colors.error} />
-            <ThemedText style={[styles.livesText, { color: colors.text }]}>
-              {lives}
-            </ThemedText>
-          </View>
-
-          {timeRemaining !== undefined && (
-            <View style={styles.timerContainer}>
-              <IconSymbol name="clock" size={20} color={colors.tint} />
-              <ThemedText style={[styles.timer, { color: colors.tint }]}>
-                {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
-              </ThemedText>
-            </View>
-          )}
+        {/* Score actuel */}
+        <View style={[styles.scoreContainer, { backgroundColor: colors.border }]}>
+          <IconSymbol name="star.fill" size={16} color={colors.tint} />
+          <ThemedText style={[styles.scoreText, { color: colors.text }]}>
+            {score} points
+          </ThemedText>
         </View>
       </View>
 
@@ -345,13 +331,6 @@ export default function QuizScreen() {
         totalQuestions={quiz.questions.length}
         timeRemaining={timeRemaining}
       />
-
-      {/* Score actuel */}
-      <View style={styles.scoreContainer}>
-        <ThemedText style={styles.scoreText}>
-          Score actuel : {score} points
-        </ThemedText>
-      </View>
 
       {/* Animation d'échec */}
       <FailureAnimation
@@ -367,11 +346,12 @@ export default function QuizScreen() {
         percentage={completionData.percentage}
         passed={completionData.passed}
         quizTitle={quiz.title}
+        quizId={quiz.id}
         onViewDetails={handleViewDetails}
         onGoHome={handleGoHome}
         onRetry={handleRetry}
       />
-    </ThemedView>
+    </SafeAreaView>
   );
 }
 
@@ -379,82 +359,61 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
+  topBar: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
-    paddingTop: 50,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0,0,0,0.1)',
-  },
-  exitButton: {
-    padding: 8,
-  },
-  titleContainer: {
-    flex: 1,
     alignItems: 'center',
-    marginHorizontal: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+  },
+  homeButton: {
+    padding: 8,
+    borderRadius: 8,
+    marginRight: 12,
+  },
+  quizTitleContainer: {
+    flex: 1,
+    marginRight: 12,
   },
   quizTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '600',
   },
   progressContainer: {
     flex: 1,
-    marginHorizontal: 16,
+    flexDirection: 'row',
     alignItems: 'center',
+    marginRight: 12,
   },
   progressBar: {
-    width: '100%',
-    height: 4,
-    backgroundColor: 'rgba(0,0,0,0.1)',
-    borderRadius: 2,
-    marginBottom: 4,
+    flex: 1,
+    height: 6,
+    borderRadius: 3,
+    overflow: 'hidden',
+    marginRight: 8,
   },
   progressFill: {
     height: '100%',
-    borderRadius: 2,
+    borderRadius: 3,
   },
   progressText: {
     fontSize: 12,
-    opacity: 0.7,
+    fontWeight: '500',
+    minWidth: 40,
+    textAlign: 'center',
   },
-  headerRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 16,
-  },
-  livesContainer: {
+  scoreContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
-    backgroundColor: 'rgba(255, 59, 48, 0.1)',
-  },
-  livesText: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  timerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
-  timer: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  scoreContainer: {
-    padding: 16,
-    alignItems: 'center',
   },
   scoreText: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 12,
+    fontWeight: '500',
   },
   loadingText: {
     fontSize: 18,

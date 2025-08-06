@@ -6,10 +6,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useQuizAdmin } from '@/hooks/useQuizAdmin';
 import { Quiz } from '@/types/quiz';
+import { showAlert } from '@/utils/alert';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Alert, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function QuizCreateScreen() {
@@ -47,7 +48,7 @@ export default function QuizCreateScreen() {
 
   const handleBackNavigation = () => {
     if (newQuiz.title || newQuiz.description || selectedQuestions.length > 0) {
-      Alert.alert(
+      showAlert(
         'Changements non sauvegardés',
         'Voulez-vous vraiment quitter sans sauvegarder ?',
         [
@@ -71,12 +72,12 @@ export default function QuizCreateScreen() {
 
   const handleCreateQuiz = async () => {
     if (!newQuiz.title || !newQuiz.description || !newQuiz.category) {
-      Alert.alert('Erreur', 'Veuillez remplir tous les champs obligatoires');
+      showAlert('Erreur', 'Veuillez remplir tous les champs obligatoires');
       return;
     }
 
     if (selectedQuestions.length === 0) {
-      Alert.alert('Erreur', 'Veuillez sélectionner au moins une question');
+      showAlert('Erreur', 'Veuillez sélectionner au moins une question');
       return;
     }
 
@@ -97,7 +98,7 @@ export default function QuizCreateScreen() {
 
       await createQuiz(quizData);
       
-      Alert.alert(
+      showAlert(
         'Succès', 
         `Quiz "${newQuiz.title}" créé avec succès avec ${selectedQuestions.length} question(s) !`,
         [
@@ -109,7 +110,7 @@ export default function QuizCreateScreen() {
       );
     } catch (error) {
       console.error('❌ Erreur lors de la création du quiz:', error);
-      Alert.alert(
+      showAlert(
         'Erreur', 
         'Impossible de créer le quiz. Vérifiez votre connexion Firebase.'
       );

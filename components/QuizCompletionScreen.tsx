@@ -1,29 +1,30 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Animated, {
-  useSharedValue,
   useAnimatedStyle,
-  withSpring,
-  withTiming,
-  withSequence,
+  useSharedValue,
   withDelay,
-  runOnJS,
-  Easing,
+  withSequence,
+  withSpring,
+  withTiming
 } from 'react-native-reanimated';
+import { Colors } from '../constants/Colors';
+import { useAuth } from '../hooks/useAuth';
+import { useColorScheme } from '../hooks/useColorScheme';
+import { useUserProgress } from '../hooks/useUserProgress';
+import { Confetti } from './Confetti';
 import { ThemedText } from './ThemedText';
 import { ThemedView } from './ThemedView';
 import { IconSymbol } from './ui/IconSymbol';
-import { Colors } from '../constants/Colors';
-import { useColorScheme } from '../hooks/useColorScheme';
-import { Confetti } from './Confetti';
 
 interface QuizCompletionScreenProps {
   visible: boolean;
-  score: number;
-  totalPoints: number;
-  percentage: number;
-  passed: boolean;
+  score?: number;
+  totalPoints?: number;
+  percentage?: number;
+  passed?: boolean;
   quizTitle: string;
+  quizId?: string;
   onViewDetails: () => void;
   onGoHome: () => void;
   onRetry: () => void;
@@ -31,17 +32,74 @@ interface QuizCompletionScreenProps {
 
 export function QuizCompletionScreen({
   visible,
-  score,
-  totalPoints,
-  percentage,
-  passed,
+  score: propScore,
+  totalPoints: propTotalPoints,
+  percentage: propPercentage,
+  passed: propPassed,
   quizTitle,
+  quizId,
   onViewDetails,
   onGoHome,
   onRetry,
 }: QuizCompletionScreenProps) {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
+  const { user } = useAuth();
+  const { userProgress } = useUserProgress();
+  
+  // États pour les données dynamiques
+  const [dynamicScore, setDynamicScore] = useState<number | null>(null);
+  const [dynamicTotalPoints, setDynamicTotalPoints] = useState<number | null>(null);
+  const [dynamicPercentage, setDynamicPercentage] = useState<number | null>(null);
+  const [dynamicPassed, setDynamicPassed] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Utiliser les props si fournies, sinon utiliser les données dynamiques
+  const score = propScore ?? dynamicScore ?? 0;
+  const totalPoints = propTotalPoints ?? dynamicTotalPoints ?? 0;
+  const percentage = propPercentage ?? dynamicPercentage ?? 0;
+  const passed = propPassed ?? dynamicPassed ?? false;
+
+  // Récupérer les données dynamiques si nécessaire
+  useEffect(() => {
+    if (visible && quizId && user?.id && (!propScore || !propTotalPoints || !propPercentage || propPassed === undefined)) {
+      const fetchQuizData = async () => {
+        setIsLoading(true);
+        setError(null);
+        
+        try {
+          const { UserProgressService } = await import('../services/userProgressService');
+          const latestAttempt = await UserProgressService.getLatestQuizAttempt(user.id, quizId);
+          
+          if (latestAttempt) {
+            setDynamicScore(latestAttempt.score);
+            setDynamicTotalPoints(latestAttempt.totalPoints);
+            setDynamicPercentage(latestAttempt.percentage);
+            setDynamicPassed(latestAttempt.passed);
+          } else {
+            // Si aucune tentative n'est trouvée, utiliser les données par défaut
+            setDynamicScore(0);
+            setDynamicTotalPoints(0);
+            setDynamicPercentage(0);
+            setDynamicPassed(false);
+          }
+        } catch (error) {
+          console.error('Erreur lors de la récupération des données de quiz:', error);
+          setError('Erreur lors de la récupération des données');
+          // En cas d'erreur, utiliser les données par défaut
+          setDynamicScore(0);
+          setDynamicTotalPoints(0);
+          setDynamicPercentage(0);
+          setDynamicPassed(false);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+
+      fetchQuizData();
+    }
+  }, [visible, quizId, user?.id, propScore, propTotalPoints, propPercentage, propPassed]);
 
   const containerOpacity = useSharedValue(0);
   const containerScale = useSharedValue(0.8);
@@ -133,30 +191,46 @@ export function QuizCompletionScreen({
         {/* Score section */}
         <Animated.View style={[styles.scoreSection, scoreStyle]}>
           <View style={[styles.scoreCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            <View style={styles.scoreRow}>
-              <ThemedText style={[styles.scoreLabel, { color: colors.text }]}>
-                Score obtenu
-              </ThemedText>
-              <ThemedText style={[styles.scoreValue, { color: colors.text }]}>
-                {score}/{totalPoints}
-              </ThemedText>
-            </View>
-            
-            <View style={styles.percentageRow}>
-              <ThemedText style={[styles.percentageLabel, { color: colors.text }]}>
-                Pourcentage
-              </ThemedText>
-              <ThemedText style={[styles.percentageValue, { color: gradeInfo.color }]}>
-                {percentage}%
-              </ThemedText>
-            </View>
+            {isLoading ? (
+              <View style={styles.loadingContainer}>
+                <ThemedText style={[styles.loadingText, { color: colors.text }]}>
+                  Chargement des résultats...
+                </ThemedText>
+              </View>
+            ) : error ? (
+              <View style={styles.errorContainer}>
+                <ThemedText style={[styles.errorText, { color: colors.error }]}>
+                  {error}
+                </ThemedText>
+              </View>
+            ) : (
+              <>
+                <View style={styles.scoreRow}>
+                  <ThemedText style={[styles.scoreLabel, { color: colors.text }]}>
+                    Score obtenu
+                  </ThemedText>
+                  <ThemedText style={[styles.scoreValue, { color: colors.text }]}>
+                    {score}/{totalPoints}
+                  </ThemedText>
+                </View>
+                
+                <View style={styles.percentageRow}>
+                  <ThemedText style={[styles.percentageLabel, { color: colors.text }]}>
+                    Pourcentage
+                  </ThemedText>
+                  <ThemedText style={[styles.percentageValue, { color: gradeInfo.color }]}>
+                    {percentage}%
+                  </ThemedText>
+                </View>
 
-            <View style={styles.gradeRow}>
-              <IconSymbol name={gradeInfo.icon} size={24} color={gradeInfo.color} />
-              <ThemedText style={[styles.gradeText, { color: gradeInfo.color }]}>
-                Note : {gradeInfo.grade}
-              </ThemedText>
-            </View>
+                <View style={styles.gradeRow}>
+                  <IconSymbol name={gradeInfo.icon as any} size={24} color={gradeInfo.color} />
+                  <ThemedText style={[styles.gradeText, { color: gradeInfo.color }]}>
+                    Note : {gradeInfo.grade}
+                  </ThemedText>
+                </View>
+              </>
+            )}
           </View>
         </Animated.View>
 
@@ -331,5 +405,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: 'white',
+  },
+  loadingContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+  },
+  loadingText: {
+    fontSize: 16,
+    fontWeight: '500',
+  },
+  errorContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+  },
+  errorText: {
+    fontSize: 16,
+    fontWeight: '500',
   },
 }); 

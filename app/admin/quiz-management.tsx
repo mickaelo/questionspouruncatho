@@ -6,10 +6,11 @@ import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useQuizAdmin } from '@/hooks/useQuizAdmin';
 import { Quiz } from '@/types/quiz';
+import { showAlert } from '@/utils/alert';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { Alert, Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function QuizManagementScreen() {
@@ -111,9 +112,9 @@ export default function QuizManagementScreen() {
     showLoading({ duration: 1000 });
     try {
       await deleteQuiz(quiz.id);
-      Alert.alert('Succès', 'Quiz supprimé avec succès');
+      showAlert('Succès', 'Quiz supprimé avec succès');
     } catch (error) {
-      Alert.alert('Erreur', 'Impossible de supprimer le quiz');
+      showAlert('Erreur', 'Impossible de supprimer le quiz');
     } finally {
       hideLoading();
     }
@@ -129,7 +130,7 @@ export default function QuizManagementScreen() {
 
   const handleAddQuiz = async () => {
     if (!newQuiz.title || !newQuiz.description || !newQuiz.category) {
-      Alert.alert('Erreur', 'Veuillez remplir tous les champs obligatoires');
+      showAlert('Erreur', 'Veuillez remplir tous les champs obligatoires');
       return;
     }
 
@@ -139,9 +140,9 @@ export default function QuizManagementScreen() {
       await createQuiz(newQuiz);
       setNewQuiz({ title: '', description: '', category: '', level: 1, questions: [], passingScore: 70 });
       setShowAddForm(false);
-      Alert.alert('Succès', 'Quiz créé avec succès');
+      showAlert('Succès', 'Quiz créé avec succès');
     } catch (error) {
-      Alert.alert('Erreur', 'Impossible de créer le quiz');
+      showAlert('Erreur', 'Impossible de créer le quiz');
     } finally {
       hideLoading();
     }
@@ -186,13 +187,13 @@ export default function QuizManagementScreen() {
       setShowQuestionSelector(null);
       setSelectedQuestions([]);
 
-      Alert.alert(
+      showAlert(
         'Succès',
         `${selectedQuestions.length} question(s) assignée(s) avec succès au quiz !`
       );
     } catch (error) {
       console.error('❌ Erreur lors de l\'assignation des questions:', error);
-      Alert.alert(
+      showAlert(
         'Erreur',
         'Impossible d\'assigner les questions. Vérifiez votre connexion Firebase.'
       );

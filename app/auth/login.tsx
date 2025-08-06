@@ -6,11 +6,11 @@ import { Colors } from '@/constants/Colors';
 import { useLoadingBarContext } from '@/contexts/LoadingBarContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { showAlert } from '@/utils/alert';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-  Alert,
   Platform,
   ScrollView,
   StyleSheet,
@@ -73,16 +73,16 @@ export default function LoginScreen() {
           router.replace('/(tabs)');
         }, 1500);
       } else {
-        Alert.alert('Erreur', result.error || 'Erreur de connexion');
+        showAlert('Erreur', result.error || 'Erreur de connexion');
       }
     } catch (error) {
-      Alert.alert('Erreur', 'Une erreur inattendue s\'est produite');
+      showAlert('Erreur', 'Une erreur inattendue s\'est produite');
     }
   };
 
   const handleEmailLogin = async () => {
     if (!email || !password) {
-      Alert.alert('Erreur', 'Veuillez remplir tous les champs');
+      showAlert('Erreur', 'Veuillez remplir tous les champs');
       return;
     }
 
@@ -99,10 +99,10 @@ export default function LoginScreen() {
           router.replace('/(tabs)');
         }, 1500);
       } else {
-        Alert.alert('Erreur', result.error || 'Email ou mot de passe incorrect');
+        showAlert('Erreur', result.error || 'Email ou mot de passe incorrect');
       }
     } catch (error) {
-      Alert.alert('Erreur', 'Une erreur inattendue s\'est produite');
+      showAlert('Erreur', 'Une erreur inattendue s\'est produite');
     }
   };
 
@@ -110,18 +110,14 @@ export default function LoginScreen() {
     // Utiliser la fonction skipLogin du hook useAuth
     const result = skipLogin();
     if (result.success) {
-      // Afficher une notification de succès
-      setSuccessMessage('Mode visiteur activé ! Redirection...');
-      setShowSuccessToast(true);
-      
       // Redirection automatique après un court délai
       setTimeout(() => {
         if (Platform.OS === 'android') {
-          router.replace('/');
+          router.replace('/(tabs)');
         } else {
           router.replace('/(tabs)');
         }
-      }, 1500);
+      }, 0);
     }
   };
 

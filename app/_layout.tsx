@@ -53,13 +53,15 @@ export default function RootLayout() {
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="auth" options={{ headerShown: false }} />
-              <Stack.Screen name="quiz" options={{ headerShown: false }} />
+              <Stack.Screen name="quiz/[id]" options={{ title: 'Modifier la question', headerShown: false }} />
               <Stack.Screen name="quiz-result" options={{ headerShown: false }} />
-              <Stack.Screen name="category" options={{ headerShown: false }} />
-              <Stack.Screen name="level" options={{ headerShown: false }} />
+              <Stack.Screen name="category/[id]" options={{ headerShown: false }} />
+              <Stack.Screen name="level/[id]" options={{ headerShown: false }} />
               <Stack.Screen name="admin" options={{ headerShown: false }} />
               <Stack.Screen name="admin/quiz-management" options={{ headerShown: false }} />
               <Stack.Screen name="admin/quiz-edit/[id]" options={{ headerShown: false }} />
+              <Stack.Screen name="admin/question-management" options={{ headerShown: false }} />
+              <Stack.Screen name="admin/question-edit/[id]" options={{ title: 'Modifier la question', headerShown: false }} />
               <Stack.Screen name="+not-found" />
             </Stack>
           </QuizDataProvider>

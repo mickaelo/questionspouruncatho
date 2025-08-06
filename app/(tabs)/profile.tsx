@@ -5,10 +5,11 @@ import { Colors } from '@/constants/Colors';
 import { sampleUserProfile } from '@/data/gamification';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { showAlert, showConfirmAlert } from '@/utils/alert';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, Image, Platform, ScrollView, StyleSheet, Switch, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, Switch, TouchableOpacity, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ProfileScreen() {
@@ -163,8 +164,7 @@ export default function ProfileScreen() {
               key={child.id}
               style={[styles.childItem, { backgroundColor: colors.card, borderColor: colors.border }]}
               onPress={() => {
-                // TODO: Implémenter la page de profil enfant
-                Alert.alert('Profil enfant', `Profil de ${child.name} - À implémenter`);
+                showAlert('Profil enfant', `Profil de ${child.name} - À implémenter`);
               }}
             >
               <View style={styles.childInfo}>
@@ -191,8 +191,7 @@ export default function ProfileScreen() {
             <TouchableOpacity
               style={[styles.childItem, { backgroundColor: colors.card, borderColor: colors.border }]}
               onPress={() => {
-                // TODO: Implémenter la page d'ajout d'enfant
-                Alert.alert('Ajouter un enfant', 'Page d\'ajout d\'enfant - À implémenter');
+                showAlert('Ajouter un enfant', 'Page d\'ajout d\'enfant - À implémenter');
               }}
             >
               <View style={styles.childInfo}>
@@ -338,12 +337,12 @@ export default function ProfileScreen() {
               try {
                 const result = await loginWithGoogle();
                 if (result.success) {
-                  Alert.alert('Succès', 'Test Google OAuth réussi !');
+                  showAlert('Succès', 'Test Google OAuth réussi !');
                 } else {
-                  Alert.alert('Erreur', result.error || 'Erreur lors du test');
+                  showAlert('Erreur', result.error || 'Erreur lors du test');
                 }
               } catch (error) {
-                Alert.alert('Erreur', 'Erreur lors du test d\'authentification');
+                showAlert('Erreur', 'Erreur lors du test d\'authentification');
               }
             }}
           >
@@ -365,7 +364,7 @@ export default function ProfileScreen() {
             style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
             onPress={() => {
               // TODO: Implémenter la page d'édition de profil
-              Alert.alert('Éditer le profil', 'Page d\'édition de profil - À implémenter');
+              showAlert('Éditer le profil', 'Page d\'édition de profil - À implémenter');
             }}
           >
             <View style={styles.actionInfo}>
@@ -386,7 +385,7 @@ export default function ProfileScreen() {
             style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
             onPress={() => {
               // TODO: Implémenter l'export des données
-              Alert.alert('Exporter les données', 'Page d\'export des données - À implémenter');
+              showAlert('Exporter les données', 'Page d\'export des données - À implémenter');
             }}
           >
             <View style={styles.actionInfo}>
@@ -407,7 +406,7 @@ export default function ProfileScreen() {
             style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
             onPress={() => {
               // TODO: Implémenter la page d'aide
-              Alert.alert('Aide et support', 'Page d\'aide et support - À implémenter');
+              showAlert('Aide et support', 'Page d\'aide et support - À implémenter');
             }}
           >
             <View style={styles.actionInfo}>
@@ -428,7 +427,7 @@ export default function ProfileScreen() {
             style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
             onPress={() => {
               // TODO: Implémenter la page à propos
-              Alert.alert('À propos', 'Page à propos - À implémenter');
+              showAlert('À propos', 'Page à propos - À implémenter');
             }}
           >
             <View style={styles.actionInfo}>
@@ -452,26 +451,18 @@ export default function ProfileScreen() {
         <TouchableOpacity
           style={[styles.logoutButton, { backgroundColor: colors.error }]}
           onPress={() => {
-            Alert.alert(
+            showConfirmAlert(
               'Déconnexion',
               'Êtes-vous sûr de vouloir vous déconnecter ?',
-              [
-                { text: 'Annuler', style: 'cancel' },
-                { 
-                  text: 'Se déconnecter', 
-                  style: 'destructive',
-                  onPress: async () => {
-                    try {
-                      await logout();
-                      console.log('✅ Déconnexion réussie');
-                      router.replace('/auth/login');
-                    } catch (error) {
-                      console.error('❌ Erreur lors de la déconnexion:', error);
-                      Alert.alert('Erreur', 'Impossible de se déconnecter. Veuillez réessayer.');
-                    }
-                  }
+              async () => {
+                try {
+                  await logout();
+                  router.replace('/auth/login');
+                } catch (error) {
+                  console.error('❌ Erreur lors de la déconnexion:', error);
+                  showAlert('Erreur', 'Impossible de se déconnecter. Veuillez réessayer.');
                 }
-              ]
+              }
             );
           }}
         >

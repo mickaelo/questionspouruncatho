@@ -6,13 +6,13 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import {
-    Alert,
     ScrollView,
     StyleSheet,
     TextInput,
     TouchableOpacity,
     View,
 } from 'react-native';
+import { showAlert } from '@/utils/alert';
 
 export default function ForgotPasswordScreen() {
   const colorScheme = useColorScheme();
@@ -22,7 +22,7 @@ export default function ForgotPasswordScreen() {
 
   const handleResetPassword = async () => {
     if (!email) {
-      Alert.alert('Erreur', 'Veuillez saisir votre adresse email');
+      showAlert('Erreur', 'Veuillez saisir votre adresse email');
       return;
     }
 
@@ -31,16 +31,11 @@ export default function ForgotPasswordScreen() {
     // Simulation de l'envoi d'email de récupération
     setTimeout(() => {
       setIsLoading(false);
-      Alert.alert(
+      showAlert(
         'Email envoyé',
-        'Si un compte existe avec cette adresse email, vous recevrez un lien de récupération.',
-        [
-          {
-            text: 'OK',
-            onPress: () => router.back(),
-          },
-        ]
+        'Si un compte existe avec cette adresse email, vous recevrez un lien de récupération.'
       );
+      router.back();
     }, 2000);
   };
 
