@@ -1,6 +1,7 @@
 import { AUTH_CONFIG } from '@/config/auth';
 import { auth } from '@/config/firebase';
 import { FirebaseAuthService } from '@/services/firebaseAuthService';
+import { localStorageService } from '@/services/localStorageService';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import { getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { useCallback, useEffect, useState } from 'react';
@@ -72,13 +73,63 @@ export function useAuth() {
           });
         }
       } else {
-        console.log('❌ État d\'authentification mis à jour: Aucun utilisateur');
-        setAuthState({
-          user: null,
-          isLoading: false,
-          isAuthenticated: false,
-          error: null,
-        });
+        console.log('❌ Aucun utilisateur Firebase détecté, vérification des données locales...');
+        
+        // Vérifier s'il existe un utilisateur anonyme en local
+        try {
+          if (!localStorageService) {
+            console.error('❌ localStorageService non disponible');
+            setAuthState({
+              user: null,
+              isLoading: false,
+              isAuthenticated: false,
+              error: null,
+            });
+            return;
+          }
+          
+          const anonymousUser = await localStorageService.getAnonymousUser();
+          if (anonymousUser) {
+            console.log('👤 Utilisateur anonyme trouvé en local:', anonymousUser.name);
+            
+            // Convertir LocalUserData en AuthUser
+            const authUser: AuthUser = {
+              id: anonymousUser.id,
+              type: anonymousUser.type || 'user',
+              name: anonymousUser.name,
+              email: anonymousUser.email || '',
+              avatar: anonymousUser.avatar || '',
+              emailVerified: anonymousUser.emailVerified || false,
+              createdAt: new Date(anonymousUser.createdAt),
+              lastLoginAt: new Date(anonymousUser.lastLoginAt),
+              provider: (anonymousUser.provider as any) || 'anonymous',
+            };
+            
+            console.log('✅ État d\'authentification mis à jour: Utilisateur anonyme local');
+            setAuthState({
+              user: authUser,
+              isLoading: false,
+              isAuthenticated: true,
+              error: null,
+            });
+          } else {
+            console.log('❌ Aucun utilisateur local trouvé');
+            setAuthState({
+              user: null,
+              isLoading: false,
+              isAuthenticated: false,
+              error: null,
+            });
+          }
+        } catch (error) {
+          console.error('❌ Erreur lors de la vérification des données locales:', error);
+          setAuthState({
+            user: null,
+            isLoading: false,
+            isAuthenticated: false,
+            error: null,
+          });
+        }
       }
     });
 
@@ -409,30 +460,99 @@ export function useAuth() {
   }, []);
 
   // Fonction pour passer la connexion (utilisateur anonyme)
-  const skipLogin = useCallback(() => {
+  const skipLogin = useCallback(async () => {
     console.log('👤 Utilisateur anonyme - passage de la connexion');
     
-    // Créer un utilisateur anonyme temporaire
-    const anonymousUser: AuthUser = {
-      id: 'anonymous-' + Date.now(),
-      type: 'anonymous',
-      name: 'Visiteur',
-      email: '',
-      avatar: '',
-      emailVerified: false,
-      createdAt: new Date(),
-      lastLoginAt: new Date(),
-      provider: 'anonymous',
-    };
-    
-    setAuthState({
-      user: anonymousUser,
-      isLoading: false,
-      isAuthenticated: true, // Considérer comme authentifié pour l'accès à l'app
-      error: null,
-    });
-    
-    return { success: true, user: anonymousUser };
+    try {
+      // Vérifier s'il existe déjà un utilisateur anonyme
+      const existingAnonymousUser = await localStorageService.getAnonymousUser();
+      
+      let anonymousUser: AuthUser;
+      
+      if (existingAnonymousUser) {
+        // Utiliser l'utilisateur anonyme existant
+        console.log('📖 Utilisation de l\'utilisateur anonyme existant');
+        anonymousUser = {
+          id: existingAnonymousUser.id,
+          type: existingAnonymousUser.type || 'user',
+          name: existingAnonymousUser.name,
+          email: existingAnonymousUser.email || '',
+          avatar: existingAnonymousUser.avatar || '',
+          emailVerified: existingAnonymousUser.emailVerified || false,
+          createdAt: new Date(existingAnonymousUser.createdAt),
+          lastLoginAt: new Date(existingAnonymousUser.lastLoginAt),
+          provider: (existingAnonymousUser.provider as any) || 'anonymous',
+        };
+        
+        // Mettre à jour la dernière connexion
+        const updatedUser = {
+          ...existingAnonymousUser,
+          lastLoginAt: new Date(),
+        };
+        await localStorageService.saveAnonymousUser(updatedUser);
+      } else {
+        // Créer un nouvel utilisateur anonyme
+        console.log('🆕 Création d\'un nouvel utilisateur anonyme');
+        anonymousUser = {
+          id: 'anonymous-' + Date.now(),
+          type: 'anonymous',
+          name: 'Visiteur',
+          email: '',
+          avatar: '',
+          emailVerified: false,
+          createdAt: new Date(),
+          lastLoginAt: new Date(),
+          provider: 'anonymous',
+        };
+        
+        // Sauvegarder l'utilisateur anonyme dans le stockage local
+        await localStorageService.saveAnonymousUser({
+          id: anonymousUser.id,
+          type: anonymousUser.type,
+          name: anonymousUser.name,
+          email: anonymousUser.email,
+          avatar: anonymousUser.avatar,
+          emailVerified: anonymousUser.emailVerified,
+          createdAt: anonymousUser.createdAt,
+          lastLoginAt: anonymousUser.lastLoginAt,
+          provider: anonymousUser.provider,
+        });
+      }
+      
+      setAuthState({
+        user: anonymousUser,
+        isLoading: false,
+        isAuthenticated: true, // Considérer comme authentifié pour l'accès à l'app
+        error: null,
+      });
+      
+      console.log('✅ Utilisateur anonyme connecté avec succès');
+      return { success: true, user: anonymousUser };
+    } catch (error) {
+      console.error('❌ Erreur lors de la création de l\'utilisateur anonyme:', error);
+      
+      // En cas d'erreur, créer un utilisateur temporaire sans stockage
+      const fallbackUser: AuthUser = {
+        id: 'anonymous-' + Date.now(),
+        type: 'anonymous',
+        name: 'Visiteur',
+        email: '',
+        avatar: '',
+        emailVerified: false,
+        createdAt: new Date(),
+        lastLoginAt: new Date(),
+        provider: 'anonymous',
+      };
+      
+      setAuthState({
+        user: fallbackUser,
+        isLoading: false,
+        isAuthenticated: true,
+        error: null,
+      });
+      
+      return { success: true, user: fallbackUser };
+    }
   }, []);
 
   // Connexion avec email/mot de passe

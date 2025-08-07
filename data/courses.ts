@@ -181,6 +181,39 @@ export const formationCourses: CourseWithQuizIds[] = [
       "quiz-21"  // La fin dernière de l'homme
     ],
     challenges: []
+  },
+  {
+    id: "6",
+    title: "La Vierge Marie dans la foi catholique",
+    level: 2,
+    color: "#E91E63", // 🌸 Rose
+    description: "Découverte et approfondissement de la dévotion mariale",
+    targetAudience: [
+      "Tous les fidèles catholiques",
+      "Personnes souhaitant approfondir leur dévotion mariale",
+      "Catéchumènes et nouveaux convertis"
+    ],
+    contentTypes: [
+      "La vie de Marie selon les Évangiles",
+      "Les dogmes mariaux (Immaculée Conception, Assomption)",
+      "Les apparitions mariales reconnues",
+      "Le Rosaire et les prières mariales",
+      "Marie dans la liturgie et les fêtes",
+      "La dévotion mariale dans l'histoire de l'Église"
+    ],
+    requiredPoints: 150,
+    requiredQuizzes: 8,
+    requiredBadges: 3,
+    unlockedBadges: [],
+    quizzes: [
+      "quiz-marie-vie", // La vie de Marie
+      "quiz-marie-dogmes", // Les dogmes mariaux
+      "quiz-marie-apparitions", // Les apparitions mariales
+      "quiz-marie-prieres", // Les prières mariales
+      "quiz-marie-liturgie", // Marie dans la liturgie
+      "quiz-marie-devotion" // La dévotion mariale
+    ],
+    challenges: []
   }
 ];
 

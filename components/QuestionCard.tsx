@@ -98,6 +98,7 @@ export function QuestionCard({
   const getCorrectAnswer = () => {
     switch (question.questionType) {
       case 'multiple-choice':
+      case 'single-choice':
         console.log(question)
 
         if (Array.isArray(question.correctAnswer)) {
@@ -176,6 +177,9 @@ export function QuestionCard({
             </TouchableOpacity>
           );
         }
+        break;
+      case 'single-choice':
+        // Pas de bouton de validation pour les questions à choix unique (réponse immédiate)
         break;
 
       case 'association':
@@ -266,6 +270,15 @@ export function QuestionCard({
         : [...selectedAnswers, answerIndex];
 
       setSelectedAnswers(newSelectedAnswers);
+    } else if (question.questionType === 'single-choice') {
+      // Pour les questions à choix unique, sélectionner immédiatement et répondre
+      setSelectedAnswers([answerIndex]);
+      setAnswered(true);
+
+      const isCorrect = answerIndex === question.correctAnswer;
+      setLastAnswerCorrect(isCorrect);
+      setLastSelectedAnswers([answerIndex]);
+      setShowExplanationPopup(true);
     } else {
       // Gestion des autres types de questions (association, sentence-reorder, etc.)
       setSelectedAnswers([answerIndex]);
@@ -482,6 +495,40 @@ export function QuestionCard({
             />
           )}
           {answered && selectedAnswers.includes(index) && !Array.isArray(question.correctAnswer) && index !== question.correctAnswer && (
+            <IconSymbol
+              name="xmark.circle.fill"
+              size={20}
+              color="#FFFFFF"
+              style={styles.answerIcon}
+            />
+          )}
+        </TouchableOpacity>
+      ))}
+    </View>
+  );
+
+  const renderSingleChoiceQuestion = () => (
+    <View style={styles.optionsContainer}>
+      {question.options.map((option, index) => (
+        <TouchableOpacity
+          key={index}
+          style={getOptionStyle(index)}
+          onPress={() => handleAnswerSelect(index)}
+          disabled={answered}
+          activeOpacity={0.7}
+        >
+          <ThemedText style={getOptionTextStyle(index)}>
+            {option}
+          </ThemedText>
+          {answered && index === question.correctAnswer && (
+            <IconSymbol
+              name="checkmark.circle.fill"
+              size={20}
+              color="#FFFFFF"
+              style={styles.answerIcon}
+            />
+          )}
+          {answered && selectedAnswers.includes(index) && index !== question.correctAnswer && (
             <IconSymbol
               name="xmark.circle.fill"
               size={20}
@@ -837,6 +884,9 @@ export function QuestionCard({
             } else if (question.questionType === 'sentence-reorder') {
               onAnswer(lastSentenceOrder, lastAnswerCorrect);
               setSentenceOrder([]);
+            } else if (question.questionType === 'single-choice') {
+              onAnswer(lastSelectedAnswers, lastAnswerCorrect);
+              setSelectedAnswers([]);
             } else {
               onAnswer(lastSelectedAnswers, lastAnswerCorrect);
               setSelectedAnswers([]);
@@ -938,21 +988,6 @@ export function QuestionCard({
         }
       ]}
     >
-      {/* Header avec progression et timer - Fixe en haut */}
-      <View style={styles.header}>
-        <ThemedText style={styles.progress}>
-          Question {questionNumber} sur {totalQuestions}
-        </ThemedText>
-        {timeRemaining !== undefined && (
-          <View style={styles.timerContainer}>
-            <IconSymbol name="clock" size={16} color={colors.tint} />
-            <ThemedText style={[styles.timer, { color: colors.tint }]}>
-              {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
-            </ThemedText>
-          </View>
-        )}
-      </View>
-
       {/* Question - Fixe */}
       <ThemedText type="subtitle" style={styles.question}>
         {question.question}
@@ -970,6 +1005,7 @@ export function QuestionCard({
           {question.questionType === 'association' ? renderAssociationQuestion() :
             question.questionType === 'sentence-reorder' ? renderSentenceReorderQuestion() :
               question.questionType === 'crossword' ? renderCrosswordQuestion() :
+              question.questionType === 'single-choice' ? renderSingleChoiceQuestion() :
                 renderMultipleChoiceQuestion()}
         </View>
       </ScrollView>

@@ -21,6 +21,8 @@ const MAPPING = {
   'chevron.up': 'keyboard-arrow-up',
   'chevron.down': 'keyboard-arrow-down',
   'star.fill': 'star',
+  'heart.fill': 'favorite',
+  'heart': 'favorite-outline',
   'star': 'star-outline',
   'xmark.circle': 'cancel',
   'xmark.circle.fill': 'cancel',

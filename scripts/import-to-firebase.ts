@@ -40,8 +40,10 @@ async function importDataToFirebase(clearExisting: boolean = false) {
 
         console.log(`📋 Quiz "${quiz.title}": ${questionIds.length} questions mappées sur ${quiz.questions.length} questions originales`);
 
+        // Supprimer l'ID du quiz et ajouter les nouveaux IDs des questions
+        const { id, ...quizWithoutId } = quiz;
         return {
-          ...quiz,
+          ...quizWithoutId,
           questionIds // Ajouter les nouveaux IDs des questions
         };
       });
@@ -131,8 +133,9 @@ async function importDataToFirebase(clearExisting: boolean = false) {
 
       console.log(`📋 Quiz "${quiz.title}": ${questionIds.length} questions mappées sur ${quiz.questions.length} questions originales`);
 
+      const { id, ...quizWithoutId } = quiz;
       return {
-        ...quiz,
+        ...quizWithoutId,
         questionIds // Ajouter les nouveaux IDs des questions
       };
     });
@@ -152,21 +155,18 @@ async function importDataToFirebase(clearExisting: boolean = false) {
 
           if (quizInFirebase) {
             // Mettre à jour le quiz existant
-            const { id, ...quizWithoutId } = quiz;
-            await quizAdminService.updateQuiz(existingQuiz.id, quizWithoutId);
+            await quizAdminService.updateQuiz(existingQuiz.id, quiz);
             quizzesUpdated++;
             console.log(`🔄 Quiz "${quiz.title}" mis à jour`);
           } else {
             // Le quiz n'existe pas dans Firebase, le créer
-            const { id, ...quizWithoutId } = quiz;
-            const quizId = await quizAdminService.createQuiz(quizWithoutId);
+            const quizId = await quizAdminService.createQuiz(quiz);
             quizzesCreated++;
             console.log(`✅ Quiz "${quiz.title}" créé (était dans le map mais pas dans Firebase)`);
           }
         } else {
           // Créer un nouveau quiz
-          const { id, ...quizWithoutId } = quiz;
-          const quizId = await quizAdminService.createQuiz(quizWithoutId);
+          const quizId = await quizAdminService.createQuiz(quiz);
           quizzesCreated++;
           console.log(`✅ Quiz "${quiz.title}" créé`);
         }

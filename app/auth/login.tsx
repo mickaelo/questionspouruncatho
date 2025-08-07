@@ -106,18 +106,23 @@ export default function LoginScreen() {
     }
   };
 
-  const handleSkipLogin = () => {
-    // Utiliser la fonction skipLogin du hook useAuth
-    const result = skipLogin();
-    if (result.success) {
-      // Redirection automatique après un court délai
-      setTimeout(() => {
-        if (Platform.OS === 'android') {
+  const handleSkipLogin = async () => {
+    try {
+      // Utiliser la fonction skipLogin du hook useAuth
+      const result = await skipLogin();
+      if (result.success) {
+        // Afficher la notification de succès
+        setSuccessMessage('Mode visiteur activé ! Redirection...');
+        setShowSuccessToast(true);
+        
+        // Redirection automatique après un court délai
+        setTimeout(() => {
           router.replace('/(tabs)');
-        } else {
-          router.replace('/(tabs)');
-        }
-      }, 0);
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('❌ Erreur lors du passage en mode visiteur:', error);
+      showAlert('Erreur', 'Impossible d\'activer le mode visiteur');
     }
   };
 

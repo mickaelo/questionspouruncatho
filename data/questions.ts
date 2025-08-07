@@ -12,44 +12,53 @@ export const sampleQuestions: Question[] = [
     category: 'decouverte-jesus',
     difficulty: 'facile',
     level: 1,
-    question: 'Qui est Jésus-Christ selon la foi chrétienne ?',
+    question: 'Selon l\'Évangile de Jean, que dit Jésus de lui-même ?',
     questionType: 'multiple-choice',
     options: [
-      'Un simple prophète',
-      'Un philosophe',
-      'Le Fils de Dieu fait homme',
-      'Un roi terrestre'
+      'Je suis un prophète envoyé par Dieu',
+      'Je suis le Fils de l\'homme',
+      'Je suis le pain de vie descendu du ciel',
+      'Je suis un maître de sagesse'
     ],
-    correctAnswer: [2],
-    multipleCorrectAnswers: true,
-    explanation: 'Jésus-Christ est le Fils de Dieu fait homme, c\'est le mystère de l\'Incarnation.',
-    points: 10,
-    catechism: 'CCC 464'
+    correctAnswer: 2,
+    explanation: 'Jésus dit : "Je suis le pain de vie descendu du ciel" (Jean 6:41). Cette affirmation révèle sa nature divine et son origine céleste.',
+    points: 15,
+    scripture: 'Jean 6:41'
   },
   {
     id: '2',
     category: 'decouverte-jesus',
     difficulty: 'facile',
     level: 1,
-    question: 'Jésus-Christ est né à Bethléem.',
-    questionType: 'true-false',
-    options: ['Vrai', 'Faux'],
-    correctAnswer: 0,
-    explanation: 'Vrai. Jésus est né à Bethléem, comme l\'annonçait le prophète Michée.',
-    points: 10,
-    scripture: 'Luc 2:4-7'
+    question: 'Selon l\'Évangile de Luc, pourquoi Jésus est-il né à Bethléem ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Parce que c\'était la ville de ses parents',
+      'À cause du recensement ordonné par César Auguste',
+      'Parce que c\'était la ville sainte',
+      'Parce que c\'était proche de Jérusalem'
+    ],
+    correctAnswer: 1,
+    explanation: 'Jésus est né à Bethléem à cause du recensement ordonné par César Auguste, qui obligea Joseph à se rendre dans sa ville d\'origine (Luc 2:1-7).',
+    points: 15,
+    scripture: 'Luc 2:1-7'
   },
   {
     id: '3',
     category: 'decouverte-jesus',
     difficulty: 'facile',
     level: 1,
-    question: 'Complétez cette citation de Jésus : "Je suis le chemin, la vérité et..."',
-    questionType: 'quote-completion',
-    options: ['la lumière', 'la vie', 'l\'amour', 'l\'espérance'],
+    question: 'Dans l\'Évangile de Jean, que répond Jésus à Thomas qui demande le chemin ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Suivez la loi de Moïse',
+      'Je suis le chemin, la vérité et la vie',
+      'Allez à Jérusalem',
+      'Priez et jeûnez'
+    ],
     correctAnswer: 1,
-    explanation: 'La citation complète est : "Je suis le chemin, la vérité et la vie" (Jean 14:6).',
-    points: 10,
+    explanation: 'Jésus répond à Thomas : "Je suis le chemin, la vérité et la vie. Nul ne vient au Père que par moi" (Jean 14:6).',
+    points: 15,
     scripture: 'Jean 14:6'
   },
   {
@@ -57,12 +66,16 @@ export const sampleQuestions: Question[] = [
     category: 'decouverte-jesus',
     difficulty: 'moyen',
     level: 1,
-    question: 'Quel est le nom donné à Jésus par l\'ange Gabriel ?',
+    question: 'Selon l\'Évangile de Luc, que signifie le nom "Jésus" ?',
     questionType: 'multiple-choice',
-    options: ['Emmanuel', 'Jésus', 'Christ', 'Seigneur'],
-    correctAnswer: [1],
-    multipleCorrectAnswers: true,
-    explanation: 'L\'ange Gabriel dit à Marie : "Tu lui donneras le nom de Jésus" (Luc 1:31).',
+    options: [
+      'Dieu avec nous',
+      'Le Seigneur sauve',
+      'Le Messie',
+      'Le Fils de Dieu'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le nom "Jésus" signifie "Le Seigneur sauve" (Luc 1:31). C\'est pourquoi l\'ange Gabriel dit à Marie : "Tu lui donneras le nom de Jésus".',
     points: 15,
     scripture: 'Luc 1:31'
   },
@@ -71,28 +84,34 @@ export const sampleQuestions: Question[] = [
     category: 'decouverte-jesus',
     difficulty: 'facile',
     level: 1,
-    question: 'Jésus a vécu environ 33 ans sur terre.',
-    questionType: 'true-false',
-    options: ['Vrai', 'Faux'],
-    correctAnswer: 0,
-    explanation: 'Vrai. Jésus a vécu environ 33 ans, de sa naissance à sa mort sur la croix.',
-    points: 10
+    question: 'Selon l\'Évangile de Luc, à quel âge Jésus a-t-il commencé son ministère public ?',
+    questionType: 'multiple-choice',
+    options: [
+      'À 25 ans',
+      'À 30 ans',
+      'À 33 ans',
+      'À 40 ans'
+    ],
+    correctAnswer: 1,
+    explanation: 'Jésus avait environ 30 ans quand il commença son ministère public (Luc 3:23).',
+    points: 15,
+    scripture: 'Luc 3:23'
   },
   {
     id: '6',
     category: 'decouverte-jesus',
     difficulty: 'moyen',
     level: 1,
-    question: 'Complétez : "Car Dieu a tant aimé le monde qu\'il a donné son Fils unique, afin que quiconque croit en lui..."',
-    questionType: 'quote-completion',
+    question: 'Dans l\'Évangile de Jean, que dit Jésus à Nicodème sur l\'amour de Dieu ?',
+    questionType: 'multiple-choice',
     options: [
-      'ait la vie éternelle',
-      'soit sauvé',
-      'ne périsse point',
-      'ait la paix'
+      'Dieu a tant aimé le monde qu\'il a donné son Fils unique',
+      'Dieu aime ceux qui l\'aiment',
+      'Dieu aime les justes',
+      'Dieu aime les pauvres'
     ],
-    correctAnswer: 2,
-    explanation: 'La citation complète est : "afin que quiconque croit en lui ne périsse point" (Jean 3:16).',
+    correctAnswer: 0,
+    explanation: 'Jésus dit à Nicodème : "Car Dieu a tant aimé le monde qu\'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu\'il ait la vie éternelle" (Jean 3:16).',
     points: 15,
     scripture: 'Jean 3:16'
   },
@@ -101,17 +120,17 @@ export const sampleQuestions: Question[] = [
     category: 'decouverte-jesus',
     difficulty: 'facile',
     level: 1,
-    question: 'Quel est le premier miracle de Jésus ?',
+    question: 'Selon l\'Évangile de Jean, où Jésus a-t-il accompli son premier miracle ?',
     questionType: 'multiple-choice',
     options: [
-      'La multiplication des pains',
-      'La guérison d\'un lépreux',
-      'Le changement de l\'eau en vin',
-      'La résurrection de Lazare'
+      'À Jérusalem',
+      'À Nazareth',
+      'À Cana de Galilée',
+      'À Capharnaüm'
     ],
     correctAnswer: 2,
-    explanation: 'Le premier miracle de Jésus est le changement de l\'eau en vin aux noces de Cana.',
-    points: 10,
+    explanation: 'Jésus a accompli son premier miracle à Cana de Galilée, en changeant l\'eau en vin aux noces (Jean 2:1-11).',
+    points: 15,
     scripture: 'Jean 2:1-11'
   },
   {
@@ -119,30 +138,35 @@ export const sampleQuestions: Question[] = [
     category: 'decouverte-jesus',
     difficulty: 'moyen',
     level: 1,
-    question: 'Jésus a choisi 12 apôtres pour l\'accompagner.',
-    questionType: 'true-false',
-    options: ['Vrai', 'Faux'],
+    question: 'Selon l\'Évangile de Marc, pourquoi Jésus a-t-il choisi 12 apôtres ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Pour qu\'ils soient avec lui et pour les envoyer prêcher',
+      'Pour qu\'ils l\'aident dans ses miracles',
+      'Pour qu\'ils collectent de l\'argent',
+      'Pour qu\'ils écrivent les Évangiles'
+    ],
     correctAnswer: 0,
-    explanation: 'Vrai. Jésus a choisi 12 apôtres pour être ses témoins et continuer sa mission.',
-    points: 10,
-    scripture: 'Marc 3:13-19'
+    explanation: 'Jésus a choisi 12 apôtres "pour qu\'ils soient avec lui et pour les envoyer prêcher" (Marc 3:14).',
+    points: 15,
+    scripture: 'Marc 3:14'
   },
   {
     id: '9',
     category: 'decouverte-jesus',
     difficulty: 'facile',
     level: 1,
-    question: 'Complétez : "Aimez-vous les uns les autres comme..."',
-    questionType: 'quote-completion',
+    question: 'Dans l\'Évangile de Jean, quel est le commandement nouveau que Jésus donne à ses disciples ?',
+    questionType: 'multiple-choice',
     options: [
-      'je vous ai aimés',
-      'Dieu vous aime',
-      'vous vous aimez',
-      'le Christ vous aime'
+      'Priez sans cesse',
+      'Aimez-vous les uns les autres comme je vous ai aimés',
+      'Jeûnez et priez',
+      'Donnez aux pauvres'
     ],
-    correctAnswer: 0,
-    explanation: 'La citation complète est : "Aimez-vous les uns les autres comme je vous ai aimés" (Jean 13:34).',
-    points: 10,
+    correctAnswer: 1,
+    explanation: 'Jésus dit : "Je vous donne un commandement nouveau : Aimez-vous les uns les autres comme je vous ai aimés" (Jean 13:34).',
+    points: 15,
     scripture: 'Jean 13:34'
   },
   {
@@ -150,18 +174,18 @@ export const sampleQuestions: Question[] = [
     category: 'decouverte-jesus',
     difficulty: 'moyen',
     level: 1,
-    question: 'Quel jour Jésus est-il mort sur la croix ?',
+    question: 'Selon l\'Évangile de Jean, à quelle heure Jésus est-il mort sur la croix ?',
     questionType: 'multiple-choice',
     options: [
-      'Jeudi saint',
-      'Vendredi saint',
-      'Samedi saint',
-      'Dimanche de Pâques'
+      'À la troisième heure',
+      'À la sixième heure',
+      'À la neuvième heure',
+      'À la douzième heure'
     ],
-    correctAnswer: 1,
-    explanation: 'Jésus est mort sur la croix le Vendredi saint, veille du sabbat.',
+    correctAnswer: 2,
+    explanation: 'Jésus est mort sur la croix à la neuvième heure (trois heures de l\'après-midi), comme le rapporte l\'Évangile de Jean (Jean 19:14-30).',
     points: 15,
-    scripture: 'Jean 19:31'
+    scripture: 'Jean 19:14-30'
   },
 
   // ===== DÉCOUVERTE - PREMIERS GESTES CHRÉTIENS (Questions 11-30) =====
@@ -170,89 +194,108 @@ export const sampleQuestions: Question[] = [
     category: 'decouverte-gestes',
     difficulty: 'facile',
     level: 1,
-    question: 'Quels sont les gestes de prière chrétienne ?',
+    question: 'Selon la tradition chrétienne, que signifie le signe de croix ?',
     questionType: 'multiple-choice',
     options: [
-      'Le signe de croix',
-      'Joindre les mains',
-      'S\'agenouiller',
-      'Fermer les yeux'
+      'Un simple geste de bénédiction',
+      'Une invocation de la Trinité et un rappel de la croix du Christ',
+      'Un signe de protection',
+      'Une prière pour les défunts'
     ],
-    correctAnswer: [0, 1, 2, 3],
-    multipleCorrectAnswers: true,
-    explanation: 'Tous ces gestes sont des gestes de prière chrétienne : le signe de croix, joindre les mains, s\'agenouiller et fermer les yeux.',
-    points: 15
+    correctAnswer: 1,
+    explanation: 'Le signe de croix est une invocation de la Trinité ("Au nom du Père, du Fils et du Saint-Esprit") et un rappel de la croix du Christ, symbole de notre salut.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 2157'
   },
   {
     id: '12',
     category: 'decouverte-gestes',
     difficulty: 'facile',
     level: 1,
-    question: 'Le signe de croix est une prière.',
-    questionType: 'true-false',
-    options: ['Vrai', 'Faux'],
-    correctAnswer: 0,
-    explanation: 'Vrai. Le signe de croix est une prière qui nous rappelle la Trinité et la croix du Christ.',
-    points: 10
+    question: 'Selon l\'Évangile de Matthieu, au nom de qui faut-il baptiser ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Au nom de Jésus-Christ',
+      'Au nom du Père, du Fils et du Saint-Esprit',
+      'Au nom de Dieu',
+      'Au nom de l\'Église'
+    ],
+    correctAnswer: 1,
+    explanation: 'Jésus dit : "Allez, faites de toutes les nations des disciples, les baptisant au nom du Père, du Fils et du Saint-Esprit" (Matthieu 28:19).',
+    points: 15,
+    scripture: 'Matthieu 28:19'
   },
   {
     id: '13',
     category: 'decouverte-gestes',
     difficulty: 'facile',
     level: 1,
-    question: 'Complétez : "Au nom du Père, et du Fils, et du..."',
-    questionType: 'quote-completion',
-    options: ['Saint-Esprit', 'Saint Esprit', 'Esprit Saint', 'Esprit'],
-    correctAnswer: 0,
-    explanation: 'La formule complète est : "Au nom du Père, et du Fils, et du Saint-Esprit. Amen."',
-    points: 10
+    question: 'Selon l\'Évangile de Luc, que demandent les disciples à Jésus ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Comment guérir les malades',
+      'Comment chasser les démons',
+      'Comment prier',
+      'Comment prêcher'
+    ],
+    correctAnswer: 2,
+    explanation: 'Les disciples demandent à Jésus : "Seigneur, apprends-nous à prier" (Luc 11:1).',
+    points: 15,
+    scripture: 'Luc 11:1'
   },
   {
     id: '14',
     category: 'decouverte-gestes',
     difficulty: 'moyen',
     level: 1,
-    question: 'Quelle est la prière enseignée par Jésus ?',
+    question: 'Selon l\'Évangile de Matthieu, comment Jésus commence-t-il le Notre Père ?',
     questionType: 'multiple-choice',
     options: [
-      'Le Je vous salue Marie',
-      'Le Notre Père',
-      'Le Gloria',
-      'Le Credo'
+      'Notre Père qui es aux cieux',
+      'Père, que ton nom soit sanctifié',
+      'Père, que ton règne vienne',
+      'Père, que ta volonté soit faite'
     ],
-    correctAnswer: 1,
-    explanation: 'Jésus a enseigné le Notre Père à ses disciples quand ils lui ont demandé comment prier.',
+    correctAnswer: 0,
+    explanation: 'Jésus commence le Notre Père par : "Notre Père qui es aux cieux" (Matthieu 6:9).',
     points: 15,
-    scripture: 'Luc 11:1-4'
+    scripture: 'Matthieu 6:9'
   },
   {
     id: '15',
     category: 'decouverte-gestes',
     difficulty: 'facile',
     level: 1,
-    question: 'On peut prier à genoux.',
-    questionType: 'true-false',
-    options: ['Vrai', 'Faux'],
-    correctAnswer: 0,
-    explanation: 'Vrai. On peut prier à genoux, debout, assis, ou dans n\'importe quelle position respectueuse.',
-    points: 10
+    question: 'Selon l\'Évangile de Luc, que dit Jésus sur la prière ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Priez seulement en public',
+      'Priez sans cesse',
+      'Priez seulement le matin',
+      'Priez seulement le soir'
+    ],
+    correctAnswer: 1,
+    explanation: 'Jésus dit : "Priez sans cesse" (Luc 18:1). La prière doit être une attitude constante dans la vie du chrétien.',
+    points: 15,
+    scripture: 'Luc 18:1'
   },
   {
     id: '16',
     category: 'decouverte-gestes',
     difficulty: 'moyen',
     level: 1,
-    question: 'Complétez : "Notre Père qui es aux cieux, que ton nom soit..."',
-    questionType: 'quote-completion',
+    question: 'Selon l\'Évangile de Matthieu, que demande Jésus dans le Notre Père ?',
+    questionType: 'multiple-choice',
     options: [
-      'béni',
-      'saintifié',
-      'glorifié',
-      'adoré'
+      'Que ton règne vienne',
+      'Que ta volonté soit faite sur la terre comme au ciel',
+      'Donne-nous aujourd\'hui notre pain de ce jour',
+      'Pardonne-nous nos offenses'
     ],
     correctAnswer: 1,
-    explanation: 'La prière commence par : "Notre Père qui es aux cieux, que ton nom soit sanctifié."',
-    points: 15
+    explanation: 'Jésus dit : "Que ta volonté soit faite sur la terre comme au ciel" (Matthieu 6:10).',
+    points: 15,
+    scripture: 'Matthieu 6:10'
   },
   {
     id: '17',
@@ -269,8 +312,9 @@ export const sampleQuestions: Question[] = [
     ],
     correctAnswer: [0, 1, 2, 3],
     multipleCorrectAnswers: true,
-    explanation: 'Tous ces gestes sont des gestes de respect dans l\'Église : s\'incliner, s\'agenouiller brièvement (génuflexion), faire le signe de croix et joindre les mains.',
-    points: 15
+    explanation: 'Tous ces gestes sont des gestes de respect dans l\'Église : s\'incliner, s\'agenouiller brièvement (génuflexion), faire le signe de croix et joindre les mains. Ces gestes expriment notre respect et notre adoration envers Dieu.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 1378'
   },
   {
     id: '18',
@@ -281,8 +325,9 @@ export const sampleQuestions: Question[] = [
     questionType: 'true-false',
     options: ['Vrai', 'Faux'],
     correctAnswer: 0,
-    explanation: 'Vrai. On fait une génuflexion devant le tabernacle qui contient le Saint-Sacrement.',
-    points: 10
+    explanation: 'Vrai. On fait une génuflexion devant le tabernacle qui contient le Saint-Sacrement. C\'est un geste d\'adoration envers la présence réelle du Christ.',
+    points: 10,
+    catechism: 'Catéchisme de l\'Église Catholique 1378'
   },
   {
     id: '19',
@@ -298,8 +343,9 @@ export const sampleQuestions: Question[] = [
       'miséricorde'
     ],
     correctAnswer: 0,
-    explanation: 'La prière commence par : "Je vous salue Marie, pleine de grâce, le Seigneur est avec vous."',
-    points: 10
+    explanation: 'La prière commence par : "Je vous salue Marie, pleine de grâce, le Seigneur est avec vous." Cette prière est basée sur les paroles de l\'ange Gabriel à Marie (Luc 1:28).',
+    points: 10,
+    scripture: 'Luc 1:28'
   },
   {
     id: '20',
@@ -315,8 +361,9 @@ export const sampleQuestions: Question[] = [
       'Le Credo'
     ],
     correctAnswer: 1,
-    explanation: 'Le Notre Père est la prière la plus importante car elle a été enseignée par Jésus lui-même.',
-    points: 15
+    explanation: 'Le Notre Père est la prière la plus importante car elle a été enseignée par Jésus lui-même (Matthieu 6:9-13). C\'est la prière par excellence de l\'Église.',
+    points: 15,
+    scripture: 'Matthieu 6:9-13'
   },
 
   // ===== DÉCOUVERTE - LA BIBLE ET LES ÉCRITURES (Questions 21-30) =====
@@ -325,115 +372,134 @@ export const sampleQuestions: Question[] = [
     category: 'decouverte-bible',
     difficulty: 'facile',
     level: 1,
-    question: 'Qu\'est-ce que la Bible ?',
+    question: 'Selon la Deuxième Lettre à Timothée, d\'où vient la Bible ?',
     questionType: 'multiple-choice',
     options: [
-      'Un livre d\'histoire',
-      'La Parole de Dieu',
-      'Un recueil de contes',
-      'Un livre de philosophie'
+      'De l\'imagination humaine',
+      'De l\'inspiration divine',
+      'De la tradition orale',
+      'De l\'histoire ancienne'
     ],
     correctAnswer: 1,
-    explanation: 'La Bible est la Parole de Dieu, inspirée par l\'Esprit Saint.',
-    points: 10,
-    catechism: 'CCC 105'
+    explanation: 'Saint Paul dit : "Toute Écriture est inspirée de Dieu" (2 Timothée 3:16). La Bible est la Parole de Dieu inspirée par l\'Esprit Saint.',
+    points: 15,
+    scripture: '2 Timothée 3:16'
   },
   {
     id: '22',
     category: 'decouverte-bible',
     difficulty: 'facile',
     level: 1,
-    question: 'La Bible est divisée en deux parties principales.',
-    questionType: 'true-false',
-    options: ['Vrai', 'Faux'],
-    correctAnswer: 0,
-    explanation: 'Vrai. La Bible est divisée en Ancien Testament et Nouveau Testament.',
-    points: 10
+    question: 'Selon la tradition chrétienne, que contient l\'Ancien Testament ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Seulement les Évangiles',
+      'Les livres écrits avant Jésus-Christ',
+      'Seulement les lettres de saint Paul',
+      'Les livres écrits après Jésus-Christ'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'Ancien Testament contient les livres écrits avant Jésus-Christ, qui préparent sa venue. Le Nouveau Testament contient les livres écrits après sa venue. L\'Ancien Testament est la révélation progressive de Dieu à son peuple.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 121-123'
   },
   {
     id: '23',
     category: 'decouverte-bible',
     difficulty: 'moyen',
     level: 1,
-    question: 'Complétez : "Au commencement, Dieu créa..."',
-    questionType: 'quote-completion',
+    question: 'Selon le livre de la Genèse, que dit Dieu après avoir créé l\'homme ?',
+    questionType: 'multiple-choice',
     options: [
-      'la terre',
-      'le ciel et la terre',
-      'l\'homme',
-      'la lumière'
+      'C\'est bien',
+      'C\'est très bien',
+      'C\'est parfait',
+      'C\'est bon'
     ],
     correctAnswer: 1,
-    explanation: 'La Bible commence par : "Au commencement, Dieu créa le ciel et la terre" (Genèse 1:1).',
+    explanation: 'Après avoir créé l\'homme, Dieu dit : "C\'est très bien" (Genèse 1:31).',
     points: 15,
-    scripture: 'Genèse 1:1'
+    scripture: 'Genèse 1:31'
   },
   {
     id: '24',
     category: 'decouverte-bible',
     difficulty: 'facile',
     level: 1,
-    question: 'Combien y a-t-il d\'évangiles ?',
+    question: 'Selon la tradition chrétienne, quel est le premier Évangile écrit ?',
     questionType: 'multiple-choice',
-    options: ['2', '3', '4', '5'],
-    correctAnswer: 2,
-    explanation: 'Il y a 4 évangiles : Matthieu, Marc, Luc et Jean.',
-    points: 10
+    options: [
+      'L\'Évangile de Matthieu',
+      'L\'Évangile de Marc',
+      'L\'Évangile de Luc',
+      'L\'Évangile de Jean'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'Évangile de Marc est généralement considéré comme le premier Évangile écrit, vers l\'an 65-70 après Jésus-Christ. Il est le plus court et le plus direct des quatre Évangiles.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 120'
   },
   {
     id: '25',
     category: 'decouverte-bible',
     difficulty: 'moyen',
     level: 1,
-    question: 'Quel est le premier livre de la Bible ?',
+    question: 'Selon le livre de la Genèse, comment Dieu a-t-il créé l\'homme ?',
     questionType: 'multiple-choice',
     options: [
-      'Exode',
-      'Genèse',
-      'Psaumes',
-      'Évangile de Matthieu'
+      'Avec de la poussière du sol',
+      'Avec de l\'argile',
+      'Avec de la pierre',
+      'Avec de l\'eau'
     ],
-    correctAnswer: 1,
-    explanation: 'Le premier livre de la Bible est la Genèse.',
-    points: 15
+    correctAnswer: 0,
+    explanation: 'Dieu a créé l\'homme "avec de la poussière du sol" (Genèse 2:7).',
+    points: 15,
+    scripture: 'Genèse 2:7'
   },
   {
     id: '26',
     category: 'decouverte-bible',
     difficulty: 'facile',
     level: 1,
-    question: 'Les Psaumes sont des prières.',
-    questionType: 'true-false',
-    options: ['Vrai', 'Faux'],
-    correctAnswer: 0,
-    explanation: 'Vrai. Les Psaumes sont des prières et des chants sacrés.',
-    points: 10
+    question: 'Selon le livre des Psaumes, que dit le Psaume 1 sur l\'homme heureux ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Il est riche',
+      'Il médite la loi du Seigneur jour et nuit',
+      'Il est puissant',
+      'Il est célèbre'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le Psaume 1 dit : "Heureux l\'homme qui médite la loi du Seigneur jour et nuit" (Psaume 1:2).',
+    points: 15,
+    scripture: 'Psaume 1:2'
   },
   {
     id: '27',
     category: 'decouverte-bible',
     difficulty: 'moyen',
     level: 1,
-    question: 'Complétez : "Le Seigneur est mon berger, je ne manque de..."',
-    questionType: 'quote-completion',
+    question: 'Selon le Psaume 23, que fait le Seigneur pour celui qui le suit ?',
+    questionType: 'single-choice',
     options: [
-      'rien',
-      'personne',
-      'rien',
-      'tout'
+      'Il le rend riche',
+      'Il le fait reposer dans de verts pâturages',
+      'Il le rend célèbre',
+      'Il le rend puissant'
     ],
-    correctAnswer: 0,
-    explanation: 'Le Psaume 23 commence par : "Le Seigneur est mon berger, je ne manque de rien."',
+    correctAnswer: 1,
+    explanation: 'Le Psaume 23 dit : "Il me fait reposer dans de verts pâturages" (Psaume 23:2).',
     points: 15,
-    scripture: 'Psaume 23:1'
+    scripture: 'Psaume 23:2'
   },
   {
     id: '28',
     category: 'decouverte-bible',
     difficulty: 'facile',
     level: 1,
-    question: 'Qui a écrit la plupart des lettres du Nouveau Testament ?',
-    questionType: 'multiple-choice',
+    question: 'Selon la tradition chrétienne, quel apôtre a écrit le plus d\'épîtres ?',
+    questionType: 'single-choice',
     options: [
       'Saint Pierre',
       'Saint Paul',
@@ -441,28 +507,35 @@ export const sampleQuestions: Question[] = [
       'Saint Matthieu'
     ],
     correctAnswer: 1,
-    explanation: 'Saint Paul a écrit la plupart des lettres (épîtres) du Nouveau Testament.',
-    points: 10
+    explanation: 'Saint Paul a écrit 13 épîtres du Nouveau Testament, plus que tout autre apôtre. Il est l\'apôtre des nations et le missionnaire par excellence.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 120'
   },
   {
     id: '29',
     category: 'decouverte-bible',
     difficulty: 'moyen',
     level: 1,
-    question: 'L\'Apocalypse est le dernier livre de la Bible.',
-    questionType: 'true-false',
-    options: ['Vrai', 'Faux'],
-    correctAnswer: 0,
-    explanation: 'Vrai. L\'Apocalypse de Saint Jean est le dernier livre de la Bible.',
-    points: 10
+    question: 'Selon la tradition chrétienne, quel est le dernier livre du Nouveau Testament ?',
+    questionType: 'single-choice',
+    options: [
+      'L\'Évangile de Jean',
+      'L\'Apocalypse de Saint Jean',
+      'La Lettre aux Hébreux',
+      'La Deuxième Lettre de Pierre'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'Apocalypse de Saint Jean est le dernier livre du Nouveau Testament et de la Bible entière. Il contient les révélations sur la fin des temps.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 120'
   },
   {
     id: '30',
     category: 'decouverte-bible',
     difficulty: 'facile',
     level: 1,
-    question: 'Qu\'est-ce qu\'un évangile ?',
-    questionType: 'multiple-choice',
+    question: 'Selon l\'Évangile de Marc, que signifie le mot "Évangile" ?',
+    questionType: 'single-choice',
     options: [
       'Une histoire',
       'Une bonne nouvelle',
@@ -470,8 +543,45 @@ export const sampleQuestions: Question[] = [
       'Un commandement'
     ],
     correctAnswer: 1,
-    explanation: 'Évangile signifie "bonne nouvelle" en grec.',
-    points: 10
+    explanation: 'Le mot "Évangile" vient du grec "euangelion" qui signifie "bonne nouvelle". Marc commence son Évangile par : "Commencement de l\'Évangile de Jésus-Christ" (Marc 1:1).',
+    points: 15,
+    scripture: 'Marc 1:1'
+  },
+  {
+    id: '30b',
+    category: 'decouverte-bible',
+    difficulty: 'moyen',
+    level: 1,
+    question: 'Selon l\'Évangile de Luc, qui a annoncé la naissance de Jean-Baptiste ?',
+    questionType: 'single-choice',
+    options: [
+      'L\'ange Gabriel',
+      'L\'ange Michel',
+      'L\'ange Raphaël',
+      'L\'ange Uriel'
+    ],
+    correctAnswer: 0,
+    explanation: 'L\'ange Gabriel a annoncé la naissance de Jean-Baptiste à Zacharie (Luc 1:11-20).',
+    points: 15,
+    scripture: 'Luc 1:11-20'
+  },
+  {
+    id: '30c',
+    category: 'decouverte-bible',
+    difficulty: 'facile',
+    level: 1,
+    question: 'Selon l\'Évangile de Matthieu, qui a guidé les mages vers Jésus ?',
+    questionType: 'single-choice',
+    options: [
+      'Une étoile',
+      'Un ange',
+      'Un prophète',
+      'Un berger'
+    ],
+    correctAnswer: 0,
+    explanation: 'Une étoile a guidé les mages vers Jésus (Matthieu 2:1-12).',
+    points: 15,
+    scripture: 'Matthieu 2:1-12'
   },
 
   // ===== DÉCOUVERTE - L'ÉGLISE ET LA MESSE (Questions 31-40) =====
@@ -480,64 +590,72 @@ export const sampleQuestions: Question[] = [
     category: 'decouverte-eglise',
     difficulty: 'facile',
     level: 1,
-    question: 'Qu\'est-ce qu\'une église ?',
-    questionType: 'multiple-choice',
+    question: 'Selon la tradition chrétienne, que représente l\'église ?',
+    questionType: 'single-choice',
     options: [
-      'Un simple bâtiment',
-      'La maison de Dieu et le lieu de rassemblement des chrétiens',
-      'Un musée religieux',
-      'Un centre culturel'
+      'Un simple bâtiment de pierre',
+      'Le Corps mystique du Christ',
+      'Un musée d\'art religieux',
+      'Un centre de loisirs'
     ],
     correctAnswer: 1,
-    explanation: 'L\'église est la maison de Dieu et le lieu où les chrétiens se rassemblent pour prier et célébrer.',
-    points: 10
+    explanation: 'L\'église représente le Corps mystique du Christ, comme l\'enseigne saint Paul dans ses épîtres.',
+    points: 15,
+    scripture: '1 Corinthiens 12:27'
   },
   {
     id: '32',
     category: 'decouverte-eglise',
     difficulty: 'facile',
     level: 1,
-    question: 'Qu\'est-ce que la messe ?',
-    questionType: 'multiple-choice',
+    question: 'Selon l\'Évangile de Luc, que fait Jésus lors de la Cène ?',
+    questionType: 'single-choice',
     options: [
-      'Une simple réunion',
-      'La célébration du sacrifice du Christ',
-      'Un concert religieux',
-      'Une conférence'
+      'Il chante un psaume',
+      'Il prend le pain, le bénit, le rompt et le donne',
+      'Il lave les pieds des disciples',
+      'Il prêche un sermon'
     ],
     correctAnswer: 1,
-    explanation: 'La messe est la célébration du sacrifice du Christ, renouvelé pour nous.',
-    points: 10,
-    catechism: 'CCC 1322'
+    explanation: 'Jésus "prit le pain, le bénit, le rompit et le donna" (Luc 22:19). C\'est l\'institution de l\'Eucharistie.',
+    points: 15,
+    scripture: 'Luc 22:19'
   },
   {
     id: '33',
     category: 'decouverte-eglise',
     difficulty: 'moyen',
     level: 1,
-    question: 'La messe se déroule en plusieurs parties.',
-    questionType: 'true-false',
-    options: ['Vrai', 'Faux'],
-    correctAnswer: 0,
-    explanation: 'Vrai. La messe se déroule en plusieurs parties : liturgie de la Parole, liturgie eucharistique, etc.',
-    points: 10
+    question: 'Selon la tradition liturgique, quelle est la première partie de la messe ?',
+    questionType: 'single-choice',
+    options: [
+      'La liturgie eucharistique',
+      'Les rites d\'ouverture',
+      'La communion',
+      'La bénédiction finale'
+    ],
+    correctAnswer: 1,
+    explanation: 'La messe commence par les rites d\'ouverture : signe de croix, salutation, acte pénitentiel, etc. C\'est la préparation à la célébration eucharistique.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 1348'
   },
   {
     id: '34',
     category: 'decouverte-eglise',
     difficulty: 'facile',
     level: 1,
-    question: 'Qu\'est-ce que l\'autel ?',
-    questionType: 'multiple-choice',
+    question: 'Selon la tradition chrétienne, que symbolise l\'autel ?',
+    questionType: 'single-choice',
     options: [
-      'Un meuble décoratif',
-      'La table du sacrifice du Christ',
-      'Un banc',
-      'Une statue'
+      'Un simple meuble',
+      'Le Christ lui-même',
+      'Une table ordinaire',
+      'Un objet décoratif'
     ],
     correctAnswer: 1,
-    explanation: 'L\'autel est la table du sacrifice du Christ, où se déroule la célébration eucharistique.',
-    points: 10
+    explanation: 'L\'autel symbolise le Christ lui-même, comme l\'enseigne la tradition liturgique de l\'Église. C\'est sur l\'autel que se renouvelle le sacrifice du Christ.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 1383'
   },
   {
     id: '35',
@@ -553,8 +671,9 @@ export const sampleQuestions: Question[] = [
       'chacun'
     ],
     correctAnswer: 1,
-    explanation: 'Le prêtre dit : "Le Seigneur soit avec vous" et l\'assemblée répond : "Et avec votre esprit."',
-    points: 15
+    explanation: 'Le prêtre dit : "Le Seigneur soit avec vous" et l\'assemblée répond : "Et avec votre esprit." Cette salutation liturgique exprime la présence du Christ dans l\'assemblée.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 1348'
   },
   {
     id: '36',
@@ -570,8 +689,9 @@ export const sampleQuestions: Question[] = [
       'Une statue'
     ],
     correctAnswer: 1,
-    explanation: 'Le tabernacle est le lieu où est conservé le Saint-Sacrement (le Corps du Christ).',
-    points: 10
+    explanation: 'Le tabernacle est le lieu où est conservé le Saint-Sacrement (le Corps du Christ). C\'est le lieu de la présence réelle du Christ.',
+    points: 10,
+    catechism: 'Catéchisme de l\'Église Catholique 1378'
   },
   {
     id: '37',
@@ -582,8 +702,9 @@ export const sampleQuestions: Question[] = [
     questionType: 'true-false',
     options: ['Vrai', 'Faux'],
     correctAnswer: 0,
-    explanation: 'Vrai. On peut communier à chaque messe si on est en état de grâce.',
-    points: 10
+    explanation: 'Vrai. On peut communier à chaque messe si on est en état de grâce. La communion est recommandée à chaque participation à la messe.',
+    points: 10,
+    catechism: 'Catéchisme de l\'Église Catholique 1415'
   },
   {
     id: '38',
@@ -599,8 +720,9 @@ export const sampleQuestions: Question[] = [
       'Un aliment'
     ],
     correctAnswer: 1,
-    explanation: 'L\'encens est une résine aromatique brûlée en signe de prière qui monte vers Dieu.',
-    points: 10
+    explanation: 'L\'encens est une résine aromatique brûlée en signe de prière qui monte vers Dieu. Il symbolise nos prières qui montent vers le ciel.',
+    points: 10,
+    catechism: 'Catéchisme de l\'Église Catholique 1152'
   },
   {
     id: '39',
@@ -616,8 +738,9 @@ export const sampleQuestions: Question[] = [
       'cieux, paix aux hommes'
     ],
     correctAnswer: 1,
-    explanation: 'Le Gloria dit : "Gloire à Dieu au plus haut des cieux, et paix sur la terre aux hommes qu\'il aime."',
-    points: 15
+    explanation: 'Le Gloria dit : "Gloire à Dieu au plus haut des cieux, et paix sur la terre aux hommes qu\'il aime." Cette prière est basée sur l\'hymne des anges (Luc 2:14).',
+    points: 15,
+    scripture: 'Luc 2:14'
   },
   {
     id: '40',
@@ -633,8 +756,9 @@ export const sampleQuestions: Question[] = [
       'Un vase décoratif'
     ],
     correctAnswer: 1,
-    explanation: 'Le ciboire est un vase sacré pour conserver les hosties consacrées.',
-    points: 10
+    explanation: 'Le ciboire est un vase sacré pour conserver les hosties consacrées. Il est utilisé pour la communion et la conservation du Saint-Sacrement.',
+    points: 10,
+    catechism: 'Catéchisme de l\'Église Catholique 1378'
   },
 
   // ===== DÉCOUVERTE - LE BAPTÊME ET LES SACREMENTS (Questions 41-50) =====
@@ -654,7 +778,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Le baptême est le sacrement qui nous fait enfants de Dieu et nous incorpore à l\'Église.',
     points: 10,
-    catechism: 'CCC 1213'
+    catechism: 'Catéchisme de l\'Église Catholique 1213'
   },
   {
     id: '42',
@@ -665,8 +789,9 @@ export const sampleQuestions: Question[] = [
     questionType: 'true-false',
     options: ['Vrai', 'Faux'],
     correctAnswer: 0,
-    explanation: 'Vrai. Le baptême efface le péché originel et tous les péchés personnels.',
-    points: 10
+    explanation: 'Vrai. Le baptême efface le péché originel et tous les péchés personnels. Il nous fait renaître à la vie divine.',
+    points: 10,
+    catechism: 'Catéchisme de l\'Église Catholique 1263'
   },
   {
     id: '43',
@@ -682,8 +807,9 @@ export const sampleQuestions: Question[] = [
       'Esprit'
     ],
     correctAnswer: 0,
-    explanation: 'La formule baptismale est : "Je te baptise au nom du Père, et du Fils, et du Saint-Esprit."',
-    points: 15
+    explanation: 'La formule baptismale est : "Je te baptise au nom du Père, et du Fils, et du Saint-Esprit." Cette formule est basée sur les paroles de Jésus (Matthieu 28:19).',
+    points: 15,
+    scripture: 'Matthieu 28:19'
   },
   {
     id: '44',
@@ -700,8 +826,9 @@ export const sampleQuestions: Question[] = [
     ],
     correctAnswer: [1, 2],
     multipleCorrectAnswers: true,
-    explanation: 'Les sacrements de guérison sont la Réconciliation (confession) et l\'Onction des malades.',
-    points: 15
+    explanation: 'Les sacrements de guérison sont la Réconciliation (confession) et l\'Onction des malades. Ils apportent la guérison spirituelle et parfois physique.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 1420-1421'
   },
   {
     id: '45',
@@ -719,7 +846,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'L\'Eucharistie est le sacrement le plus important car elle contient le Christ lui-même.',
     points: 15,
-    catechism: 'CCC 1324'
+    catechism: 'Catéchisme de l\'Église Catholique 1324'
   },
   {
     id: '46',
@@ -730,8 +857,9 @@ export const sampleQuestions: Question[] = [
     questionType: 'true-false',
     options: ['Vrai', 'Faux'],
     correctAnswer: 1,
-    explanation: 'Faux. Le baptême ne peut être reçu qu\'une seule fois, il imprime un caractère indélébile.',
-    points: 10
+    explanation: 'Faux. Le baptême ne peut être reçu qu\'une seule fois, il imprime un caractère indélébile. C\'est un sacrement qui ne peut être répété.',
+    points: 10,
+    catechism: 'Catéchisme de l\'Église Catholique 1272'
   },
   {
     id: '47',
@@ -766,8 +894,9 @@ export const sampleQuestions: Question[] = [
     ],
     correctAnswer: [0, 1, 2],
     multipleCorrectAnswers: true,
-    explanation: 'Les sacrements de l\'initiation chrétienne sont le Baptême, la Confirmation et l\'Eucharistie.',
-    points: 15
+    explanation: 'Les sacrements de l\'initiation chrétienne sont le Baptême, la Confirmation et l\'Eucharistie. Ils nous introduisent dans la vie chrétienne.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 1212'
   },
   {
     id: '49',
@@ -778,8 +907,9 @@ export const sampleQuestions: Question[] = [
     questionType: 'true-false',
     options: ['Vrai', 'Faux'],
     correctAnswer: 1,
-    explanation: 'Faux. Pour communier, il faut être baptisé et en état de grâce.',
-    points: 10
+    explanation: 'Faux. Pour communier, il faut être baptisé et en état de grâce. Le baptême est la porte d\'entrée dans la vie chrétienne.',
+    points: 10,
+    catechism: 'Catéchisme de l\'Église Catholique 1415'
   },
   {
     id: '50',
@@ -795,8 +925,9 @@ export const sampleQuestions: Question[] = [
       'Un chant'
     ],
     correctAnswer: 1,
-    explanation: 'La communion est le fait de recevoir le Corps du Christ dans l\'Eucharistie.',
-    points: 10
+    explanation: 'La communion est le fait de recevoir le Corps du Christ dans l\'Eucharistie. C\'est l\'union intime avec le Christ.',
+    points: 10,
+    catechism: 'Catéchisme de l\'Église Catholique 1391'
   },
 
   // ===== NIVEAU 2 - FONDAMENTAUX DE LA FOI (Questions 51-200) =====
@@ -818,7 +949,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Un dogme est une vérité de foi définie solennellement par l\'Église comme révélée par Dieu.',
     points: 15,
-    catechism: 'CCC 88'
+    catechism: 'Catéchisme de l\'Église Catholique 88'
   },
   {
     id: '52',
@@ -831,7 +962,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Vrai. La Trinité est le dogme central : un seul Dieu en trois personnes.',
     points: 10,
-    catechism: 'CCC 253'
+    catechism: 'Catéchisme de l\'Église Catholique 253'
   },
   {
     id: '53',
@@ -959,7 +1090,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'L\'Incarnation est le Fils de Dieu fait homme en Jésus-Christ.',
     points: 15,
-    catechism: 'CCC 464'
+    catechism: 'Catéchisme de l\'Église Catholique 464'
   },
   {
     id: '61',
@@ -1330,7 +1461,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Les sacrements sont des signes efficaces de la grâce, institués par le Christ et confiés à l\'Église, par lesquels nous est dispensée la vie divine.',
     points: 15,
-    catechism: 'CCC 1131'
+    catechism: 'Catéchisme de l\'Église Catholique 1131'
   },
   {
     id: '84',
@@ -1394,7 +1525,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'L\'Eucharistie est la source et le sommet de toute la vie chrétienne et ecclésiale.',
     points: 15,
-    catechism: 'CCC 1324'
+    catechism: 'Catéchisme de l\'Église Catholique 1324'
   },
   {
     id: '88',
@@ -1458,7 +1589,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'L\'ordre est le sacrement par lequel la mission confiée par le Christ à ses apôtres continue à être exercée dans l\'Église jusqu\'à la fin des temps.',
     points: 15,
-    catechism: 'CCC 1536'
+    catechism: 'Catéchisme de l\'Église Catholique 1536'
   },
   {
     id: '92',
@@ -14691,6 +14822,1100 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La théologie taïwanaise est la théologie développée à Taïwan.',
     points: 30
+  },
+
+  // ===== QUESTIONS SUR LA VIERGE MARIE =====
+
+  // ===== MARIE - LA VIE DE MARIE SELON LES ÉVANGILES (Questions marie-1 à marie-10) =====
+  {
+    id: 'marie-1',
+    category: 'marie-vie',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Selon l\'Évangile de Luc, qui a annoncé à Marie qu\'elle serait la mère du Sauveur ?',
+    questionType: 'multiple-choice',
+    options: [
+      'L\'ange Michel',
+      'L\'ange Gabriel',
+      'L\'ange Raphaël',
+      'L\'ange Uriel'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'ange Gabriel a annoncé à Marie qu\'elle serait la mère du Sauveur (Luc 1:26-38). C\'est l\'Annonciation.',
+    points: 15,
+    scripture: 'Luc 1:26-38'
+  },
+  {
+    id: 'marie-2',
+    category: 'marie-vie',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Selon l\'Évangile de Luc, que répond Marie à l\'ange Gabriel ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Je ne comprends pas',
+      'Comment cela se fera-t-il ?',
+      'Voici la servante du Seigneur, qu\'il me soit fait selon ta parole',
+      'Je ne suis pas digne'
+    ],
+    correctAnswer: 2,
+    explanation: 'Marie répond : "Voici la servante du Seigneur, qu\'il me soit fait selon ta parole" (Luc 1:38). C\'est son "Fiat".',
+    points: 15,
+    scripture: 'Luc 1:38'
+  },
+  {
+    id: 'marie-3',
+    category: 'marie-vie',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Selon l\'Évangile de Luc, où Marie a-t-elle rendu visite à sa cousine Élisabeth ?',
+    questionType: 'multiple-choice',
+    options: [
+      'À Nazareth',
+      'À Bethléem',
+      'Dans une ville de Juda',
+      'À Jérusalem'
+    ],
+    correctAnswer: 2,
+    explanation: 'Marie est allée rendre visite à Élisabeth "dans une ville de Juda" (Luc 1:39). C\'est la Visitation.',
+    points: 15,
+    scripture: 'Luc 1:39'
+  },
+  {
+    id: 'marie-4',
+    category: 'marie-vie',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Selon l\'Évangile de Luc, que dit Marie dans le Magnificat ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Mon âme exalte le Seigneur',
+      'Gloire à Dieu',
+      'Béni soit le Seigneur',
+      'Louange à Dieu'
+    ],
+    correctAnswer: 0,
+    explanation: 'Marie dit : "Mon âme exalte le Seigneur" (Luc 1:46). C\'est le début du Magnificat.',
+    points: 15,
+    scripture: 'Luc 1:46'
+  },
+  {
+    id: 'marie-5',
+    category: 'marie-vie',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Selon l\'Évangile de Luc, où Jésus est-il né ?',
+    questionType: 'multiple-choice',
+    options: [
+      'À Nazareth',
+      'À Bethléem',
+      'À Jérusalem',
+      'À Capharnaüm'
+    ],
+    correctAnswer: 1,
+    explanation: 'Jésus est né à Bethléem, comme le rapporte l\'Évangile de Luc (Luc 2:1-7).',
+    points: 15,
+    scripture: 'Luc 2:1-7'
+  },
+  {
+    id: 'marie-6',
+    category: 'marie-vie',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Selon l\'Évangile de Luc, que font les bergers après avoir vu l\'enfant Jésus ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Ils rentrent chez eux',
+      'Ils racontent ce qui leur a été dit',
+      'Ils partent en voyage',
+      'Ils se taisent'
+    ],
+    correctAnswer: 1,
+    explanation: 'Les bergers "racontèrent ce qui leur avait été dit au sujet de cet enfant" (Luc 2:17).',
+    points: 15,
+    scripture: 'Luc 2:17'
+  },
+  {
+    id: 'marie-7',
+    category: 'marie-vie',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Selon l\'Évangile de Luc, que dit Siméon à Marie lors de la Présentation au Temple ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Votre enfant sera grand',
+      'Un glaive transpercera votre âme',
+      'Votre enfant sera roi',
+      'Votre enfant sera prophète'
+    ],
+    correctAnswer: 1,
+    explanation: 'Siméon dit à Marie : "Un glaive transpercera votre âme" (Luc 2:35).',
+    points: 15,
+    scripture: 'Luc 2:35'
+  },
+  {
+    id: 'marie-8',
+    category: 'marie-vie',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Selon l\'Évangile de Luc, où Marie et Joseph ont-ils trouvé Jésus à l\'âge de 12 ans ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Dans la synagogue',
+      'Dans le Temple',
+      'Dans la rue',
+      'Chez des amis'
+    ],
+    correctAnswer: 1,
+    explanation: 'Marie et Joseph ont trouvé Jésus dans le Temple, assis au milieu des docteurs (Luc 2:46).',
+    points: 15,
+    scripture: 'Luc 2:46'
+  },
+  {
+    id: 'marie-9',
+    category: 'marie-vie',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Selon l\'Évangile de Jean, que dit Jésus à Marie lors des noces de Cana ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Femme, qu\'y a-t-il entre moi et toi ?',
+      'Mère, que puis-je faire ?',
+      'Femme, que veux-tu ?',
+      'Mère, je ne peux rien faire'
+    ],
+    correctAnswer: 0,
+    explanation: 'Jésus dit à Marie : "Femme, qu\'y a-t-il entre moi et toi ? Mon heure n\'est pas encore venue" (Jean 2:4).',
+    points: 15,
+    scripture: 'Jean 2:4'
+  },
+  {
+    id: 'marie-10',
+    category: 'marie-vie',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Selon l\'Évangile de Jean, que dit Jésus à Marie depuis la croix ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Femme, voici ton fils',
+      'Mère, prends soin de Jean',
+      'Femme, Jean sera ton fils',
+      'Mère, je te confie Jean'
+    ],
+    correctAnswer: 0,
+    explanation: 'Jésus dit à Marie : "Femme, voici ton fils" et à Jean : "Voici ta mère" (Jean 19:26-27).',
+    points: 15,
+    scripture: 'Jean 19:26-27'
+  },
+
+  // ===== MARIE - LES DOGMES MARIAUX (Questions marie-11 à marie-20) =====
+  {
+    id: 'marie-11',
+    category: 'marie-dogmes',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce que l\'Immaculée Conception ?',
+    questionType: 'multiple-choice',
+    options: [
+      'La naissance de Jésus',
+      'Marie préservée du péché originel dès sa conception',
+      'La résurrection de Marie',
+      'L\'ascension de Marie'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'Immaculée Conception est le dogme selon lequel Marie a été préservée du péché originel dès sa conception.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 490-493'
+  },
+  {
+    id: 'marie-12',
+    category: 'marie-dogmes',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que l\'Assomption de Marie ?',
+    questionType: 'multiple-choice',
+    options: [
+      'La mort de Marie',
+      'L\'élévation de Marie au ciel en corps et en âme',
+      'La résurrection de Marie',
+      'L\'ascension de Marie'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'Assomption est l\'élévation de Marie au ciel en corps et en âme à la fin de sa vie terrestre.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 966'
+  },
+  {
+    id: 'marie-13',
+    category: 'marie-dogmes',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce que la virginité perpétuelle de Marie ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Marie n\'a jamais eu d\'enfants',
+      'Marie est restée vierge avant, pendant et après la naissance de Jésus',
+      'Marie était célibataire',
+      'Marie n\'a eu que Jésus'
+    ],
+    correctAnswer: 1,
+    explanation: 'La virginité perpétuelle signifie que Marie est restée vierge avant, pendant et après la naissance de Jésus.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 499-501'
+  },
+  {
+    id: 'marie-14',
+    category: 'marie-dogmes',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que la maternité divine de Marie ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Marie est la mère de Dieu',
+      'Marie est la mère de Jésus',
+      'Marie est la mère de l\'Église',
+      'Marie est la mère de tous les hommes'
+    ],
+    correctAnswer: 0,
+    explanation: 'La maternité divine signifie que Marie est la mère de Dieu, car elle a donné naissance à Jésus, qui est Dieu.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 495'
+  },
+  {
+    id: 'marie-15',
+    category: 'marie-dogmes',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Quand l\'Immaculée Conception a-t-elle été proclamée dogme ?',
+    questionType: 'multiple-choice',
+    options: [
+      'En 1854 par le pape Pie IX',
+      'En 1950 par le pape Pie XII',
+      'En 1964 par le pape Paul VI',
+      'En 1870 par le pape Pie IX'
+    ],
+    correctAnswer: 0,
+    explanation: 'L\'Immaculée Conception a été proclamée dogme en 1854 par le pape Pie IX dans la bulle "Ineffabilis Deus".',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 491'
+  },
+  {
+    id: 'marie-16',
+    category: 'marie-dogmes',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Quand l\'Assomption a-t-elle été proclamée dogme ?',
+    questionType: 'multiple-choice',
+    options: [
+      'En 1854 par le pape Pie IX',
+      'En 1950 par le pape Pie XII',
+      'En 1964 par le pape Paul VI',
+      'En 1870 par le pape Pie IX'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'Assomption a été proclamée dogme en 1950 par le pape Pie XII dans la constitution apostolique "Munificentissimus Deus".',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 966'
+  },
+  {
+    id: 'marie-17',
+    category: 'marie-dogmes',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce que la médiation de Marie ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Marie remplace Jésus',
+      'Marie intercède pour nous auprès de son Fils',
+      'Marie est égale à Jésus',
+      'Marie n\'a aucun rôle'
+    ],
+    correctAnswer: 1,
+    explanation: 'La médiation de Marie signifie qu\'elle intercède pour nous auprès de son Fils Jésus-Christ.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 969'
+  },
+  {
+    id: 'marie-18',
+    category: 'marie-dogmes',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que la corédemption mariale ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Marie a sauvé l\'humanité',
+      'Marie a participé au salut par son "Fiat"',
+      'Marie est coégale au Christ',
+      'Marie n\'a pas participé au salut'
+    ],
+    correctAnswer: 1,
+    explanation: 'La corédemption mariale signifie que Marie a participé au salut de l\'humanité par son "Fiat" et sa collaboration.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 968'
+  },
+  {
+    id: 'marie-19',
+    category: 'marie-dogmes',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce que la maternité spirituelle de Marie ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Marie est la mère de tous les hommes',
+      'Marie est la mère de l\'Église',
+      'Marie est la mère des anges',
+      'Marie n\'a pas de maternité spirituelle'
+    ],
+    correctAnswer: 1,
+    explanation: 'La maternité spirituelle signifie que Marie est la mère de l\'Église et de tous les fidèles.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 963'
+  },
+  {
+    id: 'marie-20',
+    category: 'marie-dogmes',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que la rédemption préservatrice ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Marie a été rachetée après sa naissance',
+      'Marie a été préservée du péché originel par anticipation des mérites du Christ',
+      'Marie n\'a jamais eu besoin de rédemption',
+      'Marie s\'est rachetée elle-même'
+    ],
+    correctAnswer: 1,
+    explanation: 'La rédemption préservatrice signifie que Marie a été préservée du péché originel par anticipation des mérites du Christ.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 492'
+  },
+
+  // ===== MARIE - LES APPARITIONS MARIALES (Questions marie-21 à marie-30) =====
+  {
+    id: 'marie-21',
+    category: 'marie-apparitions',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Où la Vierge Marie est-elle apparue à sainte Bernadette Soubirous ?',
+    questionType: 'multiple-choice',
+    options: [
+      'À Fatima',
+      'À Lourdes',
+      'À Guadalupe',
+      'À La Salette'
+    ],
+    correctAnswer: 1,
+    explanation: 'La Vierge Marie est apparue à sainte Bernadette Soubirous à Lourdes en 1858.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+  {
+    id: 'marie-22',
+    category: 'marie-apparitions',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Quand ont eu lieu les apparitions de Fatima ?',
+    questionType: 'multiple-choice',
+    options: [
+      'En 1917',
+      'En 1858',
+      'En 1931',
+      'En 1945'
+    ],
+    correctAnswer: 0,
+    explanation: 'Les apparitions de Fatima ont eu lieu en 1917, du 13 mai au 13 octobre.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+  {
+    id: 'marie-23',
+    category: 'marie-apparitions',
+    difficulty: 'facile',
+    level: 2,
+    question: 'À qui la Vierge Marie est-elle apparue à Guadalupe ?',
+    questionType: 'multiple-choice',
+    options: [
+      'À sainte Bernadette',
+      'À saint Juan Diego',
+      'À sainte Thérèse',
+      'À saint François'
+    ],
+    correctAnswer: 1,
+    explanation: 'La Vierge Marie est apparue à saint Juan Diego à Guadalupe en 1531.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+  {
+    id: 'marie-24',
+    category: 'marie-apparitions',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Quel message principal la Vierge a-t-elle donné à Fatima ?',
+    questionType: 'multiple-choice',
+    options: [
+      'La prière et la pénitence',
+      'La construction d\'églises',
+      'La guerre sainte',
+      'La richesse matérielle'
+    ],
+    correctAnswer: 0,
+    explanation: 'À Fatima, la Vierge a demandé la prière, la pénitence et la consécration au Cœur Immaculé de Marie.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+  {
+    id: 'marie-25',
+    category: 'marie-apparitions',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Quel est le nom de la Vierge de Guadalupe ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Notre-Dame de Guadalupe',
+      'Notre-Dame de Lourdes',
+      'Notre-Dame de Fatima',
+      'Notre-Dame de La Salette'
+    ],
+    correctAnswer: 0,
+    explanation: 'La Vierge de Guadalupe est appelée "Notre-Dame de Guadalupe".',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+  {
+    id: 'marie-26',
+    category: 'marie-apparitions',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Quel miracle a eu lieu lors de l\'apparition de Guadalupe ?',
+    questionType: 'multiple-choice',
+    options: [
+      'La guérison de malades',
+      'L\'image de la Vierge sur le tilma',
+      'La multiplication du pain',
+      'La résurrection d\'un mort'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le miracle de Guadalupe est l\'image de la Vierge qui s\'est imprimée miraculeusement sur le tilma de Juan Diego.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+  {
+    id: 'marie-27',
+    category: 'marie-apparitions',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Quel est le nom de la Vierge de Lourdes ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Notre-Dame de Lourdes',
+      'Notre-Dame de Fatima',
+      'Notre-Dame de Guadalupe',
+      'Notre-Dame de La Salette'
+    ],
+    correctAnswer: 0,
+    explanation: 'La Vierge de Lourdes est appelée "Notre-Dame de Lourdes".',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+  {
+    id: 'marie-28',
+    category: 'marie-apparitions',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Quel message la Vierge a-t-elle donné à Lourdes ?',
+    questionType: 'multiple-choice',
+    options: [
+      'La prière pour les pécheurs',
+      'La construction de cathédrales',
+      'La guerre contre les infidèles',
+      'La richesse matérielle'
+    ],
+    correctAnswer: 0,
+    explanation: 'À Lourdes, la Vierge a demandé la prière pour les pécheurs et la pénitence.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+  {
+    id: 'marie-29',
+    category: 'marie-apparitions',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Quel est le nom de la Vierge de Fatima ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Notre-Dame de Fatima',
+      'Notre-Dame de Lourdes',
+      'Notre-Dame de Guadalupe',
+      'Notre-Dame de La Salette'
+    ],
+    correctAnswer: 0,
+    explanation: 'La Vierge de Fatima est appelée "Notre-Dame de Fatima".',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+  {
+    id: 'marie-30',
+    category: 'marie-apparitions',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Quel est le statut des apparitions mariales dans l\'Église ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Elles sont des dogmes de foi',
+      'Elles sont des révélations privées',
+      'Elles sont des commandements',
+      'Elles sont des sacrements'
+    ],
+    correctAnswer: 1,
+    explanation: 'Les apparitions mariales sont des révélations privées, non des dogmes de foi, mais elles peuvent être approuvées par l\'Église.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+
+  // ===== MARIE - LES PRIÈRES MARIALES (Questions marie-31 à marie-40) =====
+  {
+    id: 'marie-31',
+    category: 'marie-prieres',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Comment commence le "Je vous salue Marie" ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Je vous salue Marie, pleine de grâce',
+      'Ave Maria, gratia plena',
+      'Salve Regina',
+      'Magnificat'
+    ],
+    correctAnswer: 0,
+    explanation: 'Le "Je vous salue Marie" commence par : "Je vous salue Marie, pleine de grâce".',
+    points: 15,
+    scripture: 'Luc 1:28'
+  },
+  {
+    id: 'marie-32',
+    category: 'marie-prieres',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que le Rosaire ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une simple prière',
+      'Une méditation sur les mystères de la vie du Christ avec Marie',
+      'Un chant',
+      'Un psaume'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le Rosaire est une méditation sur les mystères de la vie du Christ avec Marie, en récitant des "Je vous salue Marie".',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-33',
+    category: 'marie-prieres',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Combien y a-t-il de mystères du Rosaire ?',
+    questionType: 'multiple-choice',
+    options: [
+      '10 mystères',
+      '15 mystères',
+      '20 mystères',
+      '25 mystères'
+    ],
+    correctAnswer: 2,
+    explanation: 'Il y a 20 mystères du Rosaire : 5 mystères joyeux, 5 mystères lumineux, 5 mystères douloureux et 5 mystères glorieux.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-34',
+    category: 'marie-prieres',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que le Magnificat ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une prière de Marie',
+      'Le cantique de Marie lors de la Visitation',
+      'Un psaume',
+      'Un chant liturgique'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le Magnificat est le cantique de Marie lors de la Visitation (Luc 1:46-55).',
+    points: 15,
+    scripture: 'Luc 1:46-55'
+  },
+  {
+    id: 'marie-35',
+    category: 'marie-prieres',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Comment commence le "Salve Regina" ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Salve Regina, Mater misericordiae',
+      'Ave Maria, gratia plena',
+      'Je vous salue Marie',
+      'Magnificat'
+    ],
+    correctAnswer: 0,
+    explanation: 'Le "Salve Regina" commence par : "Salve Regina, Mater misericordiae" (Salut, ô Reine, Mère de miséricorde).',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-36',
+    category: 'marie-prieres',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que l\'Angelus ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une prière du matin',
+      'Une prière qui commémore l\'Annonciation',
+      'Un chant',
+      'Un psaume'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'Angelus est une prière qui commémore l\'Annonciation, récitée trois fois par jour (matin, midi, soir).',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-37',
+    category: 'marie-prieres',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce que la consécration à Marie ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une simple prière',
+      'Un acte par lequel on se donne totalement à Marie',
+      'Un vœu religieux',
+      'Un sacrement'
+    ],
+    correctAnswer: 1,
+    explanation: 'La consécration à Marie est un acte par lequel on se donne totalement à Marie pour qu\'elle nous conduise à Jésus.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-38',
+    category: 'marie-prieres',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que la neuvaine mariale ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une prière de neuf jours',
+      'Une prière de neuf heures',
+      'Une prière de neuf semaines',
+      'Une prière de neuf mois'
+    ],
+    correctAnswer: 0,
+    explanation: 'La neuvaine mariale est une prière de neuf jours dédiée à la Vierge Marie.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-39',
+    category: 'marie-prieres',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce que le chapelet ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Un objet de décoration',
+      'Un instrument de prière avec des grains',
+      'Un livre de prières',
+      'Un chant'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le chapelet est un instrument de prière avec des grains pour réciter le Rosaire.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-40',
+    category: 'marie-prieres',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que la prière du "Memorare" ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une prière de saint Bernard',
+      'Une prière de saint François',
+      'Une prière de saint Thomas',
+      'Une prière de saint Augustin'
+    ],
+    correctAnswer: 0,
+    explanation: 'Le "Memorare" est une prière de saint Bernard à la Vierge Marie : "Souvenez-vous, ô très pieuse Vierge Marie..."',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+
+  // ===== MARIE - MARIE DANS LA LITURGIE (Questions marie-41 à marie-50) =====
+  {
+    id: 'marie-41',
+    category: 'marie-liturgie',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Quelle est la fête de l\'Annonciation ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Le 25 mars',
+      'Le 15 août',
+      'Le 8 décembre',
+      'Le 1er janvier'
+    ],
+    correctAnswer: 0,
+    explanation: 'La fête de l\'Annonciation est célébrée le 25 mars, neuf mois avant Noël.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 484'
+  },
+  {
+    id: 'marie-42',
+    category: 'marie-liturgie',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Quelle est la fête de l\'Assomption ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Le 15 août',
+      'Le 8 décembre',
+      'Le 25 mars',
+      'Le 1er janvier'
+    ],
+    correctAnswer: 0,
+    explanation: 'La fête de l\'Assomption est célébrée le 15 août.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 966'
+  },
+  {
+    id: 'marie-43',
+    category: 'marie-liturgie',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Quelle est la fête de l\'Immaculée Conception ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Le 8 décembre',
+      'Le 15 août',
+      'Le 25 mars',
+      'Le 1er janvier'
+    ],
+    correctAnswer: 0,
+    explanation: 'La fête de l\'Immaculée Conception est célébrée le 8 décembre.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 491'
+  },
+  {
+    id: 'marie-44',
+    category: 'marie-liturgie',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Quelle est la fête de la Visitation ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Le 31 mai',
+      'Le 25 mars',
+      'Le 15 août',
+      'Le 8 décembre'
+    ],
+    correctAnswer: 0,
+    explanation: 'La fête de la Visitation est célébrée le 31 mai.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 495'
+  },
+  {
+    id: 'marie-45',
+    category: 'marie-liturgie',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Quelle est la fête de la Nativité de Marie ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Le 8 septembre',
+      'Le 15 août',
+      'Le 25 mars',
+      'Le 8 décembre'
+    ],
+    correctAnswer: 0,
+    explanation: 'La fête de la Nativité de Marie est célébrée le 8 septembre.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 484'
+  },
+  {
+    id: 'marie-46',
+    category: 'marie-liturgie',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que le mois de mai dans l\'Église ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Le mois de Marie',
+      'Le mois de la Pentecôte',
+      'Le mois de Pâques',
+      'Le mois de l\'Ascension'
+    ],
+    correctAnswer: 0,
+    explanation: 'Le mois de mai est traditionnellement dédié à la Vierge Marie dans l\'Église catholique.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-47',
+    category: 'marie-liturgie',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce que le mois d\'octobre dans l\'Église ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Le mois du Rosaire',
+      'Le mois de Marie',
+      'Le mois de la Toussaint',
+      'Le mois de l\'Action de grâce'
+    ],
+    correctAnswer: 0,
+    explanation: 'Le mois d\'octobre est traditionnellement dédié au Rosaire dans l\'Église catholique.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-48',
+    category: 'marie-liturgie',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que la fête de la Présentation de Marie au Temple ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Le 21 novembre',
+      'Le 2 février',
+      'Le 25 mars',
+      'Le 8 septembre'
+    ],
+    correctAnswer: 0,
+    explanation: 'La fête de la Présentation de Marie au Temple est célébrée le 21 novembre.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 484'
+  },
+  {
+    id: 'marie-49',
+    category: 'marie-liturgie',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce que la fête de Marie, Mère de Dieu ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Le 1er janvier',
+      'Le 25 mars',
+      'Le 15 août',
+      'Le 8 décembre'
+    ],
+    correctAnswer: 0,
+    explanation: 'La fête de Marie, Mère de Dieu est célébrée le 1er janvier.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 495'
+  },
+  {
+    id: 'marie-50',
+    category: 'marie-liturgie',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que la fête de Notre-Dame de Lourdes ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Le 11 février',
+      'Le 15 août',
+      'Le 8 décembre',
+      'Le 25 mars'
+    ],
+    correctAnswer: 0,
+    explanation: 'La fête de Notre-Dame de Lourdes est célébrée le 11 février.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+
+  // ===== MARIE - LA DÉVOTION MARIALE (Questions marie-51 à marie-60) =====
+  {
+    id: 'marie-51',
+    category: 'marie-devotion',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce que la dévotion mariale ?',
+    questionType: 'multiple-choice',
+    options: [
+      'L\'amour et la vénération envers la Vierge Marie',
+      'L\'adoration de Marie',
+      'Le culte de Marie',
+      'La prière à Marie'
+    ],
+    correctAnswer: 0,
+    explanation: 'La dévotion mariale est l\'amour et la vénération envers la Vierge Marie, qui nous conduit à Jésus.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-52',
+    category: 'marie-devotion',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que le Cœur Immaculé de Marie ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Un symbole de l\'amour de Marie',
+      'Un organe physique',
+      'Une statue',
+      'Une prière'
+    ],
+    correctAnswer: 0,
+    explanation: 'Le Cœur Immaculé de Marie est un symbole de l\'amour de Marie pour Dieu et pour l\'humanité.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-53',
+    category: 'marie-devotion',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce que la consécration au Cœur Immaculé de Marie ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Un acte de dévotion',
+      'Un sacrement',
+      'Un vœu religieux',
+      'Une simple prière'
+    ],
+    correctAnswer: 0,
+    explanation: 'La consécration au Cœur Immaculé de Marie est un acte de dévotion par lequel on se confie à Marie.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-54',
+    category: 'marie-devotion',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que le scapulaire marial ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Un signe de dévotion à Marie',
+      'Un vêtement religieux',
+      'Une prière',
+      'Un sacrement'
+    ],
+    correctAnswer: 0,
+    explanation: 'Le scapulaire marial est un signe de dévotion à Marie et de confiance en sa protection.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-55',
+    category: 'marie-devotion',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce que la médaille miraculeuse ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une médaille de la Vierge Marie',
+      'Un objet magique',
+      'Une amulette',
+      'Un talisman'
+    ],
+    correctAnswer: 0,
+    explanation: 'La médaille miraculeuse est une médaille de la Vierge Marie, créée selon les instructions de la Vierge à sainte Catherine Labouré.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+  {
+    id: 'marie-56',
+    category: 'marie-devotion',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que le pèlerinage marial ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Un voyage vers un sanctuaire marial',
+      'Une simple promenade',
+      'Un voyage touristique',
+      'Une retraite'
+    ],
+    correctAnswer: 0,
+    explanation: 'Le pèlerinage marial est un voyage vers un sanctuaire dédié à la Vierge Marie pour prier et demander des grâces.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-57',
+    category: 'marie-devotion',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce qu\'un sanctuaire marial ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Un lieu de pèlerinage dédié à Marie',
+      'Une simple église',
+      'Un musée',
+      'Un cimetière'
+    ],
+    correctAnswer: 0,
+    explanation: 'Un sanctuaire marial est un lieu de pèlerinage dédié à la Vierge Marie, souvent lié à une apparition.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-58',
+    category: 'marie-devotion',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que la dévotion des premiers samedis ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une dévotion demandée à Fatima',
+      'Une simple coutume',
+      'Une obligation',
+      'Un sacrement'
+    ],
+    correctAnswer: 0,
+    explanation: 'La dévotion des premiers samedis a été demandée par la Vierge à Fatima pour réparer les offenses contre son Cœur Immaculé.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 67'
+  },
+  {
+    id: 'marie-59',
+    category: 'marie-devotion',
+    difficulty: 'facile',
+    level: 2,
+    question: 'Qu\'est-ce que la prière du "Sub tuum praesidium" ?',
+    questionType: 'multiple-choice',
+    options: [
+      'La plus ancienne prière mariale',
+      'Une prière moderne',
+      'Un chant',
+      'Un psaume'
+    ],
+    correctAnswer: 0,
+    explanation: 'Le "Sub tuum praesidium" est la plus ancienne prière mariale connue, datant du IIIe siècle.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
+  },
+  {
+    id: 'marie-60',
+    category: 'marie-devotion',
+    difficulty: 'moyen',
+    level: 2,
+    question: 'Qu\'est-ce que la dévotion au Cœur Immaculé de Marie ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une dévotion à l\'amour de Marie',
+      'Un culte idolâtrique',
+      'Une superstition',
+      'Une hérésie'
+    ],
+    correctAnswer: 0,
+    explanation: 'La dévotion au Cœur Immaculé de Marie est une dévotion à l\'amour de Marie pour Dieu et pour l\'humanité.',
+    points: 15,
+    catechism: 'Catéchisme de l\'Église Catholique 971'
   }
 ];
 
@@ -14731,7 +15956,7 @@ export const sampleQuizzes: Quiz[] = [
     category: 'decouverte-bible',
     level: 1,
     questions: sampleQuestions.filter(q => 
-      ['21', '22', '23', '24', '25', '26', '27', '28', '29', '30'].includes(q.id)
+      ['21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '30b', '30c'].includes(q.id)
     ),
     passingScore: 70,
     timeLimit: 15
@@ -15025,6 +16250,80 @@ export const sampleQuizzes: Quiz[] = [
     ),
     passingScore: 85,
     timeLimit: 30
+  },
+
+  // ===== QUIZ SUR LA VIERGE MARIE =====
+  {
+    id: 'quiz-marie-vie',
+    title: 'La vie de Marie selon les Évangiles',
+    description: 'Découvrez la vie de la Vierge Marie à travers les Écritures',
+    category: 'marie-vie',
+    level: 2,
+    questions: sampleQuestions.filter(q => 
+      ['marie-1', 'marie-2', 'marie-3', 'marie-4', 'marie-5', 'marie-6', 'marie-7', 'marie-8', 'marie-9', 'marie-10'].includes(q.id)
+    ),
+    passingScore: 70,
+    timeLimit: 20
+  },
+  {
+    id: 'quiz-marie-dogmes',
+    title: 'Les dogmes mariaux',
+    description: 'Apprenez les dogmes de l\'Immaculée Conception et de l\'Assomption',
+    category: 'marie-dogmes',
+    level: 2,
+    questions: sampleQuestions.filter(q => 
+      ['marie-11', 'marie-12', 'marie-13', 'marie-14', 'marie-15', 'marie-16', 'marie-17', 'marie-18', 'marie-19', 'marie-20'].includes(q.id)
+    ),
+    passingScore: 75,
+    timeLimit: 25
+  },
+  {
+    id: 'quiz-marie-apparitions',
+    title: 'Les apparitions mariales reconnues',
+    description: 'Découvrez les apparitions mariales approuvées par l\'Église',
+    category: 'marie-apparitions',
+    level: 2,
+    questions: sampleQuestions.filter(q => 
+      ['marie-21', 'marie-22', 'marie-23', 'marie-24', 'marie-25', 'marie-26', 'marie-27', 'marie-28', 'marie-29', 'marie-30'].includes(q.id)
+    ),
+    passingScore: 70,
+    timeLimit: 20
+  },
+  {
+    id: 'quiz-marie-prieres',
+    title: 'Les prières mariales',
+    description: 'Apprenez les prières dédiées à la Vierge Marie',
+    category: 'marie-prieres',
+    level: 2,
+    questions: sampleQuestions.filter(q => 
+      ['marie-31', 'marie-32', 'marie-33', 'marie-34', 'marie-35', 'marie-36', 'marie-37', 'marie-38', 'marie-39', 'marie-40'].includes(q.id)
+    ),
+    passingScore: 70,
+    timeLimit: 20
+  },
+  {
+    id: 'quiz-marie-liturgie',
+    title: 'Marie dans la liturgie',
+    description: 'Découvrez la place de Marie dans la liturgie et les fêtes',
+    category: 'marie-liturgie',
+    level: 2,
+    questions: sampleQuestions.filter(q => 
+      ['marie-41', 'marie-42', 'marie-43', 'marie-44', 'marie-45', 'marie-46', 'marie-47', 'marie-48', 'marie-49', 'marie-50'].includes(q.id)
+    ),
+    passingScore: 70,
+    timeLimit: 20
+  },
+  {
+    id: 'quiz-marie-devotion',
+    title: 'La dévotion mariale',
+    description: 'Apprenez l\'histoire et la pratique de la dévotion mariale',
+    category: 'marie-devotion',
+    level: 2,
+    questions: sampleQuestions.filter(q => 
+      ['marie-51', 'marie-52', 'marie-53', 'marie-54', 'marie-55', 'marie-56', 'marie-57', 'marie-58', 'marie-59', 'marie-60'].includes(q.id)
+    ),
+    passingScore: 70,
+    timeLimit: 20
   }
 ];
 
@@ -15052,7 +16351,13 @@ export const categoryNames: Record<string, string> = {
   'theologie-ecclesiologie': 'L\'ecclésiologie',
   'theologie-morale': 'La morale catholique',
   'vocation-discernement': 'Le discernement vocationnel',
-  'vocation-vie-consacree': 'La vie consacrée'
+  'vocation-vie-consacree': 'La vie consacrée',
+  'marie-vie': 'La vie de Marie',
+  'marie-dogmes': 'Les dogmes mariaux',
+  'marie-apparitions': 'Les apparitions mariales',
+  'marie-prieres': 'Les prières mariales',
+  'marie-liturgie': 'Marie dans la liturgie',
+  'marie-devotion': 'La dévotion mariale'
 };
 
 export const categoryIcons: Record<string, string> = {
@@ -15075,7 +16380,13 @@ export const categoryIcons: Record<string, string> = {
   'theologie-ecclesiologie': 'groups',
   'theologie-morale': 'psychology',
   'vocation-discernement': 'search',
-  'vocation-vie-consacree': 'monk'
+  'vocation-vie-consacree': 'monk',
+  'marie-vie': 'pregnant-woman',
+  'marie-dogmes': 'verified',
+  'marie-apparitions': 'visibility',
+  'marie-prieres': 'favorite',
+  'marie-liturgie': 'celebration',
+  'marie-devotion': 'heart'
 };
 
 // ========================================

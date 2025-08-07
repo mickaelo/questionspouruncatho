@@ -4,7 +4,7 @@ export interface Question {
   difficulty: 'facile' | 'moyen' | 'difficile' | 'tres-difficile';
   level: number; // Niveau de formation requis (1-5)
   question: string;
-  questionType: 'multiple-choice' | 'true-false' | 'image-recognition' | 'quote-completion' | 'association' | 'sentence-reorder' | 'crossword';
+  questionType: 'multiple-choice' | 'single-choice' | 'true-false' | 'image-recognition' | 'quote-completion' | 'association' | 'sentence-reorder' | 'crossword';
   options: string[];
   correctAnswer: number | number[]; // number pour choix unique, number[] pour associations et réorganisation
   explanation: string;
@@ -85,6 +85,13 @@ export interface MultipleChoiceQuestion extends Question {
   options: string[];
   correctAnswer: number | number[]; // number pour une seule réponse, number[] pour plusieurs
   multipleCorrectAnswers: boolean;
+}
+
+export interface SingleChoiceQuestion extends Question {
+  questionType: 'single-choice';
+  options: string[];
+  correctAnswer: number; // Toujours un seul nombre pour les questions à choix unique
+  multipleCorrectAnswers: false;
 }
 
 export interface SentenceReorderQuestion extends Question {

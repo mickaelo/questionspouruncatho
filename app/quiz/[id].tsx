@@ -285,7 +285,7 @@ export default function QuizScreen() {
           style={[styles.homeButton, { backgroundColor: colors.border }]}
           onPress={handleHomePress}
         >
-          <IconSymbol name="house.fill" size={16} color={colors.text} />
+          <IconSymbol name="house.fill" size={24} color={colors.text} />
         </TouchableOpacity>
 
         {/* Nom du quiz */}
@@ -313,9 +313,35 @@ export default function QuizScreen() {
           </ThemedText>
         </View>
 
+                {/* Système de vies */}
+        <View style={[styles.livesContainer, { backgroundColor: colors.border }]}>
+          {Array.from({ length: 3 }, (_, index) => {
+            const isAlive = index < lives;
+            return (
+              <IconSymbol
+                key={index}
+                name={isAlive ? "heart.fill" : "heart"}
+                size={24}
+                color={isAlive ? colors.error : colors.text}
+                style={{ marginRight: 3 }}
+              />
+            );
+          })}
+        </View>
+
+        {/* Timer */}
+        {timeRemaining !== undefined && (
+          <View style={[styles.timerContainer, { backgroundColor: colors.border }]}>
+            <IconSymbol name="clock" size={24} color={colors.tint} />
+            <ThemedText style={[styles.timerText, { color: colors.text }]}>
+              {Math.floor(timeRemaining / 60)}:{(timeRemaining % 60).toString().padStart(2, '0')}
+            </ThemedText>
+          </View>
+        )}
+
         {/* Points actuels */}
         <View style={[styles.scoreContainer, { backgroundColor: colors.border }]}>
-          <IconSymbol name="star.fill" size={16} color={colors.tint} />
+          <IconSymbol name="star.fill" size={24} color={colors.tint} />
           <ThemedText style={[styles.scoreText, { color: colors.text }]}>
             {totalPoints} points
           </ThemedText>
@@ -376,57 +402,83 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingHorizontal: 20,
+    paddingVertical: 20,
     borderBottomWidth: 1,
   },
   homeButton: {
-    padding: 8,
-    borderRadius: 8,
-    marginRight: 12,
+    padding: 12,
+    borderRadius: 10,
+    marginRight: 16,
   },
   quizTitleContainer: {
     flex: 1,
     marginRight: 12,
   },
   quizTitle: {
-    fontSize: 16,
-    fontWeight: '600',
+    fontSize: 20,
+    fontWeight: '700',
   },
   progressContainer: {
-    flex: 1,
+    flex: 2,
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: 12,
   },
   progressBar: {
     flex: 1,
-    height: 6,
-    borderRadius: 3,
+    height: 18,
+    borderRadius: 9,
     overflow: 'hidden',
-    marginRight: 8,
+    marginRight: 12,
   },
   progressFill: {
     height: '100%',
-    borderRadius: 3,
+    borderRadius: 9,
   },
   progressText: {
-    fontSize: 12,
-    fontWeight: '500',
-    minWidth: 40,
+    fontSize: 16,
+    fontWeight: '700',
+    minWidth: 60,
     textAlign: 'center',
   },
   scoreContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 12,
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 16,
   },
   scoreText: {
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  livesContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 16,
+    marginRight: 16,
+  },
+  livesText: {
     fontSize: 12,
     fontWeight: '500',
+  },
+  timerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 16,
+    marginRight: 16,
+  },
+  timerText: {
+    fontSize: 16,
+    fontWeight: '700',
   },
   loadingText: {
     fontSize: 18,

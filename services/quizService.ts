@@ -193,7 +193,7 @@ class QuizServiceImpl implements QuizService {
       const quizSnap = await getDoc(docRef);
 
       if (!quizSnap.exists()) {
-        throw new Error('Quiz non trouvé');
+        throw new Error('Quiz non trouvéa');
       }
       const quizData = quizSnap.data();
 

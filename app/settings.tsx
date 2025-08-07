@@ -2,9 +2,9 @@ import { CORSErrorModal } from '@/components/CORSErrorModal';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { sampleUserProfile } from '@/data/gamification';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useSettings } from '@/hooks/useSettings';
 import { showAlert, showConfirmAlert } from '@/utils/alert';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
@@ -18,12 +18,50 @@ export default function SettingsScreen() {
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === 'web';
   const { user, isAuthenticated, logout } = useAuth();
-  const [notifications, setNotifications] = useState(sampleUserProfile.preferences.notifications);
-  const [sound, setSound] = useState(sampleUserProfile.preferences.sound);
-  const [hapticFeedback, setHapticFeedback] = useState(sampleUserProfile.preferences.hapticFeedback);
-  const [familyMode, setFamilyMode] = useState(sampleUserProfile.familyMode);
+  
+  // Utiliser le hook de paramètres
+  const {
+    notifications,
+    sound,
+    hapticFeedback,
+    familyMode,
+    fontSize,
+    autoPlay,
+    showHints,
+    enableAnimations,
+    difficulty,
+    dailyGoal,
+    isLoading,
+    updateSetting,
+    handleNotificationsChange,
+    handleHapticFeedbackChange,
+    resetSettings,
+    testSettings,
+  } = useSettings();
+  
   const [showCORSError, setShowCORSError] = useState(false);
   const [corsErrorMessage, setCorsErrorMessage] = useState('');
+
+  // Gérer le changement de mode familial
+  const handleFamilyModeChange = async (value: boolean) => {
+    try {
+      // TODO: Implémenter la mise à jour du mode familial
+      console.log('Mode familial changé:', value);
+    } catch (error) {
+      console.error('Erreur lors du changement de mode familial:', error);
+      showAlert('Erreur', 'Impossible de modifier le mode familial');
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <ThemedText style={[styles.loadingText, { color: colors.text }]}>
+          Chargement des paramètres...
+        </ThemedText>
+      </View>
+    );
+  }
 
   return (
     <ScrollView
@@ -45,6 +83,7 @@ export default function SettingsScreen() {
         </ThemedText>
 
         <View style={styles.settingsList}>
+          {/* Notifications */}
           <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
             <View style={styles.settingInfo}>
               <MaterialIcons name="notifications" size={20} color={colors.primary} />
@@ -59,12 +98,13 @@ export default function SettingsScreen() {
             </View>
             <Switch
               value={notifications}
-              onValueChange={setNotifications}
+              onValueChange={handleNotificationsChange}
               trackColor={{ false: colors.border, true: colors.primary }}
               thumbColor={colors.background}
             />
           </View>
 
+          {/* Sons */}
           <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
             <View style={styles.settingInfo}>
               <MaterialIcons name="volume-up" size={20} color={colors.secondary} />
@@ -79,32 +119,36 @@ export default function SettingsScreen() {
             </View>
             <Switch
               value={sound}
-              onValueChange={setSound}
+              onValueChange={(value) => updateSetting('sound', value)}
               trackColor={{ false: colors.border, true: colors.secondary }}
               thumbColor={colors.background}
             />
           </View>
 
-          <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
-            <View style={styles.settingInfo}>
-              <MaterialIcons name="vibration" size={20} color={colors.warning} />
-              <View style={styles.settingText}>
-                <ThemedText style={[styles.settingTitle, { color: colors.text }]}>
-                  Retour haptique
-                </ThemedText>
-                <ThemedText style={[styles.settingDescription, { color: colors.text }]}>
-                  Vibrations lors des interactions
-                </ThemedText>
+          {/* Retour haptique - seulement sur mobile */}
+          {Platform.OS !== 'web' && (
+            <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              <View style={styles.settingInfo}>
+                <MaterialIcons name="vibration" size={20} color={colors.warning} />
+                <View style={styles.settingText}>
+                  <ThemedText style={[styles.settingTitle, { color: colors.text }]}>
+                    Retour haptique
+                  </ThemedText>
+                  <ThemedText style={[styles.settingDescription, { color: colors.text }]}>
+                    Vibrations lors des interactions
+                  </ThemedText>
+                </View>
               </View>
+              <Switch
+                value={hapticFeedback}
+                onValueChange={handleHapticFeedbackChange}
+                trackColor={{ false: colors.border, true: colors.warning }}
+                thumbColor={colors.background}
+              />
             </View>
-            <Switch
-              value={hapticFeedback}
-              onValueChange={setHapticFeedback}
-              trackColor={{ false: colors.border, true: colors.warning }}
-              thumbColor={colors.background}
-            />
-          </View>
+          )}
 
+          {/* Mode familial */}
           <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
             <View style={styles.settingInfo}>
               <MaterialIcons name="family-restroom" size={20} color={colors.success} />
@@ -119,10 +163,190 @@ export default function SettingsScreen() {
             </View>
             <Switch
               value={familyMode}
-              onValueChange={setFamilyMode}
+              onValueChange={handleFamilyModeChange}
               trackColor={{ false: colors.border, true: colors.success }}
               thumbColor={colors.background}
             />
+          </View>
+
+          {/* Taille de police */}
+          <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <MaterialIcons name="format-size" size={20} color={colors.primary} />
+              <View style={styles.settingText}>
+                <ThemedText style={[styles.settingTitle, { color: colors.text }]}>
+                  Taille de police
+                </ThemedText>
+                <ThemedText style={[styles.settingDescription, { color: colors.text }]}>
+                  Ajuster la taille du texte
+                </ThemedText>
+              </View>
+            </View>
+            <View style={styles.fontSizeSelector}>
+              {(['small', 'medium', 'large'] as const).map((size) => (
+                <TouchableOpacity
+                  key={size}
+                  style={[
+                    styles.fontSizeOption,
+                    fontSize === size && { backgroundColor: colors.primary }
+                  ]}
+                  onPress={() => updateSetting('fontSize', size)}
+                >
+                  <ThemedText 
+                    style={[
+                      styles.fontSizeText,
+                      { color: fontSize === size ? colors.background : colors.text }
+                    ]}
+                  >
+                    {size === 'small' ? 'A' : size === 'medium' ? 'A' : 'A'}
+                  </ThemedText>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          {/* Auto-play */}
+          <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <MaterialIcons name="play-circle-outline" size={20} color={colors.secondary} />
+              <View style={styles.settingText}>
+                <ThemedText style={[styles.settingTitle, { color: colors.text }]}>
+                  Lecture automatique
+                </ThemedText>
+                <ThemedText style={[styles.settingDescription, { color: colors.text }]}>
+                  Lancer automatiquement les médias
+                </ThemedText>
+              </View>
+            </View>
+            <Switch
+              value={autoPlay}
+              onValueChange={(value) => updateSetting('autoPlay', value)}
+              trackColor={{ false: colors.border, true: colors.secondary }}
+              thumbColor={colors.background}
+            />
+          </View>
+
+          {/* Afficher les indices */}
+          <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <MaterialIcons name="lightbulb-outline" size={20} color={colors.warning} />
+              <View style={styles.settingText}>
+                <ThemedText style={[styles.settingTitle, { color: colors.text }]}>
+                  Afficher les indices
+                </ThemedText>
+                <ThemedText style={[styles.settingDescription, { color: colors.text }]}>
+                  Montrer des indices pendant les quiz
+                </ThemedText>
+              </View>
+            </View>
+            <Switch
+              value={showHints}
+              onValueChange={(value) => updateSetting('showHints', value)}
+              trackColor={{ false: colors.border, true: colors.warning }}
+              thumbColor={colors.background}
+            />
+          </View>
+
+          {/* Animations */}
+          <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <MaterialIcons name="animation" size={20} color={colors.success} />
+              <View style={styles.settingText}>
+                <ThemedText style={[styles.settingTitle, { color: colors.text }]}>
+                  Animations
+                </ThemedText>
+                <ThemedText style={[styles.settingDescription, { color: colors.text }]}>
+                  Activer les animations de l'interface
+                </ThemedText>
+              </View>
+            </View>
+            <Switch
+              value={enableAnimations}
+              onValueChange={(value) => updateSetting('enableAnimations', value)}
+              trackColor={{ false: colors.border, true: colors.success }}
+              thumbColor={colors.background}
+            />
+          </View>
+        </View>
+      </ThemedView>
+
+      {/* Paramètres de jeu */}
+      <ThemedView style={styles.section}>
+        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
+          Paramètres de jeu
+        </ThemedText>
+
+        <View style={styles.settingsList}>
+          {/* Difficulté */}
+          <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <MaterialIcons name="speed" size={20} color={colors.primary} />
+              <View style={styles.settingText}>
+                <ThemedText style={[styles.settingTitle, { color: colors.text }]}>
+                  Difficulté
+                </ThemedText>
+                <ThemedText style={[styles.settingDescription, { color: colors.text }]}>
+                  Niveau de difficulté des quiz
+                </ThemedText>
+              </View>
+            </View>
+            <View style={styles.difficultySelector}>
+              {(['facile', 'moyen', 'difficile'] as const).map((level) => (
+                <TouchableOpacity
+                  key={level}
+                  style={[
+                    styles.difficultyOption,
+                    difficulty === level && { backgroundColor: colors.primary }
+                  ]}
+                  onPress={() => updateSetting('difficulty', level)}
+                >
+                  <ThemedText 
+                    style={[
+                      styles.difficultyText,
+                      { color: difficulty === level ? colors.background : colors.text }
+                    ]}
+                  >
+                    {level.charAt(0).toUpperCase() + level.slice(1)}
+                  </ThemedText>
+                </TouchableOpacity>
+              ))}
+            </View>
+          </View>
+
+          {/* Objectif quotidien */}
+          <View style={[styles.settingItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.settingInfo}>
+              <MaterialIcons name="flag" size={20} color={colors.secondary} />
+              <View style={styles.settingText}>
+                <ThemedText style={[styles.settingTitle, { color: colors.text }]}>
+                  Objectif quotidien
+                </ThemedText>
+                <ThemedText style={[styles.settingDescription, { color: colors.text }]}>
+                  Points à gagner par jour
+                </ThemedText>
+              </View>
+            </View>
+            <View style={styles.dailyGoalSelector}>
+              {[50, 100, 150, 200].map((goal) => (
+                <TouchableOpacity
+                  key={goal}
+                  style={[
+                    styles.dailyGoalOption,
+                    dailyGoal === goal && { backgroundColor: colors.secondary }
+                  ]}
+                  onPress={() => updateSetting('dailyGoal', goal)}
+                >
+                  <ThemedText 
+                    style={[
+                      styles.dailyGoalText,
+                      { color: dailyGoal === goal ? colors.background : colors.text }
+                    ]}
+                  >
+                    {goal}
+                  </ThemedText>
+                </TouchableOpacity>
+              ))}
+            </View>
           </View>
         </View>
       </ThemedView>
@@ -134,6 +358,24 @@ export default function SettingsScreen() {
         </ThemedText>
 
         <View style={styles.actionsList}>
+          <TouchableOpacity
+            style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
+            onPress={testSettings}
+          >
+            <View style={styles.actionInfo}>
+              <MaterialIcons name="play-arrow" size={20} color={colors.primary} />
+              <View style={styles.actionText}>
+                <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                  Tester les paramètres
+                </ThemedText>
+                <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
+                  Tester le son et les vibrations
+                </ThemedText>
+              </View>
+            </View>
+            <MaterialIcons name="chevron-right" size={20} color={colors.primary} />
+          </TouchableOpacity>
+
           <TouchableOpacity
             style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
             onPress={() => {
@@ -174,6 +416,38 @@ export default function SettingsScreen() {
               </View>
             </View>
             <MaterialIcons name="chevron-right" size={20} color={colors.text} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[styles.actionItem, { backgroundColor: colors.card, borderColor: colors.border }]}
+            onPress={() => {
+              showConfirmAlert(
+                'Réinitialiser les paramètres',
+                'Êtes-vous sûr de vouloir réinitialiser tous les paramètres aux valeurs par défaut ?',
+                async () => {
+                  try {
+                    await resetSettings();
+                    showAlert('Succès', 'Paramètres réinitialisés avec succès');
+                  } catch (error) {
+                    console.error('Erreur lors de la réinitialisation:', error);
+                    showAlert('Erreur', 'Impossible de réinitialiser les paramètres');
+                  }
+                }
+              );
+            }}
+          >
+            <View style={styles.actionInfo}>
+              <MaterialIcons name="restore" size={20} color={colors.warning} />
+              <View style={styles.actionText}>
+                <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
+                  Réinitialiser les paramètres
+                </ThemedText>
+                <ThemedText style={[styles.actionDescription, { color: colors.text }]}>
+                  Restaurer les paramètres par défaut
+                </ThemedText>
+              </View>
+            </View>
+            <MaterialIcons name="chevron-right" size={20} color={colors.warning} />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -261,6 +535,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  loadingText: {
+    textAlign: 'center',
+    marginTop: 50,
+    fontSize: 16,
+  },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -326,6 +605,53 @@ const styles = StyleSheet.create({
   settingDescription: {
     fontSize: 14,
     opacity: 0.8,
+  },
+  fontSizeSelector: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  fontSizeOption: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  fontSizeText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  difficultySelector: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  difficultyOption: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  difficultyText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  dailyGoalSelector: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  dailyGoalOption: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#ccc',
+  },
+  dailyGoalText: {
+    fontSize: 12,
+    fontWeight: '600',
   },
   actionsList: {
     gap: 12,

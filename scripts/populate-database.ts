@@ -9,7 +9,7 @@ async function populateDatabase() {
 
     // 2. Importer/mettre à jour les questions et quiz
     console.log('📝 ÉTAPE 2: Importation/mise à jour des questions et quiz...');
-    await importDataToFirebase();
+    await importDataToFirebase(true);
     // 1. Importer/mettre à jour les cours
     console.log('📚 ÉTAPE 1: Importation/mise à jour des cours...');
     await importCoursesToFirebase();

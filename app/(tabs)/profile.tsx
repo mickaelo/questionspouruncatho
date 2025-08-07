@@ -7,6 +7,7 @@ import { Colors } from '@/constants/Colors';
 import { sampleUserProfile, spiritualChallenges } from '@/data/gamification';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useLocalUserData } from '@/hooks/useLocalUserData';
 import { useUserProgress } from '@/hooks/useUserProgress';
 import { showAlert, showConfirmAlert } from '@/utils/alert';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
@@ -22,12 +23,25 @@ export default function ProfileScreen() {
   const isWeb = Platform.OS === 'web';
   const { user, isAuthenticated, logout, loginWithGoogle } = useAuth();
   const { userProgress, isLoading } = useUserProgress();
+  const { userData: localUserData, isLoading: localDataLoading } = useLocalUserData();
   const [showCORSError, setShowCORSError] = useState(false);
   const [corsErrorMessage, setCorsErrorMessage] = useState('');
   const [activeTab, setActiveTab] = useState<'overview' | 'badges' | 'challenges' | 'fidelity'>('overview');
 
-  // Utiliser les vraies données de progression ou des valeurs par défaut
-  const progressData = userProgress || {
+  // Utiliser les données locales si disponibles, sinon les données de progression Firebase
+  const progressData = localUserData ? {
+    totalPoints: localUserData.totalPoints,
+    level: localUserData.level,
+    streak: localUserData.streak,
+    completedQuizzes: localUserData.completedQuizzes,
+    fidelityScore: {
+      prayerScore: 0,
+      readingScore: 0,
+      quizScore: 0,
+      totalScore: 0,
+      lastUpdated: new Date()
+    }
+  } : (userProgress || {
     totalPoints: 0,
     level: 1,
     streak: 0,
@@ -39,7 +53,7 @@ export default function ProfileScreen() {
       totalScore: 0,
       lastUpdated: new Date()
     }
-  };
+  });
 
   // Utiliser des badges par défaut pour l'instant
   const unlockedBadges: any[] = [];
@@ -115,6 +129,46 @@ export default function ProfileScreen() {
             </ThemedText>
             <ThemedText style={[styles.statLabel, { color: colors.text }]}>Quiz complétés</ThemedText>
           </View>
+        </View>
+      </ThemedView>
+
+      {/* Statut de connexion */}
+      <ThemedView style={[styles.statsCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
+          Statut de connexion
+        </ThemedText>
+        
+        <View style={styles.connectionStatus}>
+          <View style={styles.statusItem}>
+            <MaterialIcons 
+              name={localUserData?.isAnonymous ? "visibility" : "account-circle"} 
+              size={24} 
+              color={localUserData?.isAnonymous ? colors.warning : colors.success} 
+            />
+            <View style={styles.statusText}>
+              <ThemedText style={[styles.statusLabel, { color: colors.text }]}>
+                {localUserData?.isAnonymous ? 'Mode visiteur' : 'Compte connecté'}
+              </ThemedText>
+              <ThemedText style={[styles.statusDescription, { color: colors.text + '80' }]}>
+                {localUserData?.isAnonymous 
+                  ? 'Vos données sont sauvegardées localement'
+                  : 'Vos données sont synchronisées avec votre compte'
+                }
+              </ThemedText>
+            </View>
+          </View>
+          
+          {localUserData?.isAnonymous && (
+            <TouchableOpacity
+              style={[styles.connectButton, { backgroundColor: colors.primary }]}
+              onPress={() => router.push('/auth/login')}
+            >
+              <MaterialIcons name="login" size={16} color={colors.background} />
+              <ThemedText style={[styles.connectButtonText, { color: colors.background }]}>
+                Se connecter
+              </ThemedText>
+            </TouchableOpacity>
+          )}
         </View>
       </ThemedView>
 
@@ -773,6 +827,40 @@ const styles = StyleSheet.create({
   fidelityItemTitle: {
     fontSize: 12,
     opacity: 0.8,
+  },
+  connectionStatus: {
+    marginTop: 16,
+  },
+  statusItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  statusText: {
+    marginLeft: 12,
+    flex: 1,
+  },
+  statusLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  statusDescription: {
+    fontSize: 14,
+  },
+  connectButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginTop: 8,
+  },
+  connectButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginLeft: 6,
   },
   fidelityItemScore: {
     fontSize: 14,
