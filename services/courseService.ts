@@ -60,7 +60,7 @@ class CourseServiceImpl implements CourseService {
         const data = doc.data();
         console.log('Document data:', data);
         return {
-          id: index + 1, // Utiliser un ID numérique séquentiel
+          id: doc.id, // Utiliser un ID numérique séquentiel
           ...data
         } as unknown as Course;
       });

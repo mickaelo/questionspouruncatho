@@ -2,18 +2,19 @@ import { CourseCard } from '@/components/CourseCard';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { canAccessCourse, courseContents, getCourseProgress } from '@/data/courses';
+import { canAccessCourse, getCourseProgress } from '@/data/courses';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useCourseData } from '@/hooks/useCourseData';
 import { useUserProgress } from '@/hooks/useUserProgress';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React from 'react';
 import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export default function LevelsScreen() {
+export default function CoursesScreen() {
   const { user, isAuthenticated } = useAuth();
-  const { userProgress, isLoading } = useUserProgress();
+  const { userProgress } = useUserProgress();
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
   const insets = useSafeAreaInsets();
@@ -24,6 +25,9 @@ export default function LevelsScreen() {
   const userPoints = userProgress?.totalPoints || 0;
   const userQuizzes = userProgress?.completedQuizzes.length || 0;
   const userBadges = 3; // TODO: Récupérer depuis userProgress
+
+  // Récupération dynamique des cours
+  const { courses, isLoading } = useCourseData();
 
   return (
     <ScrollView 
@@ -114,32 +118,36 @@ export default function LevelsScreen() {
 
       {/* Liste des parcours */}
       <View style={styles.levelsContainer}>
-        {courseContents.map((level) => {
-          const isUnlocked = canAccessCourse(userLevel, level.level);
-          const progress = isUnlocked ? getCourseProgress(
-            userPoints, 
-            userQuizzes, 
-            userBadges, 
-            { 
-              requiredPoints: level.level * 100, 
-              requiredQuizzes: level.level * 5, 
-              requiredBadges: level.level * 2 
-            } as any
-          ) : undefined;
+        {isLoading ? (
+          <ThemedText style={{ color: colors.text, textAlign: 'center', marginVertical: 20 }}>Chargement des parcours...</ThemedText>
+        ) : (
+          // Trier les cours par niveau avant de les afficher
+          courses
+            .sort((a, b) => a.level - b.level) // Tri croissant par niveau
+            .map((course) => {
+            const courseLevel = course.level;
+            const isUnlocked = canAccessCourse(userLevel, courseLevel);
+            const progress = isUnlocked ? getCourseProgress(
+              userPoints,
+              userQuizzes,
+              userBadges,
+              course
+            ) : undefined;
 
-          return (
-            <CourseCard
-              key={level.level}
-              course={level}
-              userLevel={userLevel}
-              userPoints={userPoints}
-              userQuizzes={userQuizzes}
-              userBadges={userBadges}
-              isUnlocked={isUnlocked}
-              progress={progress}
-            />
-          );
-        })}
+            return (
+              <CourseCard
+                key={course.id}
+                course={course}
+                userLevel={userLevel}
+                userPoints={userPoints}
+                userQuizzes={userQuizzes}
+                userBadges={userBadges}
+                isUnlocked={isUnlocked}
+                progress={progress}
+              />
+            );
+          })
+        )}
       </View>
 
       {/* Informations supplémentaires */}

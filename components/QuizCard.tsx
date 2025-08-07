@@ -84,7 +84,7 @@ export function QuizCard({ quiz, onPress, completed, score, index = 0 }: QuizCar
       <View style={styles.footer}>
         <View style={styles.stats}>
           <ThemedText style={[styles.stat, { color: colors.text }]}>
-            {quiz.questions.length} questions
+            {quiz.questions?.length || 0} questions
           </ThemedText>
           {quiz.timeLimit && (
             <ThemedText style={[styles.stat, { color: colors.text }]}>
@@ -97,11 +97,11 @@ export function QuizCard({ quiz, onPress, completed, score, index = 0 }: QuizCar
           <View 
             style={[
               styles.difficultyDot, 
-              { backgroundColor: getDifficultyColor(quiz.questions[0]?.difficulty || 'moyen') }
+              { backgroundColor: getDifficultyColor(quiz.questions?.[0]?.difficulty || 'moyen') }
             ]} 
           />
           <ThemedText style={[styles.difficulty, { color: colors.text }]}>
-            {getDifficultyText(quiz.questions[0]?.difficulty || 'moyen')}
+            {getDifficultyText(quiz.questions?.[0]?.difficulty || 'moyen')}
           </ThemedText>
         </View>
       </View>

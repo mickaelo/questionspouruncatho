@@ -150,6 +150,7 @@ export default function courseEditScreen() {
             title: `Quiz ${quizId}`,
             description: 'Quiz assigné manuellement',
             category: 'general',
+            level: 1, // Ajout du champ manquant
             course: 1,
             questions: [],
             passingScore: 70,
@@ -159,12 +160,7 @@ export default function courseEditScreen() {
       });
       
       // Mettre à jour le niveau avec les quiz assignés
-      const updatedCourse = {
-        ...course,
-        quizzes: quizObjects
-      };
-      
-      // await updateCourse(id, updatedCourse);
+      await updateCourse(id, { ...course, quizzes: quizObjects });
       setIsEditing(false);
       showAlert('Succès', 'Niveau mis à jour avec succès');
     } catch (error) {
@@ -284,6 +280,26 @@ export default function courseEditScreen() {
                 editable={isEditing}
                 placeholder="Nom du niveau"
                 placeholderTextColor={colors.secondary}
+              />
+            </View>
+
+            <View style={styles.formGroup}>
+              <ThemedText style={[styles.label, { color: colors.text }]}>Niveau</ThemedText>
+              <TextInput
+                style={[
+                  styles.input,
+                  {
+                    backgroundColor: colors.background,
+                    borderColor: colors.border,
+                    color: colors.text
+                  }
+                ]}
+                value={course.level?.toString() ?? ''}
+                onChangeText={text => updateCourseField('level', Number(text.replace(/[^0-9]/g, '')))}
+                editable={isEditing}
+                placeholder="Niveau (ex: 1)"
+                placeholderTextColor={colors.secondary}
+                keyboardType="numeric"
               />
             </View>
 

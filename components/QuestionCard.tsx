@@ -35,6 +35,10 @@ export function QuestionCard({
   const [skipped, setSkipped] = useState(false);
   const [foundWords, setFoundWords] = useState<string[]>([]);
   const [crosswordGrid, setCrosswordGrid] = useState<{ [key: string]: any }>({});
+  const [lastAnswerCorrect, setLastAnswerCorrect] = useState(false);
+  const [lastSelectedAnswers, setLastSelectedAnswers] = useState<number[]>([]);
+  const [lastAssociationSelections, setLastAssociationSelections] = useState<{ [key: string]: string }>({});
+  const [lastSentenceOrder, setLastSentenceOrder] = useState<number[]>([]);
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
   const insets = useSafeAreaInsets();
@@ -272,15 +276,9 @@ export function QuestionCard({
         isCorrect = answerIndex === question.correctAnswer;
       }
 
+      setLastAnswerCorrect(isCorrect);
+      setLastSelectedAnswers([answerIndex]);
       setShowExplanationPopup(true);
-
-      // Délai pour montrer la réponse correcte
-      setTimeout(() => {
-        onAnswer(answerIndex, isCorrect);
-        setSelectedAnswers([]);
-        setAnswered(false);
-        setShowExplanationPopup(false);
-      }, 2000);
     }
   };
 
@@ -296,13 +294,9 @@ export function QuestionCard({
     } else {
       isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === question.correctAnswer;
     }
+    setLastAnswerCorrect(isCorrect);
+    setLastSelectedAnswers([...selectedAnswers]);
     setShowExplanationPopup(true);
-
-    setTimeout(() => {
-      onAnswer(selectedAnswers, isCorrect);
-      setSelectedAnswers([]);
-      setAnswered(false);
-    }, 2000);
   };
 
   const handleAssociationSelect = (leftId: string, rightId: string) => {
@@ -379,16 +373,9 @@ export function QuestionCard({
       }),
       isCorrect
     });
+    setLastAnswerCorrect(isCorrect);
+    setLastAssociationSelections({...associationSelections});
     setShowExplanationPopup(true);
-    setTimeout(() => {
-      const selectedIndices = question.associationPairs?.map((pair, index) =>
-        associationSelections[pair.id] ? index : -1
-      ).filter(index => index !== -1) ?? [];
-      setShowExplanationPopup(false);
-      onAnswer(selectedIndices, isCorrect);
-      setAssociationSelections({});
-      setAnswered(false);
-    }, 2000);
   };
 
   const handleSentenceReorderSubmit = () => {
@@ -398,14 +385,9 @@ export function QuestionCard({
 
     // Vérifier si l'ordre est correct (doit être 0, 1, 2, 3, ...)
     const isCorrect = sentenceOrder.every((sentenceIndex, index) => sentenceIndex === index);
+    setLastAnswerCorrect(isCorrect);
+    setLastSentenceOrder([...sentenceOrder]);
     setShowExplanationPopup(true);
-
-    setTimeout(() => {
-      onAnswer(sentenceOrder, isCorrect);
-      setSentenceOrder([]);
-      setShowExplanationPopup(false);
-      setAnswered(false);
-    }, 2000);
   };
 
   const getOptionStyle = (index: number) => {
@@ -798,60 +780,70 @@ export function QuestionCard({
     );
   };
 
-  // Composant popup pour l'explication
-  const ExplanationPopup = () => {
+  const ExplanationFooter = () => {
     if (!showExplanationPopup) return null;
 
     return (
-      <View style={styles.popupOverlay}>
-        <View style={[styles.popupContainer, { backgroundColor: colors.background }]}>
-          <View style={styles.popupHeader}>
-            <ThemedText type="subtitle" style={[styles.popupTitle, { color: colors.text }]}>
-              Explication
-            </ThemedText>
-            <TouchableOpacity
-              onPress={() => setShowExplanationPopup(false)}
-              style={styles.closeButton}
-            >
-              <IconSymbol name="xmark" size={20} color={colors.text} />
-            </TouchableOpacity>
-          </View>
-
-          <ScrollView style={styles.popupContent} showsVerticalScrollIndicator={true}>
-            <ThemedText style={[styles.popupExplanation, { color: colors.text }]}>
-              {question.explanation}
-            </ThemedText>
-
-            {/* Références */}
-            <View style={styles.popupReferences}>
-              {question.scripture && (
-                <View style={styles.popupReference}>
-                  <IconSymbol name="book" size={16} color={colors.tint} />
-                  <ThemedText style={[styles.popupReferenceText, { color: colors.tint }]}>
-                    {question.scripture}
-                  </ThemedText>
-                </View>
-              )}
-              {question.catechism && (
-                <View style={styles.popupReference}>
-                  <IconSymbol name="doc.text" size={16} color={colors.tint} />
-                  <ThemedText style={[styles.popupReferenceText, { color: colors.tint }]}>
-                    {question.catechism}
-                  </ThemedText>
-                </View>
-              )}
-            </View>
-          </ScrollView>
-
-          <TouchableOpacity
-            style={[styles.popupCloseButton, { backgroundColor: colors.primary }]}
-            onPress={() => setShowExplanationPopup(false)}
-          >
-            <ThemedText style={[styles.popupCloseButtonText, { color: colors.background }]}>
-              Fermer
-            </ThemedText>
-          </TouchableOpacity>
+      <View style={[styles.explanationFooter, { backgroundColor: colors.background, borderTopColor: colors.border }]}>
+        <View style={styles.explanationHeader}>
+          <ThemedText type="subtitle" style={[styles.explanationTitle, { color: colors.text }]}>
+            Explication
+          </ThemedText>
         </View>
+
+        <ScrollView style={styles.explanationContent} showsVerticalScrollIndicator={true}>
+          <ThemedText style={[styles.explanationText, { color: colors.text }]}>
+            {question.explanation}
+          </ThemedText>
+
+          {/* Références */}
+          <View style={styles.explanationReferences}>
+            {question.scripture && (
+              <View style={styles.explanationReference}>
+                <IconSymbol name="book" size={16} color={colors.tint} />
+                <ThemedText style={[styles.explanationReferenceText, { color: colors.tint }]}>
+                  {question.scripture}
+                </ThemedText>
+              </View>
+            )}
+            {question.catechism && (
+              <View style={styles.explanationReference}>
+                <IconSymbol name="doc.text" size={16} color={colors.tint} />
+                <ThemedText style={[styles.explanationReferenceText, { color: colors.tint }]}>
+                  {question.catechism}
+                </ThemedText>
+              </View>
+            )}
+          </View>
+        </ScrollView>
+
+        <TouchableOpacity
+          style={[styles.explanationContinueButton, { backgroundColor: colors.primary }]}
+          onPress={() => {
+            setShowExplanationPopup(false);
+            
+            // Gérer les différents types de questions
+            if (question.questionType === 'association') {
+              const selectedIndices = question.associationPairs?.map((pair, index) =>
+                lastAssociationSelections[pair.id] ? index : -1
+              ).filter(index => index !== -1) ?? [];
+              onAnswer(selectedIndices, lastAnswerCorrect);
+              setAssociationSelections({});
+            } else if (question.questionType === 'sentence-reorder') {
+              onAnswer(lastSentenceOrder, lastAnswerCorrect);
+              setSentenceOrder([]);
+            } else {
+              onAnswer(lastSelectedAnswers, lastAnswerCorrect);
+              setSelectedAnswers([]);
+            }
+            
+            setAnswered(false);
+          }}
+        >
+          <ThemedText style={[styles.explanationContinueButtonText, { color: colors.background }]}>
+            Continuer
+          </ThemedText>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -979,7 +971,7 @@ export function QuestionCard({
       <View style={styles.validationButtonContainer}>
         {renderValidationButton()}
       </View>
-      <ExplanationPopup />
+      <ExplanationFooter />
       <SkipPopup />
     </ThemedView>
   );
@@ -1389,21 +1381,6 @@ const styles = StyleSheet.create({
       elevation: 5,
     }),
   },
-  popupHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: 'rgba(0,0,0,0.1)',
-  },
-  popupTitle: {
-    fontSize: 20,
-    fontWeight: '700',
-  },
-  closeButton: {
-    padding: 8,
-  },
   popupContent: {
     padding: 16,
   },
@@ -1432,6 +1409,63 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   popupCloseButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  explanationFooter: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    zIndex: 5,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.1)',
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    ...(Platform.OS === 'web' ? {
+      boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
+    } : {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: -2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 3,
+    }),
+  },
+  explanationHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  explanationContent: {
+    paddingBottom: 15,
+  },
+  explanationText: {
+    fontSize: 16,
+    lineHeight: 22,
+    marginBottom: 15,
+  },
+  explanationReferences: {
+    gap: 8,
+  },
+  explanationReference: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  explanationReferenceText: {
+    fontSize: 14,
+    fontStyle: 'italic',
+  },
+  explanationContinueButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 15,
+  },
+  explanationContinueButtonText: {
     fontSize: 16,
     fontWeight: '600',
   },

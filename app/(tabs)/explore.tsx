@@ -6,6 +6,8 @@ import { Colors } from '@/constants/Colors';
 import { categoryIcons, categoryNames } from '@/data/questions';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { quizService } from '@/services/quizService';
+import { UserProgressService } from '@/services/userProgressService';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -31,6 +33,10 @@ export default function CategoriesScreen() {
   // État pour stocker le nombre de quiz par catégorie
   const [quizCounts, setQuizCounts] = useState<Record<string, number>>({});
 
+  // État pour les quiz populaires
+  const [popularQuizzes, setPopularQuizzes] = useState<any[]>([]);
+  const [isLoadingPopular, setIsLoadingPopular] = useState(false);
+
   // Calculer le nombre de quiz par catégorie
   useEffect(() => {
     if (quizzes.length > 0) {
@@ -50,6 +56,26 @@ export default function CategoriesScreen() {
       setQuizCounts(counts);
     }
   }, [quizzes, userLevel, isAdmin]);
+
+  useEffect(() => {
+    const fetchPopularQuizzes = async () => {
+      setIsLoadingPopular(true);
+      try {
+        const popular = await UserProgressService.getMostPopularQuizzes(3);
+        const quizPromises = popular.map(async ({ quizId }) => {
+          const quiz = await quizService.getQuiz(quizId);
+          return quiz;
+        });
+        const quizzes = (await Promise.all(quizPromises)).filter(Boolean);
+        setPopularQuizzes(quizzes);
+      } catch (error) {
+        setPopularQuizzes([]);
+      } finally {
+        setIsLoadingPopular(false);
+      }
+    };
+    fetchPopularQuizzes();
+  }, []);
 
   const handleCategoryPress = (category: string) => {
     router.push({
@@ -106,21 +132,15 @@ export default function CategoriesScreen() {
       </ThemedView>
 
       <ThemedView style={styles.section}>
-        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-          Quiz populaires
-        </ThemedText>
-
-        {quizzes
-          .filter(quiz => isAdmin || quiz.level <= userLevel)
-          .slice(0, 3)
-          .map((quiz) => (
+        <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>Quiz populaires</ThemedText>
+        {isLoadingPopular ? (
+          <ThemedText style={{ color: colors.text, textAlign: 'center', marginVertical: 20 }}>Chargement...</ThemedText>
+        ) : (
+          popularQuizzes.map((quiz) => (
             <TouchableOpacity
               key={quiz.id}
               style={[styles.popularQuiz, { backgroundColor: colors.card, borderColor: colors.border }]}
-              onPress={() => router.push({
-                pathname: '/quiz/[id]',
-                params: { id: quiz.id }
-              })}
+              onPress={() => router.push({ pathname: '/quiz/[id]', params: { id: quiz.id } })}
             >
               <View style={styles.quizInfo}>
                 <ThemedText type="subtitle" style={[styles.quizTitle, { color: colors.text }]}>
@@ -130,19 +150,16 @@ export default function CategoriesScreen() {
                   {quiz.description}
                 </ThemedText>
                 <View style={styles.quizMeta}>
-                  <ThemedText style={[styles.quizMetaText, { color: colors.primary }]}>
-                    {quiz.questions.length} questions
-                  </ThemedText>
+                  <ThemedText style={[styles.quizMetaText, { color: colors.primary }]}> {quiz.questions?.length || 0} questions </ThemedText>
                   {quiz.timeLimit && (
-                    <ThemedText style={[styles.quizMetaText, { color: colors.primary }]}>
-                      {quiz.timeLimit} min
-                    </ThemedText>
+                    <ThemedText style={[styles.quizMetaText, { color: colors.primary }]}> {quiz.timeLimit} min </ThemedText>
                   )}
                 </View>
               </View>
               <IconSymbol name="chevron.right" size={20} color={colors.primary} />
             </TouchableOpacity>
-          ))}
+          ))
+        )}
       </ThemedView>
     </ScrollView>
   );

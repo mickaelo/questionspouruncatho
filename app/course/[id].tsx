@@ -1,14 +1,15 @@
 import { ChallengeCard } from '@/components/ChallengeCard';
+import { GlobalLoadingBar } from '@/components/GlobalLoadingBar';
 import { QuizCard } from '@/components/QuizCard';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
-import { getCourseById, getCourseContentById } from '@/data/courses';
 import { spiritualChallenges } from '@/data/gamification';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { useCourseData } from '@/hooks/useCourseData';
 import { useQuizData } from '@/hooks/useQuizData';
-import { Quiz } from '@/types/quiz';
+import { Course, Quiz } from '@/types/quiz';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -20,13 +21,11 @@ export default function CourseDetailScreen() {
   const colorScheme = useColorScheme();
   const colors = Colors[colorScheme ?? 'light'];
   const isWeb = Platform.OS === 'web';
+  const { getCourse } = useCourseData();
   const { getQuizzesByCourse } = useQuizData();
-
+  const [course, setCourse] = useState<Course | null>(null);
   // Vérifier que l'ID est valide
-  const courseId = id ? parseInt(id as string) : null;
-  const courseContent = courseId ? getCourseContentById(courseId) : undefined;
-  const course = courseId ? getCourseById(courseId) : undefined;
-
+  const courseId = id as string | undefined;
   // État pour les quiz du niveau
   const [courseQuizzes, setCourseQuizzes] = useState<Quiz[]>([]);
   const [isLoadingQuizzes, setIsLoadingQuizzes] = useState(true);
@@ -47,6 +46,8 @@ export default function CourseDetailScreen() {
       }
 
       try {
+        const courseData = await getCourse(courseId);
+        setCourse(courseData);
         setIsLoadingQuizzes(true);
         const quizzes = await getQuizzesByCourse(courseId);
         setCourseQuizzes(quizzes || []);
@@ -59,35 +60,16 @@ export default function CourseDetailScreen() {
     };
 
     loadCourseQuizzes();
-  }, [courseId, getQuizzesByCourse]);
+  }, [courseId, getCourse, getQuizzesByCourse]);
 
   // Filtrer les défis pour ce niveau
   const courseChallenges = spiritualChallenges.filter(challenge => 
-    challenge.title.toLowerCase().includes(courseContent?.title?.toLowerCase() || '')
+    challenge.title.toLowerCase().includes(course?.title?.toLowerCase() || '')
   );
 
-  if (!courseContent || !course) {
+  if (!course) {
     return (
-      <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
-        <ThemedView style={styles.errorContainer}>
-          <MaterialIcons name="error" size={48} color={colors.error} />
-          <ThemedText type="title" style={[styles.errorTitle, { color: colors.text }]}>
-            Niveau non trouvé
-          </ThemedText>
-          <ThemedText style={[styles.errorText, { color: colors.text }]}>
-            Le niveau demandé n'existe pas.
-          </ThemedText>
-          <TouchableOpacity
-            style={[styles.backButton, { backgroundColor: colors.primary }]}
-            onPress={() => router.back()}
-          >
-            <MaterialIcons name="arrow-back" size={20} color={colors.background} />
-            <ThemedText style={[styles.backButtonText, { color: colors.background }]}>
-              Retour
-            </ThemedText>
-          </TouchableOpacity>
-        </ThemedView>
-      </ScrollView>
+      <GlobalLoadingBar />
     );
   }
 
@@ -110,17 +92,17 @@ export default function CourseDetailScreen() {
           <MaterialIcons name="arrow-back" size={24} color={colors.primary} />
         </TouchableOpacity>
         <View style={styles.headerContent}>
-          <View style={[styles.courseIcon, { backgroundColor: `${courseContent.color}20` }]}>
-            <ThemedText style={[styles.icon, { color: courseContent.color }]}>
-              {courseContent.icon}
+          {/* <View style={[styles.courseIcon, { backgroundColor: `${course.color}20` }]}>
+            <ThemedText style={[styles.icon, { color: course.color }]}>
+              {course.icon}
             </ThemedText>
-          </View>
+          </View> */}
           <View style={styles.headerText}>
             <ThemedText type="title" style={[styles.title, { color: colors.text }]}>
-              {courseContent.title}
+              {course.title}
             </ThemedText>
             <ThemedText style={[styles.subtitle, { color: colors.text }]}>
-              Niveau {courseContent.level}
+              Niveau {course.level}
             </ThemedText>
           </View>
         </View>
@@ -129,7 +111,7 @@ export default function CourseDetailScreen() {
       {/* Description du niveau */}
       <ThemedView style={[styles.descriptionCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
         <ThemedText style={[styles.description, { color: colors.text }]}>
-          {courseContent.description}
+          {course.description}
         </ThemedText>
       </ThemedView>
 
@@ -139,7 +121,7 @@ export default function CourseDetailScreen() {
           Public cible
         </ThemedText>
         <View style={styles.audienceList}>
-          {courseContent.targetAudience.map((audience, index) => (
+          {course.targetAudience.map((audience, index) => (
             <View key={index} style={styles.audienceItem}>
               <MaterialIcons name="person" size={20} color={colors.primary} />
               <ThemedText style={[styles.audienceText, { color: colors.text }]}>
@@ -156,7 +138,7 @@ export default function CourseDetailScreen() {
           Contenus de formation
         </ThemedText>
         <View style={styles.contentList}>
-          {courseContent.contentTypes.map((content, index) => (
+          {course.contentTypes.map((content, index) => (
             <View key={index} style={styles.contentItem}>
               <MaterialIcons name="book" size={20} color={colors.primary} />
               <ThemedText style={[styles.contentText, { color: colors.text }]}>
@@ -229,24 +211,6 @@ export default function CourseDetailScreen() {
         )}
       </ThemedView>
 
-      {/* Prérequis */}
-      {courseContent.prerequisites.length > 0 && (
-        <ThemedView style={styles.section}>
-          <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-            Prérequis
-          </ThemedText>
-          <View style={styles.prerequisitesList}>
-            {courseContent.prerequisites.map((prerequisite, index) => (
-              <View key={index} style={styles.prerequisiteItem}>
-                <MaterialIcons name="check-circle" size={20} color={colors.success} />
-                <ThemedText style={[styles.prerequisiteText, { color: colors.text }]}>
-                  {prerequisite}
-                </ThemedText>
-              </View>
-            ))}
-          </View>
-        </ThemedView>
-      )}
 
       {/* Actions */}
       <ThemedView style={styles.section}>

@@ -1,5 +1,4 @@
 import { FailureAnimation } from '@/components/FailureAnimation';
-import { GlobalLoadingBar } from '@/components/GlobalLoadingBar';
 import { QuestionCard } from '@/components/QuestionCard';
 import { QuizCompletionScreen } from '@/components/QuizCompletionScreen';
 import { useQuizDataContext } from '@/components/QuizDataProvider';
@@ -96,27 +95,20 @@ export default function QuizScreen() {
   }, [timeRemaining]);
 
   // Gérer le cas où le quiz n'est pas encore chargé
-  if (!quiz) {
-    return (
-      <GlobalLoadingBar />
-    );
-  }
-
-  if (error) {
+  if (!quiz || !quiz.questions || quiz.questions.length === 0) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
-        <ThemedText style={[styles.errorText, { color: colors.error }]}>
-          Erreur: {error}
-        </ThemedText>
-        <TouchableOpacity 
-          style={[styles.retryButton, { backgroundColor: colors.tint }]}
-          onPress={() => {
-            // Recharger la page
-            router.replace(`/quiz/${id}`);
-          }}
+        <View style={styles.loadingContainer}>
+          <ThemedText style={[styles.loadingText, { color: colors.text }]}>
+            Quiz non trouvé ou sans questions
+          </ThemedText>
+        </View>
+        <TouchableOpacity
+          style={[styles.backButton, { backgroundColor: colors.card }]}
+          onPress={() => router.back()}
         >
-          <ThemedText style={[styles.retryButtonText, { color: 'white' }]}>
-            Réessayer
+          <ThemedText style={[styles.backButtonText, { color: colors.text }]}>
+            Retour
           </ThemedText>
         </TouchableOpacity>
       </SafeAreaView>
@@ -426,6 +418,23 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   retryButtonText: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  backButton: {
+    marginTop: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+    alignSelf: 'center',
+  },
+  backButtonText: {
     fontSize: 16,
     fontWeight: '600',
   },

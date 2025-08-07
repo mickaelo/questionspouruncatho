@@ -257,6 +257,7 @@ export interface FidelityScore {
 export interface Course {
   id: string;
   title: string;
+  level: number;
   color: string;
   description: string;
   targetAudience: string[];

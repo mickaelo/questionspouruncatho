@@ -1,7 +1,9 @@
 // Configuration d'authentification
 export const AUTH_CONFIG = {
   google: {
-    clientId: '9483993562-09gt4nvdru9bcapscbevfngn3i37ohco.apps.googleusercontent.com',
+    clientId: '9483993562-09gt4nvdru9bcapscbevfngn3i37ohco.apps.googleusercontent.com', // Web
+    androidClientId: '9483993562-fvk8nb3l2uie5hh0iot7nk7t1melir3h.apps.googleusercontent.com', // Android
+    projectId: 'helical-theater-308116', // Project ID Google Cloud
     clientSecret: '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',
     scopes: ['openid', 'profile', 'email'],
     redirectUri: 'http://localhost:8081/auth/callback',
@@ -28,6 +30,7 @@ export const OAUTH_ENDPOINTS = {
     token: 'https://oauth2.googleapis.com/token',
     userInfo: 'https://www.googleapis.com/oauth2/v2/userinfo',
     revocation: 'https://oauth2.googleapis.com/revoke',
+    authProviderX509CertUrl: 'https://www.googleapis.com/oauth2/v1/certs',
   },
 };
 

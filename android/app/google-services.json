@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "762800880851",
+    "project_id": "questionspouruncatho",
+    "storage_bucket": "questionspouruncatho.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762800880851:android:296793fc6c5bbdb47be826",
+        "android_client_info": {
+          "package_name": "com.anonymous.questionpouruncatho2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762800880851-gkpdgv34rcm8iq10d81ihqs805p0guq1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anonymous.questionpouruncatho2",
+            "certificate_hash": "ae10dd7496f698d5514f2a65356adf283d90c0c8"
+          }
+        },
+        {
+          "client_id": "762800880851-v5dbj88g8poqjl5br2tpuhh3b8hkul8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAwM-fplPlu6yq-CYelDz3nl9nqRa4Xp-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762800880851-v5dbj88g8poqjl5br2tpuhh3b8hkul8v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

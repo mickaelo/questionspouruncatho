@@ -89,7 +89,7 @@ export default function CategoryScreen() {
           
           <View style={[styles.statCard, { backgroundColor: colors.background, borderColor: colors.border }]}>
             <ThemedText style={styles.statNumber}>
-              {categoryQuizzes.reduce((total, quiz) => total + quiz.questions.length, 0)}
+              {categoryQuizzes.reduce((total, quiz) => total + (quiz.questions?.length || 0), 0)}
             </ThemedText>
             <ThemedText style={styles.statLabel}>Questions totales</ThemedText>
           </View>
@@ -152,7 +152,7 @@ export default function CategoryScreen() {
                     {categoryNames[quiz.category]}
                   </ThemedText>
                   <ThemedText style={styles.recommendationMetaText}>
-                    • {quiz.questions.length} questions
+                    • {quiz.questions?.length || 0} questions
                   </ThemedText>
                 </View>
               </View>

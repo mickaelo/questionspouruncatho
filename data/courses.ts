@@ -1,9 +1,15 @@
-import { Course, CourseContent } from '../types/quiz';
+import { Course, Quiz } from '../types/quiz';
 
-export const formationCourses: Course[] = [
+// Type temporaire pour les cours avec des IDs de quiz
+interface CourseWithQuizIds extends Omit<Course, 'quizzes'> {
+  quizzes: string[]; // IDs des quiz au lieu d'objets Quiz complets
+}
+
+export const formationCourses: CourseWithQuizIds[] = [
   {
-    id: 1,
+    id: "1",
     title: "Découverte / Premiers pas dans la foi",
+    level: 1,
     color: "#4CAF50", // 🟢 Vert
     description: "Premiers pas dans la foi chrétienne pour les nouveaux venus",
     targetAudience: [
@@ -23,12 +29,24 @@ export const formationCourses: Course[] = [
     requiredQuizzes: 0,
     requiredBadges: 0,
     unlockedBadges: [],
-    quizzes: [],
+    quizzes: [
+      "quiz-23", // Qui est Jésus-Christ ?
+      "quiz-24", // Les premiers gestes chrétiens
+      "quiz-25", // La Bible et les Écritures
+      "quiz-26", // L'Église et la messe
+      "quiz-27", // Le baptême et les sacrements
+      "quiz-1",  // Les Fondamentaux de la Foi
+      "quiz-3",  // La Bible et les Écritures
+      "quiz-5",  // Les Saints et la Communion des Saints
+      "quiz-11", // Les Prières Catholiques
+      "quiz-13"  // Introduction à Saint Thomas d'Aquin
+    ],
     challenges: []
   },
   {
-    id: 2,
+    id: "2",
     title: "Fondamentaux de la foi catholique",
+    level: 2,
     color: "#2196F3", // 🔵 Bleu
     description: "Apprentissage des bases de la doctrine catholique",
     targetAudience: [
@@ -47,12 +65,22 @@ export const formationCourses: Course[] = [
     requiredQuizzes: 5,
     requiredBadges: 2,
     unlockedBadges: [],
-    quizzes: [],
+    quizzes: [
+      "quiz-2",  // Les Sacrements
+      "quiz-4",  // La Liturgie et les Fêtes
+      "quiz-12", // Les Prières en Latin
+      "quiz-14", // Dieu et son existence
+      "quiz-16", // L'Incarnation du Verbe
+      "quiz-17", // Les vertus selon Saint Thomas
+      "quiz-19", // Les sacrements (Saint Thomas)
+      "quiz-21"  // La fin dernière de l'homme
+    ],
     challenges: []
   },
   {
-    id: 3,
+    id: "3",
     title: "Vie chrétienne engagée",
+    level: 3,
     color: "#FFC107", // 🟡 Jaune
     description: "Approfondissement de la vie spirituelle et de la pratique",
     targetAudience: [
@@ -71,12 +99,21 @@ export const formationCourses: Course[] = [
     requiredQuizzes: 15,
     requiredBadges: 5,
     unlockedBadges: [],
-    quizzes: [],
+    quizzes: [
+      "quiz-11", // Les Prières Catholiques
+      "quiz-12", // Les Prières en Latin
+      "quiz-4",  // La Liturgie et les Fêtes
+      "quiz-15", // La Trinité selon Saint Thomas
+      "quiz-18", // La loi et la morale
+      "quiz-20", // La grâce divine
+      "quiz-22"  // La méthode thomiste
+    ],
     challenges: []
   },
   {
-    id: 4,
+    id: "4",
     title: "Formation théologique et doctrinale",
+    level: 4,
     color: "#F44336", // 🔴 Rouge
     description: "Formation avancée en théologie et doctrine catholique",
     targetAudience: [
@@ -95,12 +132,24 @@ export const formationCourses: Course[] = [
     requiredQuizzes: 30,
     requiredBadges: 10,
     unlockedBadges: [],
-    quizzes: [],
+    quizzes: [
+      "quiz-13", // Introduction à Saint Thomas d'Aquin
+      "quiz-14", // Dieu et son existence
+      "quiz-15", // La Trinité selon Saint Thomas
+      "quiz-16", // L'Incarnation du Verbe
+      "quiz-17", // Les vertus selon Saint Thomas
+      "quiz-18", // La loi et la morale
+      "quiz-19", // Les sacrements (Saint Thomas)
+      "quiz-20", // La grâce divine
+      "quiz-21", // La fin dernière de l'homme
+      "quiz-22"  // La méthode thomiste
+    ],
     challenges: []
   },
   {
-    id: 5,
+    id: "5",
     title: "Vie consacrée / Discernement vocationnel",
+    level: 5,
     color: "#9E9E9E", // ⚪ Gris
     description: "Formation pour le discernement vocationnel et la vie consacrée",
     targetAudience: [
@@ -117,215 +166,28 @@ export const formationCourses: Course[] = [
     requiredQuizzes: 50,
     requiredBadges: 15,
     unlockedBadges: [],
-    quizzes: [],
+    quizzes: [
+      // Pour ce niveau, on inclut tous les quiz de niveau 3 et quelques-uns de niveau 2
+      // comme formation complète pour le discernement
+      "quiz-15", // La Trinité selon Saint Thomas
+      "quiz-18", // La loi et la morale
+      "quiz-20", // La grâce divine
+      "quiz-22", // La méthode thomiste
+      "quiz-12", // Les Prières en Latin
+      "quiz-14", // Dieu et son existence
+      "quiz-16", // L'Incarnation du Verbe
+      "quiz-17", // Les vertus selon Saint Thomas
+      "quiz-19", // Les sacrements (Saint Thomas)
+      "quiz-21"  // La fin dernière de l'homme
+    ],
     challenges: []
   }
 ];
 
-export const courseContents: CourseContent[] = [
-  {
-    id: 1,
-    level: 1,
-    title: "Découverte / Premiers pas dans la foi",
-    description: "Commencez votre voyage spirituel avec les bases de la foi chrétienne",
-    color: "#4CAF50",
-    icon: "🌱",
-    targetAudience: [
-      "Non-croyants curieux",
-      "Nouveaux convertis",
-      "Catéchumènes"
-    ],
-    contentTypes: [
-      "Qui est Jésus-Christ ?",
-      "Qu'est-ce que la foi chrétienne ?",
-      "Introduction à la prière",
-      "Symboles de la messe et premiers gestes",
-      "Le signe de croix, le Notre Père, Je vous salue Marie",
-      "Premiers textes bibliques (Genèse, Évangile de Luc)"
-    ],
-    quizzes: [
-      "Jésus-Christ : Fils de Dieu",
-      "Les bases de la prière",
-      "Premiers pas dans la Bible"
-    ],
-    challenges: [
-      "Prier 5 minutes par jour",
-      "Lire un passage biblique quotidien",
-      "Apprendre le signe de croix"
-    ],
-    prerequisites: []
-  },
-  {
-    id: 2,
-    level: 2,
-    title: "Fondamentaux de la foi catholique",
-    description: "Découvrez les fondements de la doctrine catholique",
-    color: "#2196F3",
-    icon: "📚",
-    targetAudience: [
-      "Baptisés peu pratiquants",
-      "Adolescents / adultes recommençant une vie chrétienne"
-    ],
-    contentTypes: [
-      "Les 7 sacrements",
-      "Les 10 commandements",
-      "Le Credo expliqué",
-      "Les grandes fêtes chrétiennes",
-      "Les Béatitudes",
-      "Introduction au Catéchisme de l'Église Catholique"
-    ],
-    quizzes: [
-      "Les sacrements de l'Église",
-      "Les commandements de Dieu",
-      "Le Credo de Nicée-Constantinople"
-    ],
-    challenges: [
-      "Étudier un sacrement par semaine",
-      "Mémoriser les 10 commandements",
-      "Participer aux fêtes liturgiques"
-    ],
-    prerequisites: ["Niveau 1 terminé"]
-  },
-  {
-    id: 3,
-    level: 3,
-    title: "Vie chrétienne engagée",
-    description: "Approfondissez votre vie spirituelle et votre pratique",
-    color: "#FFC107",
-    icon: "🙏",
-    targetAudience: [
-      "Pratiquants réguliers",
-      "Personnes investies dans une paroisse"
-    ],
-    contentTypes: [
-      "Lectio divina (lecture priante de la Bible)",
-      "Rôle de l'Esprit Saint dans la vie quotidienne",
-      "Comment se confesser ?",
-      "Le Rosaire approfondi",
-      "Vertus cardinales et théologales",
-      "Discernement chrétien"
-    ],
-    quizzes: [
-      "La Lectio Divina",
-      "Le sacrement de réconciliation",
-      "Le chapelet et le rosaire"
-    ],
-    challenges: [
-      "Pratiquer la Lectio Divina quotidiennement",
-      "Se confesser régulièrement",
-      "Réciter le chapelet chaque jour"
-    ],
-    prerequisites: ["Niveau 2 terminé"]
-  },
-  {
-    id: 4,
-    level: 4,
-    title: "Formation théologique et doctrinale",
-    description: "Formation avancée en théologie et doctrine catholique",
-    color: "#F44336",
-    icon: "🎓",
-    targetAudience: [
-      "Chrétiens engagés souhaitant approfondir",
-      "Animateurs, catéchistes, accompagnateurs"
-    ],
-    contentTypes: [
-      "Histoire de l'Église",
-      "Introduction à la théologie (Trinité, Christologie, ecclésiologie…)",
-      "Saints Pères et Docteurs de l'Église",
-      "Conciles et magistère",
-      "Lecture guidée de documents comme Dei Verbum, Lumen Gentium, Evangelii Gaudium",
-      "Éthique catholique, morale sociale"
-    ],
-    quizzes: [
-      "Histoire de l'Église primitive",
-      "La Trinité divine",
-      "Les conciles œcuméniques"
-    ],
-    challenges: [
-      "Étudier un document conciliaire",
-      "Lire les Pères de l'Église",
-      "Approfondir un aspect de la théologie"
-    ],
-    prerequisites: ["Niveau 3 terminé"]
-  },
-  {
-    id: 5,
-    level: 5,
-    title: "Vie consacrée / Discernement vocationnel",
-    description: "Formation pour le discernement vocationnel et la vie consacrée",
-    color: "#9E9E9E",
-    icon: "⛪",
-    targetAudience: [
-      "Personnes en cheminement vocationnel (prêtrise, vie religieuse, mariage chrétien)"
-    ],
-    contentTypes: [
-      "Les différentes vocations dans l'Église",
-      "Théologie du corps (Jean-Paul II)",
-      "Vœux religieux et vie communautaire",
-      "Liturgie des Heures",
-      "Spiritualités catholiques (franciscaine, bénédictine, ignatienne…)"
-    ],
-    quizzes: [
-      "Les vocations dans l'Église",
-      "La théologie du corps",
-      "Les vœux religieux"
-    ],
-    challenges: [
-      "Pratiquer la Liturgie des Heures",
-      "Découvrir une spiritualité particulière",
-      "Accompagnement vocationnel"
-    ],
-    prerequisites: ["Niveau 4 terminé"]
-  },
-  {
-    id: 6,
-    level: 6,
-    title: "Parcours Saint Thomas d'Aquin",
-    description: "Découverte approfondie de la pensée du Docteur Angélique",
-    color: "#FF9800",
-    icon: "📚",
-    targetAudience: [
-      "Étudiants en théologie",
-      "Amateurs de philosophie et théologie",
-      "Personnes souhaitant approfondir la doctrine catholique"
-    ],
-    contentTypes: [
-      "Introduction à Saint Thomas d'Aquin",
-      "Les 5 voies de l'existence de Dieu",
-      "La Trinité et l'Incarnation",
-      "Les vertus cardinales et théologales",
-      "La loi naturelle et la morale",
-      "Les sacrements et la grâce",
-      "La fin dernière de l'homme",
-      "La méthode scolastique"
-    ],
-    quizzes: [
-      "Introduction à Saint Thomas d'Aquin",
-      "Dieu et son existence",
-      "La Trinité selon Sait Thomas",
-      "Les vertus selon Saint Thomas",
-      "La loi et la morale"
-    ],
-    challenges: [
-      "Lire un passage de la Somme théologique",
-      "Méditer sur les 5 voies de Saint Thomas",
-      "Pratiquer une vertu cardinale",
-      "Étudier la méthode scolastique"
-    ],
-    prerequisites: ["Niveau 3 terminé"]
-  }
-];
 
-export function getCourseById(id: number): Course | undefined {
+
+export function getCourseById(id: string): CourseWithQuizIds | undefined {
   return formationCourses.find(course => course.id === id);
-}
-
-export function getCourseContentById(id: number): CourseContent | undefined {
-  return courseContents.find(course => course.id === id);
-}
-
-export function getNextCourse(currentCourse: number): Course | undefined {
-  return formationCourses.find(course => course.id === currentCourse + 1);
 }
 
 export function canAccessCourse(userLevel: number, targetCourse: number): boolean {
@@ -350,4 +212,20 @@ export function getCourseProgress(userPoints: number, userQuizzes: number, userB
     badgesProgress,
     overallProgress
   };
+}
+
+// Fonction pour obtenir les quiz d'un cours spécifique
+export function getCourseQuizzes(courseId: string): Quiz[] {
+  const { sampleQuizzes } = require('./questions');
+  
+  // Trouver le cours
+  const course = formationCourses.find(c => c.id === courseId);
+  if (!course) {
+    return [];
+  }
+  
+  // Retourner les quiz basés sur les IDs stockés dans le cours
+  return sampleQuizzes.filter((quiz: Quiz) => 
+    course.quizzes.includes(quiz.id)
+  );
 } 

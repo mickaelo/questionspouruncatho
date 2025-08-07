@@ -7,8 +7,8 @@ import { Alert, Platform } from 'react-native';
  * @param buttons - Boutons optionnels (uniquement pour mobile)
  */
 export function showAlert(
-  title: string, 
-  message: string, 
+  title: string,
+  message: string,
   buttons?: Array<{
     text: string;
     onPress?: () => void;
@@ -68,4 +68,18 @@ export function showConfirmAlert(
       ]
     );
   }
-} 
+}
+
+const alertPolyfill = (title: string, description: string, options: any, extra: any) => {
+  const result = window.confirm([title, description].filter(Boolean).join('\n'))
+
+  if (result) {
+    const confirmOption = options.find(({ style }: { style: string }) => style !== 'cancel')
+    confirmOption && confirmOption.onPress()
+  } else {
+    const cancelOption = options.find(({ style }: { style: string }) => style === 'cancel')
+    cancelOption && cancelOption.onPress()
+  }
+}
+
+export const alert = Platform.OS === 'web' ? alertPolyfill : Alert.alert

@@ -1889,6 +1889,185 @@ export const sampleQuestions: Question[] = [
       ],
     },
   },
+  // QUESTIONS POUR "DÉCOUVERTE / PREMIERS PAS DANS LA FOI"
+  {
+    id: '96',
+    category: 'decouverte',
+    difficulty: 'facile',
+    level: 1,
+    question: 'Qui est Jésus-Christ pour les chrétiens ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Un simple prophète',
+      'Le Fils de Dieu fait homme',
+      'Un roi terrestre',
+      'Un philosophe'
+    ],
+    correctAnswer: 1,
+    explanation: 'Jésus-Christ est le Fils de Dieu qui s\'est fait homme pour nous sauver. C\'est le cœur de la foi chrétienne.',
+    points: 10,
+    scripture: 'Jean 3:16'
+  },
+  {
+    id: '97',
+    category: 'decouverte',
+    difficulty: 'facile',
+    level: 1,
+    question: 'Qu\'est-ce que la foi chrétienne ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une simple croyance en Dieu',
+      'Une relation personnelle avec Dieu par Jésus-Christ',
+      'Un ensemble de règles à suivre',
+      'Une philosophie de vie'
+    ],
+    correctAnswer: 1,
+    explanation: 'La foi chrétienne est une relation personnelle avec Dieu, rendue possible par Jésus-Christ.',
+    points: 10,
+    catechism: 'CCC 150'
+  },
+  {
+    id: '98',
+    category: 'decouverte',
+    difficulty: 'facile',
+    level: 1,
+    question: 'Comment faire le signe de croix ?',
+    questionType: 'multiple-choice',
+    options: [
+      'De gauche à droite',
+      'De droite à gauche',
+      'De haut en bas puis de gauche à droite',
+      'De haut en bas puis de droite à gauche'
+    ],
+    correctAnswer: 2,
+    explanation: 'Le signe de croix se fait en touchant le front, puis le cœur, puis l\'épaule gauche, puis l\'épaule droite.',
+    points: 10
+  },
+  {
+    id: '99',
+    category: 'decouverte',
+    difficulty: 'facile',
+    level: 1,
+    question: 'Quelle est la prière enseignée par Jésus ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Le Je vous salue Marie',
+      'Le Notre Père',
+      'Le Gloria',
+      'Le Credo'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le Notre Père est la prière que Jésus a enseignée à ses disciples.',
+    points: 10,
+    scripture: 'Matthieu 6:9-13'
+  },
+  {
+    id: '100',
+    category: 'decouverte',
+    difficulty: 'facile',
+    level: 1,
+    question: 'Qu\'est-ce que la Bible ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Un livre d\'histoire',
+      'La Parole de Dieu',
+      'Un recueil de contes',
+      'Un livre de philosophie'
+    ],
+    correctAnswer: 1,
+    explanation: 'La Bible est la Parole de Dieu, inspirée par l\'Esprit Saint.',
+    points: 10,
+    catechism: 'CCC 105'
+  },
+  {
+    id: '101',
+    category: 'decouverte',
+    difficulty: 'facile',
+    level: 1,
+    question: 'Quel est le premier livre de la Bible ?',
+    questionType: 'multiple-choice',
+    options: [
+      'L\'Exode',
+      'La Genèse',
+      'Le Lévitique',
+      'Les Nombres'
+    ],
+    correctAnswer: 1,
+    explanation: 'La Genèse est le premier livre de la Bible. Il raconte la création du monde et les débuts de l\'humanité.',
+    points: 10,
+    scripture: 'Genèse 1:1'
+  },
+  {
+    id: '102',
+    category: 'decouverte',
+    difficulty: 'facile',
+    level: 1,
+    question: 'Qu\'est-ce qu\'une église ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Un simple bâtiment',
+      'La maison de Dieu et le lieu de rassemblement des chrétiens',
+      'Un musée religieux',
+      'Un centre culturel'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'église est la maison de Dieu et le lieu où les chrétiens se rassemblent pour prier et célébrer.',
+    points: 10
+  },
+  {
+    id: '103',
+    category: 'decouverte',
+    difficulty: 'facile',
+    level: 1,
+    question: 'Qu\'est-ce que la messe ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une simple réunion',
+      'La célébration du sacrifice du Christ',
+      'Un concert religieux',
+      'Une conférence'
+    ],
+    correctAnswer: 1,
+    explanation: 'La messe est la célébration du sacrifice du Christ, renouvelé pour nous.',
+    points: 10,
+    catechism: 'CCC 1322'
+  },
+  {
+    id: '104',
+    category: 'decouverte',
+    difficulty: 'facile',
+    level: 1,
+    question: 'Qu\'est-ce que le baptême ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une simple cérémonie',
+      'Le sacrement qui nous fait enfants de Dieu',
+      'Une tradition culturelle',
+      'Un rite de passage'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le baptême est le sacrement qui nous fait enfants de Dieu et nous incorpore à l\'Église.',
+    points: 10,
+    catechism: 'CCC 1213'
+  },
+  {
+    id: '105',
+    category: 'decouverte',
+    difficulty: 'facile',
+    level: 1,
+    question: 'Qu\'est-ce que la prière ?',
+    questionType: 'multiple-choice',
+    options: [
+      'Une simple demande',
+      'Une conversation avec Dieu',
+      'Une méditation',
+      'Un exercice de relaxation'
+    ],
+    correctAnswer: 1,
+    explanation: 'La prière est une conversation avec Dieu, un dialogue d\'amour avec notre Père céleste.',
+    points: 10,
+    catechism: 'CCC 2559'
+  }
 ];
 
 export const sampleQuizzes: Quiz[] = [
@@ -1898,7 +2077,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Testez vos connaissances sur les bases de la foi catholique',
     category: 'dogmes',
     level: 1,
-    questions: sampleQuestions.filter(q => q.category === 'dogmes').slice(0, 10),
+    questions: sampleQuestions.filter(q => 
+      ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'].includes(q.id)
+    ),
     passingScore: 70,
     timeLimit: 15
   },
@@ -1908,7 +2089,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Découvrez les 7 sacrements de l\'Église catholique',
     category: 'sacrements',
     level: 2,
-    questions: sampleQuestions.filter(q => q.category === 'sacrements').slice(0, 10),
+    questions: sampleQuestions.filter(q => 
+      ['11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'].includes(q.id)
+    ),
     passingScore: 80,
     timeLimit: 15
   },
@@ -1918,7 +2101,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Explorez les Saintes Écritures',
     category: 'saintes-ecritures',
     level: 1,
-    questions: sampleQuestions.filter(q => q.category === 'saintes-ecritures').slice(0, 10),
+    questions: sampleQuestions.filter(q => 
+      ['26', '27', '28', '29', '30', '31', '32', '33', '34', '35'].includes(q.id)
+    ),
     passingScore: 75,
     timeLimit: 15
   },
@@ -1928,7 +2113,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Apprenez les couleurs liturgiques et les fêtes chrétiennes',
     category: 'liturgie',
     level: 2,
-    questions: sampleQuestions.filter(q => q.category === 'liturgie').slice(0, 10),
+    questions: sampleQuestions.filter(q => 
+      ['36', '37', '38', '39', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49', '50'].includes(q.id)
+    ),
     passingScore: 75,
     timeLimit: 15
   },
@@ -1938,7 +2125,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Découvrez les saints patrons et la communion des saints',
     category: 'saints',
     level: 1,
-    questions: sampleQuestions.filter(q => q.category === 'saints').slice(0, 10),
+    questions: sampleQuestions.filter(q => 
+      ['61', '62', '63', '64', '65', '66', '67', '68', '69', '70', '71', '72', '73', '74', '75'].includes(q.id)
+    ),
     passingScore: 70,
     timeLimit: 15
   },
@@ -1948,7 +2137,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Testez vos connaissances sur les prières fondamentales de l\'Église',
     category: 'prieres',
     level: 1,
-    questions: sampleQuestions.filter(q => q.category === 'prieres').slice(0, 10),
+    questions: sampleQuestions.filter(q => 
+      ['76', '77', '78', '79', '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '90'].includes(q.id)
+    ),
     passingScore: 70,
     timeLimit: 15
   },
@@ -1958,7 +2149,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Découvrez les prières traditionnelles de l\'Église en latin',
     category: 'prieres-latin',
     level: 2,
-    questions: sampleQuestions.filter(q => q.category === 'prieres-latin').slice(0, 10),
+    questions: sampleQuestions.filter(q => 
+      ['91', '92', '93', '94', '95', '96', '97', '98', '99', '100'].includes(q.id)
+    ),
     passingScore: 75,
     timeLimit: 15
   },
@@ -1968,7 +2161,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Découvrez la vie et l\'œuvre du Docteur Angélique',
     category: 'saint-thomas',
     level: 1,
-    questions: sampleQuestions.filter(q => q.category === 'saint-thomas' && q.level === 1),
+    questions: sampleQuestions.filter(q => 
+      ['51', '52', '53', '54', '55', '56', '57', '58', '59', '60'].includes(q.id)
+    ),
     passingScore: 70,
     timeLimit: 15
   },
@@ -1978,7 +2173,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Les 5 voies de Saint Thomas pour prouver l\'existence de Dieu',
     category: 'saint-thomas',
     level: 2,
-    questions: sampleQuestions.filter(q => q.category === 'saint-thomas' && (q.id === '74' || q.id === '75' || q.id === '76')),
+    questions: sampleQuestions.filter(q => 
+      ['51', '52', '53', '54', '55', '56', '57', '58', '59', '60'].includes(q.id)
+    ),
     passingScore: 75,
     timeLimit: 20
   },
@@ -1988,7 +2185,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Comprendre le mystère de la Trinité avec le Docteur Angélique',
     category: 'saint-thomas',
     level: 3,
-    questions: sampleQuestions.filter(q => q.category === 'saint-thomas' && (q.id === '77' || q.id === '78')),
+    questions: sampleQuestions.filter(q => 
+      ['51', '52', '53', '54', '55', '56', '57', '58', '59', '60'].includes(q.id)
+    ),
     passingScore: 80,
     timeLimit: 15
   },
@@ -1998,7 +2197,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'L\'union hypostatique et la nécessité de l\'Incarnation',
     category: 'saint-thomas',
     level: 2,
-    questions: sampleQuestions.filter(q => q.category === 'saint-thomas' && (q.id === '79' || q.id === '80')),
+    questions: sampleQuestions.filter(q => 
+      ['51', '52', '53', '54', '55', '56', '57', '58', '59', '60'].includes(q.id)
+    ),
     passingScore: 75,
     timeLimit: 15
   },
@@ -2008,7 +2209,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Vertus cardinales et théologales dans la pensée thomiste',
     category: 'saint-thomas',
     level: 2,
-    questions: sampleQuestions.filter(q => q.category === 'saint-thomas' && (q.id === '81' || q.id === '82' || q.id === '83')),
+    questions: sampleQuestions.filter(q => 
+      ['51', '52', '53', '54', '55', '56', '57', '58', '59', '60'].includes(q.id)
+    ),
     passingScore: 75,
     timeLimit: 20
   },
@@ -2018,7 +2221,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Les différents types de loi dans la pensée de Saint Thomas',
     category: 'saint-thomas',
     level: 3,
-    questions: sampleQuestions.filter(q => q.category === 'saint-thomas' && (q.id === '84' || q.id === '85')),
+    questions: sampleQuestions.filter(q => 
+      ['51', '52', '53', '54', '55', '56', '57', '58', '59', '60'].includes(q.id)
+    ),
     passingScore: 80,
     timeLimit: 15
   },
@@ -2028,7 +2233,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'La doctrine sacramentelle de Saint Thomas d\'Aquin',
     category: 'saint-thomas',
     level: 2,
-    questions: sampleQuestions.filter(q => q.category === 'saint-thomas' && (q.id === '86' || q.id === '87')),
+    questions: sampleQuestions.filter(q => 
+      ['51', '52', '53', '54', '55', '56', '57', '58', '59', '60'].includes(q.id)
+    ),
     passingScore: 75,
     timeLimit: 15
   },
@@ -2038,7 +2245,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'Grâce sanctifiante et grâce actuelle selon Saint Thomas',
     category: 'saint-thomas',
     level: 3,
-    questions: sampleQuestions.filter(q => q.category === 'saint-thomas' && (q.id === '88' || q.id === '89')),
+    questions: sampleQuestions.filter(q => 
+      ['51', '52', '53', '54', '55', '56', '57', '58', '59', '60'].includes(q.id)
+    ),
     passingScore: 80,
     timeLimit: 15
   },
@@ -2048,7 +2257,9 @@ export const sampleQuizzes: Quiz[] = [
     description: 'La vision béatifique et le bonheur parfait',
     category: 'saint-thomas',
     level: 2,
-    questions: sampleQuestions.filter(q => q.category === 'saint-thomas' && (q.id === '90' || q.id === '91')),
+    questions: sampleQuestions.filter(q => 
+      ['51', '52', '53', '54', '55', '56', '57', '58', '59', '60'].includes(q.id)
+    ),
     passingScore: 75,
     timeLimit: 15
   },
@@ -2058,9 +2269,72 @@ export const sampleQuizzes: Quiz[] = [
     description: 'La méthode scolastique et l\'influence de Saint Thomas',
     category: 'saint-thomas',
     level: 3,
-    questions: sampleQuestions.filter(q => q.category === 'saint-thomas' && (q.id === '92' || q.id === '93' || q.id === '94' || q.id === '95')),
+    questions: sampleQuestions.filter(q => 
+      ['51', '52', '53', '54', '55', '56', '57', '58', '59', '60'].includes(q.id)
+    ),
     passingScore: 75,
     timeLimit: 20
+  },
+  // QUIZ POUR "DÉCOUVERTE / PREMIERS PAS DANS LA FOI"
+  {
+    id: 'quiz-23',
+    title: 'Qui est Jésus-Christ ?',
+    description: 'Découvrez qui est Jésus-Christ pour les chrétiens',
+    category: 'decouverte',
+    level: 1,
+    questions: sampleQuestions.filter(q => 
+      ['101', '102', '103', '104', '105'].includes(q.id)
+    ),
+    passingScore: 70,
+    timeLimit: 10
+  },
+  {
+    id: 'quiz-24',
+    title: 'Les premiers gestes chrétiens',
+    description: 'Apprenez le signe de croix et les prières de base',
+    category: 'decouverte',
+    level: 1,
+    questions: sampleQuestions.filter(q => 
+      ['101', '102', '103', '104', '105'].includes(q.id)
+    ),
+    passingScore: 70,
+    timeLimit: 15
+  },
+  {
+    id: 'quiz-25',
+    title: 'La Bible et les Écritures',
+    description: 'Découvrez ce qu\'est la Bible et ses premiers livres',
+    category: 'decouverte',
+    level: 1,
+    questions: sampleQuestions.filter(q => 
+      ['101', '102', '103', '104', '105'].includes(q.id)
+    ),
+    passingScore: 70,
+    timeLimit: 10
+  },
+  {
+    id: 'quiz-26',
+    title: 'L\'Église et la messe',
+    description: 'Comprenez ce qu\'est l\'église et la messe',
+    category: 'decouverte',
+    level: 1,
+    questions: sampleQuestions.filter(q => 
+      ['101', '102', '103', '104', '105'].includes(q.id)
+    ),
+    passingScore: 70,
+    timeLimit: 10
+  },
+  {
+    id: 'quiz-27',
+    title: 'Le baptême et les sacrements',
+    description: 'Découvrez le sacrement du baptême',
+    category: 'decouverte',
+    level: 1,
+    questions: sampleQuestions.filter(q => 
+      ['101', '102', '103', '104', '105'].includes(q.id)
+    ),
+    passingScore: 70,
+    timeLimit: 5
   }
 ];
 
@@ -2074,7 +2348,8 @@ export const categoryNames: Record<string, string> = {
   'saints': 'Saints et Saintes',
   'prieres': 'Prières',
   'prieres-latin': 'Prières en Latin',
-  'saint-thomas': 'Saint Thomas d\'Aquin'
+  'saint-thomas': 'Saint Thomas d\'Aquin',
+  'decouverte': 'Découverte de la Foi'
 };
 
 export const categoryIcons: Record<string, string> = {
@@ -2087,7 +2362,8 @@ export const categoryIcons: Record<string, string> = {
   'saints': 'person',
   'prieres': 'pan-tool',
   'prieres-latin': 'translate',
-  'saint-thomas': 'school'
+  'saint-thomas': 'school',
+  'decouverte': 'lightbulb'
 };
 
 // Utility function to filter quizzes based on user level and admin status

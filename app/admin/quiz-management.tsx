@@ -152,7 +152,7 @@ export default function QuizManagementScreen() {
     console.log('📝 Ouverture du sélecteur de questions pour:', quiz.title);
 
     // Extraire les IDs des questions actuelles du quiz
-    const questionIds = quiz.questions.map(q => {
+    const questionIds = (quiz.questions || []).map(q => {
       if (typeof q === 'string') return q;
       if (typeof q === 'object' && q.id) return q.id;
       return null;

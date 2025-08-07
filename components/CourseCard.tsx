@@ -2,6 +2,7 @@ import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { Course, CourseContent } from '@/types/quiz';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import { router } from 'expo-router';
 import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ThemedText } from './ThemedText';
@@ -40,7 +41,7 @@ export function CourseCard({
 
   const handlePress = () => {
     if (isUnlocked) {
-      // router.push(`/course/${course.id}`);
+      router.push(`/course/${course.id}`);
     }
   };
 

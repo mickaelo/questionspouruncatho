@@ -8,6 +8,8 @@ import { Colors } from '@/constants/Colors';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useUserProgress } from '@/hooks/useUserProgress';
+import { quizService } from '@/services/quizService';
+import { UserProgressService } from '@/services/userProgressService';
 import { Quiz } from '@/types/quiz';
 import { router } from 'expo-router';
 import React, { useEffect } from 'react';
@@ -21,7 +23,7 @@ export default function HomeScreen() {
 
   // Check if user is admin
   const isAdmin = isAuthenticated && user?.type?.includes('admin');
-  
+
   // Get user level from progress or default to 1
   const userLevel = userProgress?.level || 1;
 
@@ -34,11 +36,15 @@ export default function HomeScreen() {
   const [isLoadingQuizzes, setIsLoadingQuizzes] = React.useState(false);
   const [hasError, setHasError] = React.useState(false);
 
+  // Quiz populaires
+  const [popularQuizzes, setPopularQuizzes] = React.useState<any[]>([]);
+  const [isLoadingPopular, setIsLoadingPopular] = React.useState(false);
+
   // Log de débogage
-  console.log('🏠 HomeScreen rendu:', { 
-    isAuthenticated, 
-    userLevel, 
-    colorScheme, 
+  console.log('🏠 HomeScreen rendu:', {
+    isAuthenticated,
+    userLevel,
+    colorScheme,
     isWeb,
     userProgressLoading,
     quizLoading,
@@ -67,6 +73,26 @@ export default function HomeScreen() {
     loadAvailableQuizzes();
   }, [getAvailableQuizzes, userLevel]);
 
+  useEffect(() => {
+    const fetchPopularQuizzes = async () => {
+      setIsLoadingPopular(true);
+      try {
+        const popular = await UserProgressService.getMostPopularQuizzes(3);
+        const quizPromises = popular.map(async ({ quizId }) => {
+          const quiz = await quizService.getQuiz(quizId);
+          return quiz;
+        });
+        const quizzes = (await Promise.all(quizPromises)).filter(Boolean);
+        setPopularQuizzes(quizzes);
+      } catch (error) {
+        setPopularQuizzes([]);
+      } finally {
+        setIsLoadingPopular(false);
+      }
+    };
+    fetchPopularQuizzes();
+  }, []);
+
   const handleQuizPress = (quiz: Quiz) => {
     router.push({
       pathname: '/quiz/[id]',
@@ -93,10 +119,10 @@ export default function HomeScreen() {
   const progress = userProgress || defaultProgress;
   const insets = useSafeAreaInsets();
   return (
-    <ScrollView 
+    <ScrollView
       style={[
-        styles.container, 
-        { 
+        styles.container,
+        {
           backgroundColor: colors.background,
           paddingTop: Platform.OS === 'android' ? insets.top : 0,
           // Ajouter un padding à droite sur le web pour compenser la largeur du menu de gauche
@@ -143,23 +169,23 @@ export default function HomeScreen() {
               <ThemedText type="subtitle" style={[styles.progressCardTitle, { color: colors.text }]}>
                 Votre progression
               </ThemedText>
-              
+
               <View style={styles.userInfo}>
                 <ThemedText style={[styles.level, { color: colors.primary }]}>
                   {getLevelTitle(progress.level)} - Niveau {progress.level}
                 </ThemedText>
-                
+
                 {/* Barre de progression vers le prochain niveau */}
                 <View style={styles.progressBarContainer}>
                   <View style={styles.progressBarBackground}>
-                    <View 
+                    <View
                       style={[
-                        styles.progressBarFill, 
-                        { 
+                        styles.progressBarFill,
+                        {
                           width: `${Math.min((progress.totalPoints % 1000) / 10, 100)}%`,
-                          backgroundColor: colors.primary 
+                          backgroundColor: colors.primary
                         }
-                      ]} 
+                      ]}
                     />
                   </View>
                   <ThemedText style={[styles.progressText, { color: colors.text }]}>
@@ -191,6 +217,29 @@ export default function HomeScreen() {
                 <IconSymbol name="chevron.right" size={20} color={colors.primary} />
               </TouchableOpacity>
             </ThemedView>
+
+            {/* Section Quiz populaires */}
+            <ThemedView style={[styles.progressCard, { backgroundColor: colors.card, borderColor: colors.border, marginTop: 16 }]}>
+              <ThemedText type="subtitle" style={[styles.progressCardTitle, { color: colors.text }]}>Quiz populaires</ThemedText>
+              {isLoadingPopular ? (
+                <ThemedText style={{ color: colors.text, textAlign: 'center', marginVertical: 20 }}>Chargement...</ThemedText>
+              ) : (
+                popularQuizzes.map((quiz) => (
+                  <TouchableOpacity
+                    key={quiz.id}
+                    style={[styles.popularQuiz]}
+                    onPress={() => handleQuizPress(quiz)}
+                  >
+                    <View style={styles.quizInfo}>
+                      <ThemedText type="subtitle" style={[styles.quizTitle, { color: colors.text }]}>
+                        <IconSymbol name="star.fill" size={16} color="#FFD700" style={styles.popularIcon} />{quiz.title}
+                      </ThemedText>
+                    </View>
+                    <IconSymbol name="chevron.right" size={20} color={colors.primary} />
+                  </TouchableOpacity>
+                ))
+              )}
+            </ThemedView>
           </View>
         </View>
       ) : (
@@ -198,9 +247,9 @@ export default function HomeScreen() {
         <View>
           {/* Header avec progression utilisateur (mobile uniquement) */}
           <ThemedView style={[
-            styles.header, 
-            { 
-              backgroundColor: colors.card, 
+            styles.header,
+            {
+              backgroundColor: colors.card,
               borderColor: colors.border,
               marginTop: Platform.OS === 'android' ? 0 : 16, // Pas de marge en haut sur Android
             }
@@ -209,18 +258,18 @@ export default function HomeScreen() {
               <ThemedText style={[styles.level, { color: colors.primary }]}>
                 {getLevelTitle(progress.level)} - Niveau {progress.level}
               </ThemedText>
-              
+
               {/* Barre de progression vers le prochain niveau */}
               <View style={styles.progressBarContainer}>
                 <View style={styles.progressBarBackground}>
-                  <View 
+                  <View
                     style={[
-                      styles.progressBarFill, 
-                      { 
+                      styles.progressBarFill,
+                      {
                         width: `${Math.min((progress.totalPoints % 1000) / 10, 100)}%`,
-                        backgroundColor: colors.primary 
+                        backgroundColor: colors.primary
                       }
-                    ]} 
+                    ]}
                   />
                 </View>
                 <ThemedText style={[styles.progressText, { color: colors.text }]}>
@@ -255,10 +304,7 @@ export default function HomeScreen() {
 
           {/* Section Défis quotidiens */}
           <ThemedView style={styles.section}>
-            <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>
-              Défi du jour
-            </ThemedText>
-
+            <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>Défi du jour</ThemedText>
             <TouchableOpacity
               style={[styles.dailyChallenge, { backgroundColor: colors.card, borderColor: colors.border }]}
               onPress={() => router.push('/explore')}
@@ -267,13 +313,34 @@ export default function HomeScreen() {
                 <IconSymbol name="target" size={24} color={colors.primary} />
                 <View style={styles.challengeText}>
                   <ThemedText type="subtitle" style={{ color: colors.text }}>Quiz sur les Saints</ThemedText>
-                  <ThemedText style={[styles.challengeDescription, { color: colors.text }]}>
-                    Testez vos connaissances sur les saints de l'Église catholique
-                  </ThemedText>
+                  <ThemedText style={[styles.challengeDescription, { color: colors.text }]}>Testez vos connaissances sur les saints de l'Église catholique</ThemedText>
                 </View>
               </View>
               <IconSymbol name="chevron.right" size={20} color={colors.primary} />
             </TouchableOpacity>
+          </ThemedView>
+
+          {/* Section Quiz populaires */}
+          <ThemedView style={styles.section}>
+            <ThemedText type="subtitle" style={[styles.sectionTitle, { color: colors.text }]}>Quiz populaires</ThemedText>
+            {isLoadingPopular ? (
+              <ThemedText style={{ color: colors.text, textAlign: 'center', marginVertical: 20 }}>Chargement...</ThemedText>
+            ) : (
+              popularQuizzes.map((quiz) => (
+                <TouchableOpacity
+                  key={quiz.id}
+                  style={[styles.popularQuiz, { backgroundColor: colors.card, borderColor: colors.border }]}
+                  onPress={() => handleQuizPress(quiz)}
+                >
+                  <View style={styles.quizInfo}>
+                    <ThemedText type="subtitle" style={[styles.quizTitle, { color: colors.text }]}>
+                      {quiz.title}
+                    </ThemedText>
+                  </View>
+                  <IconSymbol name="chevron.right" size={20} color={colors.primary} />
+                </TouchableOpacity>
+              ))
+            )}
           </ThemedView>
         </View>
       )}
@@ -515,6 +582,66 @@ const styles = StyleSheet.create({
   rightColumn: {
     flex: 1,
     paddingLeft: 16,
+  },
+  popularQuiz: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+    marginBottom: 12,
+    backgroundColor: 'rgba(255, 193, 7, 0.1)', // Fond doré subtil
+    borderColor: 'rgba(255, 193, 7, 0.3)', // Bordure dorée
+  },
+  popularQuizHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  popularBadge: {
+    backgroundColor: '#FFD700',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 12,
+    marginRight: 8,
+  },
+  popularBadgeText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#000',
+  },
+  popularIcon: {
+    marginRight: 8,
+  },
+  quizInfo: {
+    flex: 1,
+    marginRight: 12,
+  },
+  quizTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  quizDescription: {
+    fontSize: 14,
+    opacity: 0.8,
+    marginBottom: 8,
+  },
+  quizMeta: {
+    flexDirection: 'row',
+    gap: 8,
+  },
+  quizMetaText: {
+    fontSize: 12,
   },
 
 });

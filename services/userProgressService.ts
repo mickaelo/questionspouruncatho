@@ -1,19 +1,19 @@
 import { db } from '@/config/firebase';
 import {
-    Answer,
-    FidelityScore,
-    FormationProgress,
-    MonthlyStats,
-    WeeklyStats
+  Answer,
+  FidelityScore,
+  FormationProgress,
+  MonthlyStats,
+  WeeklyStats
 } from '@/types/quiz';
 import {
-    addDoc,
-    collection,
-    doc,
-    getDoc,
-    setDoc,
-    Timestamp,
-    updateDoc
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+  Timestamp,
+  updateDoc
 } from 'firebase/firestore';
 
 export interface QuizAttempt {
@@ -459,6 +459,30 @@ export class UserProgressService {
     } catch (error) {
       console.error('Erreur lors de la récupération de la dernière tentative:', error);
       return null;
+    }
+  }
+
+  // Récupérer les quiz les plus populaires (par nombre de tentatives)
+  static async getMostPopularQuizzes(limit: number = 5): Promise<{ quizId: string, count: number }[]> {
+    try {
+      const { collection, getDocs } = await import('firebase/firestore');
+      const attemptsSnapshot = await getDocs(collection(db, 'quizAttempts'));
+      const countMap: Record<string, number> = {};
+      attemptsSnapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.quizId) {
+          countMap[data.quizId] = (countMap[data.quizId] || 0) + 1;
+        }
+      });
+      // Convertir en tableau et trier
+      const sorted = Object.entries(countMap)
+        .map(([quizId, count]) => ({ quizId, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, limit);
+      return sorted;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des quiz populaires:', error);
+      return [];
     }
   }
 } 

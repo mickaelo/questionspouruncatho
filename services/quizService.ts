@@ -26,7 +26,7 @@ export interface QuizService {
   getQuiz(id: string): Promise<Quiz | null>;
   getAllQuizzes(): Promise<Quiz[]>;
   getQuizzesByCategory(category: string): Promise<Quiz[]>;
-  getQuizzesByCourse(level: number): Promise<Quiz[]>;
+  getQuizzesByCourse(courseId: string): Promise<Quiz[]>;
   getAvailableQuizzes(userLevel: number): Promise<Quiz[]>;
   getQuizzesByCategoryAndLevel(category: string, userLevel: number): Promise<Quiz[]>;
 
@@ -291,43 +291,30 @@ class QuizServiceImpl implements QuizService {
     }
   }
 
-  async getQuizzesByCourse(level: number): Promise<Quiz[]> {
+  async getQuizzesByCourse(courseId: string): Promise<Quiz[]> {
     try {
-      // Utiliser seulement le filtre where sans orderBy pour éviter l'erreur d'index
-      const q = query(
-        collection(db, QUIZZES_COLLECTION),
-        where('level', '==', level)
-      );
-      const querySnapshot = await getDocs(q);
+      const courseRef = doc(db, 'courses', courseId);
+      const courseSnap = await getDoc(courseRef);
+      if (!courseSnap.exists()) return [];
 
-      const quizzes: Quiz[] = [];
-      for (const doc of querySnapshot.docs) {
-        const quizData = doc.data();
-        
-        // Vérifier que les données ne sont pas null
-        if (!quizData) {
-          console.warn('Quiz data is null for doc:', doc.id);
-          continue;
-        }
-        
-        // Récupérer le nombre de questions depuis le document quiz
-        const questionCount = quizData.questions?.length || 0;
+      const courseData = courseSnap.data();
+      let quizzes = courseData.quizzes || [];
 
-        // Créer un tableau avec le bon nombre d'éléments pour que .length fonctionne
-        const questionsArray = Array(questionCount).fill(null);
-
-        quizzes.push({
-          id: doc.id,
-          ...quizData,
-          questions: questionsArray // Tableau avec la bonne longueur
-        } as Quiz);
+      // Si ce sont des IDs, on va chercher les quiz complets
+      if (quizzes.length > 0 && typeof quizzes[0] === 'string') {
+        const quizDocs = await Promise.all(
+          quizzes.map((quizId: string) => getDoc(doc(db, 'quizzes', quizId)))
+        );
+        return quizDocs
+          .filter(q => q.exists())
+          .map(q => ({ id: q.id, ...q.data() } as Quiz));
       }
 
-      // Trier les quiz par ID côté client si nécessaire
-      return quizzes.sort((a, b) => a.id.localeCompare(b.id));
+      // Sinon, on suppose que ce sont déjà des objets Quiz
+      return quizzes as Quiz[];
     } catch (error) {
-      console.error('Error getting quizzes by level:', error);
-      throw new Error('Failed to get quizzes by level');
+      console.error('Error getting quizzes for course:', error);
+      throw new Error('Failed to get quizzes for course');
     }
   }
 
