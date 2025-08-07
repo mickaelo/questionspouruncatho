@@ -19,7 +19,6 @@ import { IconSymbol } from './ui/IconSymbol';
 
 interface QuizCompletionScreenProps {
   visible: boolean;
-  score?: number;
   totalPoints?: number;
   percentage?: number;
   passed?: boolean;
@@ -32,7 +31,6 @@ interface QuizCompletionScreenProps {
 
 export function QuizCompletionScreen({
   visible,
-  score: propScore,
   totalPoints: propTotalPoints,
   percentage: propPercentage,
   passed: propPassed,
@@ -48,22 +46,39 @@ export function QuizCompletionScreen({
   const { userProgress } = useUserProgress();
   
   // États pour les données dynamiques
-  const [dynamicScore, setDynamicScore] = useState<number | null>(null);
   const [dynamicTotalPoints, setDynamicTotalPoints] = useState<number | null>(null);
   const [dynamicPercentage, setDynamicPercentage] = useState<number | null>(null);
   const [dynamicPassed, setDynamicPassed] = useState<boolean | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Prioriser les props si elles sont fournies, sinon utiliser les données dynamiques
+  const totalPoints = propTotalPoints !== undefined ? propTotalPoints : (dynamicTotalPoints ?? 0);
+  const percentage = propPercentage !== undefined ? propPercentage : (dynamicPercentage ?? 0);
+  const passed = propPassed !== undefined ? propPassed : (dynamicPassed ?? false);
 
-  // Utiliser les props si fournies, sinon utiliser les données dynamiques
-  const score = propScore ?? dynamicScore ?? 0;
-  const totalPoints = propTotalPoints ?? dynamicTotalPoints ?? 0;
-  const percentage = propPercentage ?? dynamicPercentage ?? 0;
-  const passed = propPassed ?? dynamicPassed ?? false;
-
-  // Récupérer les données dynamiques si nécessaire
+  // Log des valeurs finales utilisées pour le débogage
   useEffect(() => {
-    if (visible && quizId && user?.id && (!propScore || !propTotalPoints || !propPercentage || propPassed === undefined)) {
+    if (visible) {
+      console.log('QuizCompletionScreen - Valeurs finales:', { totalPoints, percentage, passed });
+    }
+  }, [visible, totalPoints, percentage, passed]);
+
+  // Mettre à jour les données dynamiques quand les props changent
+  useEffect(() => {
+    if (visible && propTotalPoints !== undefined && propPercentage !== undefined && propPassed !== undefined) {
+      console.log('QuizCompletionScreen - Props reçues:', { propTotalPoints, propPercentage, propPassed });
+      setDynamicTotalPoints(propTotalPoints);
+      setDynamicPercentage(propPercentage);
+      setDynamicPassed(propPassed);
+      setIsLoading(false);
+      setError(null);
+    }
+  }, [visible, propTotalPoints, propPercentage, propPassed]);
+
+  // Récupérer les données depuis Firebase seulement si les props ne sont pas fournies
+  useEffect(() => {
+    if (visible && (!propTotalPoints || !propPercentage || propPassed === undefined) && quizId && user?.id) {
       const fetchQuizData = async () => {
         setIsLoading(true);
         setError(null);
@@ -71,15 +86,13 @@ export function QuizCompletionScreen({
         try {
           const { UserProgressService } = await import('../services/userProgressService');
           const latestAttempt = await UserProgressService.getLatestQuizAttempt(user.id, quizId);
-          
+          console.log('Données récupérées depuis Firebase:', latestAttempt);
           if (latestAttempt) {
-            setDynamicScore(latestAttempt.score);
             setDynamicTotalPoints(latestAttempt.totalPoints);
             setDynamicPercentage(latestAttempt.percentage);
             setDynamicPassed(latestAttempt.passed);
           } else {
             // Si aucune tentative n'est trouvée, utiliser les données par défaut
-            setDynamicScore(0);
             setDynamicTotalPoints(0);
             setDynamicPercentage(0);
             setDynamicPassed(false);
@@ -88,7 +101,6 @@ export function QuizCompletionScreen({
           console.error('Erreur lors de la récupération des données de quiz:', error);
           setError('Erreur lors de la récupération des données');
           // En cas d'erreur, utiliser les données par défaut
-          setDynamicScore(0);
           setDynamicTotalPoints(0);
           setDynamicPercentage(0);
           setDynamicPassed(false);
@@ -97,14 +109,17 @@ export function QuizCompletionScreen({
         }
       };
 
-      fetchQuizData();
+      // Ajouter un délai pour s'assurer que la sauvegarde Firebase a eu le temps de se terminer
+      setTimeout(() => {
+        fetchQuizData();
+      }, 1000);
     }
-  }, [visible, quizId, user?.id, propScore, propTotalPoints, propPercentage, propPassed]);
+  }, [visible, quizId, user?.id, propTotalPoints, propPercentage, propPassed]);
 
   const containerOpacity = useSharedValue(0);
   const containerScale = useSharedValue(0.8);
   const titleScale = useSharedValue(0);
-  const scoreScale = useSharedValue(0);
+  const pointsScale = useSharedValue(0);
   const buttonsScale = useSharedValue(0);
   const confettiVisible = useSharedValue(false);
 
@@ -120,8 +135,8 @@ export function QuizCompletionScreen({
       // Animate title
       titleScale.value = withDelay(300, withSpring(1, { damping: 12, stiffness: 150 }));
 
-      // Animate score with bounce effect
-      scoreScale.value = withDelay(600, withSequence(
+      // Animate points with bounce effect
+      pointsScale.value = withDelay(600, withSequence(
         withSpring(1.2, { damping: 8, stiffness: 200 }),
         withSpring(1, { damping: 12, stiffness: 150 })
       ));
@@ -144,8 +159,8 @@ export function QuizCompletionScreen({
     transform: [{ scale: titleScale.value }],
   }));
 
-  const scoreStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scoreScale.value }],
+  const pointsStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: pointsScale.value }],
   }));
 
   const buttonsStyle = useAnimatedStyle(() => ({
@@ -188,8 +203,8 @@ export function QuizCompletionScreen({
           </ThemedText>
         </Animated.View>
 
-        {/* Score section */}
-        <Animated.View style={[styles.scoreSection, scoreStyle]}>
+        {/* Points section */}
+        <Animated.View style={[styles.scoreSection, pointsStyle]}>
           <View style={[styles.scoreCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
             {isLoading ? (
               <View style={styles.loadingContainer}>
@@ -207,10 +222,10 @@ export function QuizCompletionScreen({
               <>
                 <View style={styles.scoreRow}>
                   <ThemedText style={[styles.scoreLabel, { color: colors.text }]}>
-                    Score obtenu
+                    Points obtenus
                   </ThemedText>
                   <ThemedText style={[styles.scoreValue, { color: colors.text }]}>
-                    {score}/{totalPoints}
+                    {totalPoints} points
                   </ThemedText>
                 </View>
                 

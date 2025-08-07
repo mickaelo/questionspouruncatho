@@ -36,6 +36,7 @@ export default function QuestionEditScreen() {
   const [newOption, setNewOption] = useState('');
   const [newSentence, setNewSentence] = useState('');
   const [newAssociationPair, setNewAssociationPair] = useState({ leftItem: '', rightItem: '' });
+  const [multipleCorrectAnswers, setMultipleCorrectAnswers] = useState(false);
 
   // Vérifier si l'utilisateur est admin
   const isAdmin = user?.type?.includes('admin');
@@ -80,26 +81,28 @@ export default function QuestionEditScreen() {
           associationPairs: foundQuestion.associationPairs ? [...foundQuestion.associationPairs] : [],
           multipleCorrectAnswers: foundQuestion.multipleCorrectAnswers
         });
+        setMultipleCorrectAnswers(foundQuestion.multipleCorrectAnswers || false);
       }
     } else if (isNewQuestion) {
       // Initialiser une nouvelle question
-      setEditedQuestion({
-        question: '',
-        category: '',
-        difficulty: 'moyen',
-        level: 1,
-        points: 10,
-        explanation: '',
-        options: ['', '', '', ''],
-        correctAnswer: 0,
-        questionType: 'multiple-choice',
-        author: '',
-        reference: '',
-        sentences: [],
-        correctOrder: [],
-        associationPairs: [],
-        multipleCorrectAnswers: false
-      });
+              setEditedQuestion({
+          question: '',
+          category: '',
+          difficulty: 'moyen',
+          level: 1,
+          points: 10,
+          explanation: '',
+          options: ['', '', '', ''],
+          correctAnswer: 0,
+          questionType: 'multiple-choice',
+          author: '',
+          reference: '',
+          sentences: [],
+          correctOrder: [],
+          associationPairs: [],
+          multipleCorrectAnswers: false
+        });
+        setMultipleCorrectAnswers(false);
     }
   }, [id, questions, isNewQuestion]);
 
@@ -117,6 +120,7 @@ export default function QuestionEditScreen() {
         editedQuestion.author !== question.author ||
         editedQuestion.reference !== question.reference ||
         editedQuestion.questionType !== question.questionType ||
+        multipleCorrectAnswers !== question.multipleCorrectAnswers ||
         JSON.stringify(editedQuestion.options) !== JSON.stringify(question.options) ||
         JSON.stringify(editedQuestion.sentences) !== JSON.stringify(question.sentences) ||
         JSON.stringify(editedQuestion.associationPairs) !== JSON.stringify(question.associationPairs);
@@ -161,7 +165,7 @@ export default function QuestionEditScreen() {
           sentences: editedQuestion.sentences || [],
           correctOrder: editedQuestion.correctOrder || [],
           associationPairs: editedQuestion.associationPairs || [],
-          multipleCorrectAnswers: editedQuestion.multipleCorrectAnswers || false
+          multipleCorrectAnswers: multipleCorrectAnswers
         };
 
         console.log('🔄 Création de la question:', questionData);
@@ -170,7 +174,7 @@ export default function QuestionEditScreen() {
         showAlert('Succès', 'Question créée avec succès');
       } else if (question) {
         console.log('🔄 Mise à jour de la question:', question.id, editedQuestion);
-        await updateQuestion(question.id, editedQuestion);
+        await updateQuestion(question.id, { ...editedQuestion, multipleCorrectAnswers });
         console.log('✅ Question mise à jour avec succès');
         showAlert('Succès', 'Question mise à jour avec succès');
       }
@@ -289,6 +293,33 @@ export default function QuestionEditScreen() {
     const updatedPairs = [...(editedQuestion.associationPairs || [])];
     updatedPairs[index] = { ...updatedPairs[index], [field]: value };
     setEditedQuestion({ ...editedQuestion, associationPairs: updatedPairs });
+  };
+
+  // Fonctions pour gérer les réponses multiples
+  const handleToggleCorrectAnswer = (optionIndex: number) => {
+    const currentCorrectAnswers = Array.isArray(editedQuestion.correctAnswer) 
+      ? editedQuestion.correctAnswer 
+      : [];
+    
+    const newCorrectAnswers = currentCorrectAnswers.includes(optionIndex)
+      ? currentCorrectAnswers.filter(index => index !== optionIndex)
+      : [...currentCorrectAnswers, optionIndex];
+    
+    // Détecter automatiquement si c'est une réponse multiple
+    const isMultiple = newCorrectAnswers.length > 1;
+    
+    setEditedQuestion({ 
+      ...editedQuestion, 
+      correctAnswer: newCorrectAnswers,
+      multipleCorrectAnswers: isMultiple
+    });
+    
+    setMultipleCorrectAnswers(isMultiple);
+  };
+
+  const isOptionCorrect = (optionIndex: number) => {
+    return Array.isArray(editedQuestion.correctAnswer) && 
+           editedQuestion.correctAnswer.includes(optionIndex);
   };
 
   if (!isAdmin) {
@@ -533,11 +564,37 @@ export default function QuestionEditScreen() {
                 </ThemedText>
               </View>
               
+
+              
               <View style={styles.optionsContainer}>
                 {(editedQuestion.options || []).map((option, index) => (
                   <View key={index} style={styles.optionRow}>
+                    <TouchableOpacity
+                      style={[
+                        styles.correctAnswerToggle,
+                        { 
+                          backgroundColor: isOptionCorrect(index) ? colors.success : colors.background,
+                          borderColor: isOptionCorrect(index) ? colors.success : colors.border
+                        }
+                      ]}
+                      onPress={() => handleToggleCorrectAnswer(index)}
+                    >
+                      <MaterialIcons 
+                        name={isOptionCorrect(index) ? "check" : "add"} 
+                        size={16} 
+                        color={isOptionCorrect(index) ? colors.background : colors.text} 
+                      />
+                    </TouchableOpacity>
                     <TextInput
-                      style={[styles.optionInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                      style={[
+                        styles.optionInput, 
+                        { 
+                          color: colors.text, 
+                          borderColor: isOptionCorrect(index) ? colors.success : colors.border, 
+                          backgroundColor: colors.background,
+                          borderWidth: isOptionCorrect(index) ? 2 : 1
+                        }
+                      ]}
                       placeholder={`Option ${index + 1}`}
                       placeholderTextColor={colors.text + '80'}
                       value={option}
@@ -1055,5 +1112,14 @@ const styles = StyleSheet.create({
   questionTypeButtonText: {
     fontSize: 14,
     fontWeight: '500',
+  },
+
+  correctAnswerToggle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
   },
 }); 

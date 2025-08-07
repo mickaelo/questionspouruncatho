@@ -1,7 +1,7 @@
 export interface Question {
   id: string;
   category: string;
-  difficulty: 'facile' | 'moyen' | 'difficile';
+  difficulty: 'facile' | 'moyen' | 'difficile' | 'tres-difficile';
   level: number; // Niveau de formation requis (1-5)
   question: string;
   questionType: 'multiple-choice' | 'true-false' | 'image-recognition' | 'quote-completion' | 'association' | 'sentence-reorder' | 'crossword';

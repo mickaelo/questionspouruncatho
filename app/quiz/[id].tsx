@@ -20,22 +20,21 @@ export default function QuizScreen() {
   // Tous les hooks doivent être appelés en premier, avant toute logique conditionnelle
   const params = useLocalSearchParams<{ id: string }>();
   const { id } = params;
-  
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
-  const [score, setScore] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState<number | undefined>(undefined);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [showFailureAnimation, setShowFailureAnimation] = useState(false);
   const [showCompletionScreen, setShowCompletionScreen] = useState(false);
+  const [isCompletingQuiz, setIsCompletingQuiz] = useState(false);
   const [completionData, setCompletionData] = useState({
-    score: 0,
     totalPoints: 0,
     percentage: 0,
     passed: false,
   });
-
   const { lives, loseLife, isGameOver } = useLives({
     onLivesDepleted: () => setShowFailureAnimation(true)
   });
@@ -48,7 +47,14 @@ export default function QuizScreen() {
 
   // État pour le quiz
   const [quiz, setQuiz] = useState<Quiz | null>(null);
+  console.log(totalPoints)
 
+  // Surveiller isGameOver pour lancer completeQuiz automatiquement
+  useEffect(() => {
+    if (!isGameOver && quizCompleted) {
+      completeQuiz();
+    }
+  }, [isGameOver, quizCompleted]);
   // Gérer l'affichage du loading bar global
   useEffect(() => {
     if (isLoading) {
@@ -146,7 +152,8 @@ export default function QuizScreen() {
     setAnswers(prev => [...prev, answer]);
 
     if (isCorrect) {
-      setScore(prev => prev + currentQuestion.points);
+      console.log(totalPoints)
+      setTotalPoints(prev => prev + currentQuestion.points);
     } else {
       // Perdre une vie si la réponse est incorrecte
       loseLife();
@@ -157,49 +164,65 @@ export default function QuizScreen() {
       setCurrentQuestionIndex(prev => prev + 1);
       setStartTime(new Date());
     } else if (!isGameOver) {
-      completeQuiz();
+      setQuizCompleted(true);
     }
   };
 
   const completeQuiz = async () => {
-    const totalPoints = quiz.questions.reduce((sum, q) => sum + q.points, 0);
-    const percentage = Math.round((score / totalPoints) * 100);
+    const maxTotalPoints = quiz.questions.reduce((sum, q) => sum + q.points, 0);
+    const percentage = Math.round((totalPoints / maxTotalPoints) * 100);
     const passed = percentage >= quiz.passingScore;
 
-    setQuizCompleted(true);
-
-    setCompletionData({
-      score,
-      totalPoints,
-      percentage,
-      passed,
-    });
+    // Indiquer que le quiz est en cours de finalisation
+    setIsCompletingQuiz(true);
 
     // Calculer le temps total passé
     const totalTimeSpent = answers.reduce((sum, answer) => sum + answer.timeSpent, 0);
     const livesUsed = 3 - lives; // Nombre de vies utilisées
 
+    // Marquer le quiz comme terminé
+    setQuizCompleted(true);
+
     // Sauvegarder la progression dans Firebase
     try {
       await saveQuizAttempt(
         quiz.id,
-        score,
         totalPoints,
+        maxTotalPoints,
         percentage,
         passed,
         totalTimeSpent,
         answers,
         livesUsed
       );
+
+      // Mettre à jour les données de completion seulement après la sauvegarde réussie
+      setCompletionData({
+        totalPoints,
+        percentage,
+        passed,
+      });
+
+      // Afficher l'écran de completion seulement après que tout soit terminé
+      setShowCompletionScreen(true);
+
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde de la progression:', error);
       showAlert(
         'Erreur de sauvegarde',
         'Votre progression n\'a pas pu être sauvegardée. Veuillez réessayer.'
       );
-    }
 
-    setShowCompletionScreen(true);
+      // Même en cas d'erreur, afficher les résultats locaux
+      setCompletionData({
+        totalPoints,
+        percentage,
+        passed,
+      });
+      setShowCompletionScreen(true);
+    } finally {
+      // Indiquer que la finalisation est terminée
+      setIsCompletingQuiz(false);
+    }
   };
 
   const handleLivesDepleted = () => {
@@ -213,7 +236,6 @@ export default function QuizScreen() {
       pathname: '/quiz-result',
       params: {
         quizId: quiz.id,
-        score: completionData.score.toString(),
         totalPoints: completionData.totalPoints.toString(),
         percentage: completionData.percentage.toString(),
         passed: completionData.passed.toString()
@@ -228,11 +250,10 @@ export default function QuizScreen() {
   const handleRetry = () => {
     // Réinitialiser le quiz
     setCurrentQuestionIndex(0);
-    setScore(0);
+    setTotalPoints(0);
     setShowCompletionScreen(false);
     setShowFailureAnimation(false);
     setCompletionData({
-      score: 0,
       totalPoints: 0,
       percentage: 0,
       passed: false
@@ -293,11 +314,11 @@ export default function QuizScreen() {
           </ThemedText>
         </View>
 
-        {/* Score actuel */}
+        {/* Points actuels */}
         <View style={[styles.scoreContainer, { backgroundColor: colors.border }]}>
           <IconSymbol name="star.fill" size={16} color={colors.tint} />
           <ThemedText style={[styles.scoreText, { color: colors.text }]}>
-            {score} points
+            {totalPoints} points
           </ThemedText>
         </View>
       </View>
@@ -311,6 +332,21 @@ export default function QuizScreen() {
         timeRemaining={timeRemaining}
       />
 
+      {/* Indicateur de finalisation du quiz */}
+      {isCompletingQuiz && (
+        <View style={[styles.completingOverlay, { backgroundColor: colors.background }]}>
+          <View style={styles.completingContainer}>
+            <IconSymbol name="clock" size={48} color={colors.tint} />
+            <ThemedText style={[styles.completingText, { color: colors.text }]}>
+              Finalisation du quiz...
+            </ThemedText>
+            <ThemedText style={[styles.completingSubtext, { color: colors.text }]}>
+              Veuillez patienter
+            </ThemedText>
+          </View>
+        </View>
+      )}
+
       {/* Animation d'échec */}
       <FailureAnimation
         visible={showFailureAnimation}
@@ -320,7 +356,6 @@ export default function QuizScreen() {
       {/* Écran de félicitations et récompense */}
       <QuizCompletionScreen
         visible={showCompletionScreen}
-        score={completionData.score}
         totalPoints={completionData.totalPoints}
         percentage={completionData.percentage}
         passed={completionData.passed}
@@ -437,5 +472,40 @@ const styles = StyleSheet.create({
   backButtonText: {
     fontSize: 16,
     fontWeight: '600',
+  },
+  completingOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+  completingContainer: {
+    alignItems: 'center',
+    padding: 40,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 20,
+    elevation: 20,
+  },
+  completingText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 16,
+    textAlign: 'center',
+  },
+  completingSubtext: {
+    fontSize: 16,
+    marginTop: 8,
+    opacity: 0.7,
+    textAlign: 'center',
   },
 }); 

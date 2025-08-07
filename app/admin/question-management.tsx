@@ -31,6 +31,10 @@ export default function QuestionManagementScreen() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
   const [filterDifficulty, setFilterDifficulty] = useState('');
+  
+  // État de pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [questionsPerPage, setQuestionsPerPage] = useState(10);
 
   // Gérer l'affichage du loading bar global
   useEffect(() => {
@@ -40,6 +44,11 @@ export default function QuestionManagementScreen() {
       hideLoading();
     }
   }, [isLoading, showLoading, hideLoading]);
+
+  // Réinitialiser la page courante quand les filtres changent
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, filterCategory, filterDifficulty]);
 
   // Vérifier si l'utilisateur est admin
   const isAdmin = user?.type?.includes('admin');
@@ -67,6 +76,68 @@ export default function QuestionManagementScreen() {
     const matchesDifficulty = !filterDifficulty || question.difficulty === filterDifficulty;
     return matchesSearch && matchesCategory && matchesDifficulty;
   });
+
+  // Calculs de pagination
+  const totalQuestions = filteredQuestions.length;
+  const totalPages = Math.ceil(totalQuestions / questionsPerPage);
+  const startIndex = (currentPage - 1) * questionsPerPage;
+  const endIndex = startIndex + questionsPerPage;
+  const currentQuestions = filteredQuestions.slice(startIndex, endIndex);
+
+  // Navigation de pagination
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  // Générer les numéros de page à afficher
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
+  };
 
   const handleDeleteQuestion = (question: Question) => {
     showConfirmAlert(
@@ -290,9 +361,52 @@ export default function QuestionManagementScreen() {
             </View>
           </ThemedView>
 
+          {/* Contrôles de pagination */}
+          {totalQuestions > 0 && (
+            <ThemedView style={[styles.paginationCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              <View style={styles.paginationHeader}>
+                <View style={styles.paginationInfo}>
+                  <ThemedText style={[styles.paginationText, { color: colors.text }]}>
+                    Affichage {startIndex + 1}-{Math.min(endIndex, totalQuestions)} sur {totalQuestions} questions
+                  </ThemedText>
+                </View>
+                
+                <View style={styles.paginationControls}>
+                  <View style={styles.questionsPerPageControl}>
+                    <ThemedText style={[styles.paginationLabel, { color: colors.text }]}>
+                      Par page:
+                    </ThemedText>
+                    <View style={styles.questionsPerPageButtons}>
+                      {[5, 10, 20, 50].map((perPage) => (
+                        <TouchableOpacity
+                          key={perPage}
+                          style={[
+                            styles.perPageButton,
+                            { 
+                              backgroundColor: questionsPerPage === perPage ? colors.primary : colors.background,
+                              borderColor: colors.border
+                            }
+                          ]}
+                          onPress={() => {
+                            setQuestionsPerPage(perPage);
+                            setCurrentPage(1);
+                          }}
+                        >
+                          <ThemedText style={[styles.perPageButtonText, { color: questionsPerPage === perPage ? colors.background : colors.text }]}>
+                            {perPage}
+                          </ThemedText>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </ThemedView>
+          )}
+
           {/* Liste des questions */}
           <View style={styles.questionsGrid}>
-            {filteredQuestions.map((question) => (
+            {currentQuestions.map((question) => (
               <ThemedView key={question.id} style={[styles.questionCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
                 <View style={styles.questionHeader}>
                   <View style={styles.questionTitleContainer}>
@@ -348,6 +462,73 @@ export default function QuestionManagementScreen() {
               </ThemedView>
             ))}
           </View>
+
+          {/* Navigation de pagination */}
+          {totalPages > 1 && (
+            <ThemedView style={[styles.paginationNavigationCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
+              <View style={styles.paginationNavigation}>
+                <TouchableOpacity
+                  style={[
+                    styles.navButton,
+                    { 
+                      backgroundColor: currentPage === 1 ? colors.background : colors.primary,
+                      borderColor: colors.border
+                    }
+                  ]}
+                  onPress={goToPreviousPage}
+                  disabled={currentPage === 1}
+                >
+                  <MaterialIcons 
+                    name="chevron-left" 
+                    size={20} 
+                    color={currentPage === 1 ? colors.secondary : colors.background} 
+                  />
+                </TouchableOpacity>
+
+                <View style={styles.pageNumbers}>
+                  {getPageNumbers().map((page, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={[
+                        styles.pageButton,
+                        { 
+                          backgroundColor: page === currentPage ? colors.primary : colors.background,
+                          borderColor: colors.border
+                        }
+                      ]}
+                      onPress={() => typeof page === 'number' && goToPage(page)}
+                      disabled={page === '...'}
+                    >
+                      <ThemedText style={[
+                        styles.pageButtonText, 
+                        { color: page === currentPage ? colors.background : colors.text }
+                      ]}>
+                        {page}
+                      </ThemedText>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+
+                <TouchableOpacity
+                  style={[
+                    styles.navButton,
+                    { 
+                      backgroundColor: currentPage === totalPages ? colors.background : colors.primary,
+                      borderColor: colors.border
+                    }
+                  ]}
+                  onPress={goToNextPage}
+                  disabled={currentPage === totalPages}
+                >
+                  <MaterialIcons 
+                    name="chevron-right" 
+                    size={20} 
+                    color={currentPage === totalPages ? colors.secondary : colors.background} 
+                  />
+                </TouchableOpacity>
+              </View>
+            </ThemedView>
+          )}
 
           {filteredQuestions.length === 0 && (
             <ThemedView style={[styles.emptyCard, { backgroundColor: colors.card, borderColor: colors.border }]}>
@@ -646,5 +827,97 @@ const styles = StyleSheet.create({
   errorDescription: {
     fontSize: 14,
     textAlign: 'center',
+  },
+  paginationCard: {
+    padding: 15,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+    borderWidth: 1,
+    marginTop: 15,
+  },
+  paginationHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  paginationInfo: {
+    flex: 1,
+    marginRight: 10,
+  },
+  paginationText: {
+    fontSize: 14,
+  },
+  paginationControls: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  questionsPerPageControl: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  paginationLabel: {
+    fontSize: 14,
+    marginRight: 5,
+  },
+  questionsPerPageButtons: {
+    flexDirection: 'row',
+    gap: 5,
+  },
+  perPageButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  perPageButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  paginationNavigationCard: {
+    padding: 15,
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 4,
+    borderWidth: 1,
+    marginTop: 15,
+  },
+  paginationNavigation: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  navButton: {
+    padding: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  pageNumbers: {
+    flexDirection: 'row',
+    gap: 5,
+  },
+  pageButton: {
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  pageButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
   },
 }); 

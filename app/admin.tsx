@@ -201,15 +201,10 @@ export default function AdminScreen() {
 
             <TouchableOpacity
               style={[styles.actionCard, { backgroundColor: colors.card, borderColor: colors.border }]}
-              onPress={() => {
-                showAlert(
-                  'Fonctionnalité à venir',
-                  'Les statistiques détaillées seront bientôt disponibles.'
-                );
-              }}
+              onPress={() => router.push('/admin/advanced-statistics' as any)}
             >
               <View style={styles.actionIcon}>
-                <MaterialIcons name="analytics" size={32} color={colors.secondary} />
+                <MaterialIcons name="analytics" size={32} color={colors.primary} />
               </View>
               <ThemedText style={[styles.actionTitle, { color: colors.text }]}>
                 Statistiques Avancées

@@ -416,13 +416,26 @@ export class UserProgressService {
     try {
       const { collection, query, where, getDocs, orderBy, limit } = await import('firebase/firestore');
       
-      let q = query(collection(db, 'quizAttempts'), where('userId', '==', userId));
+      let q;
       
       if (quizId) {
-        q = query(q, where('quizId', '==', quizId));
+        // Si on a un quizId spécifique, filtrer par userId ET quizId
+        q = query(
+          collection(db, 'quizAttempts'), 
+          where('userId', '==', userId),
+          where('quizId', '==', quizId),
+          orderBy('completedAt', 'desc'),
+          limit(10)
+        );
+      } else {
+        // Si pas de quizId, filtrer seulement par userId
+        q = query(
+          collection(db, 'quizAttempts'), 
+          where('userId', '==', userId),
+          orderBy('completedAt', 'desc'),
+          limit(10)
+        );
       }
-      
-      q = query(q, orderBy('completedAt', 'desc'), limit(10));
       
       const querySnapshot = await getDocs(q);
       const attempts: QuizAttempt[] = [];
@@ -454,11 +467,50 @@ export class UserProgressService {
   // Récupérer la dernière tentative d'un quiz spécifique
   static async getLatestQuizAttempt(userId: string, quizId: string): Promise<QuizAttempt | null> {
     try {
-      const attempts = await this.getQuizAttempts(userId, quizId);
-      return attempts.length > 0 ? attempts[0] : null;
+      // Méthode alternative qui évite les index composites
+      const { collection, query, where, getDocs, orderBy, limit } = await import('firebase/firestore');
+      
+      // Récupérer seulement les tentatives pour ce quiz et cet utilisateur
+      const q = query(
+        collection(db, 'quizAttempts'),
+        where('userId', '==', userId),
+        where('quizId', '==', quizId),
+        orderBy('completedAt', 'desc'),
+        limit(1)
+      );
+      
+      const querySnapshot = await getDocs(q);
+      
+      if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0];
+        const data = doc.data();
+        return {
+          id: doc.id,
+          userId: data.userId,
+          quizId: data.quizId,
+          score: data.score,
+          totalPoints: data.totalPoints,
+          percentage: data.percentage,
+          passed: data.passed,
+          timeSpent: data.timeSpent,
+          answers: data.answers || [],
+          completedAt: data.completedAt.toDate(),
+          livesUsed: data.livesUsed || 0,
+        };
+      }
+      
+      return null;
     } catch (error) {
       console.error('Erreur lors de la récupération de la dernière tentative:', error);
-      return null;
+      
+      // Fallback: essayer la méthode originale
+      try {
+        const attempts = await this.getQuizAttempts(userId, quizId);
+        return attempts.length > 0 ? attempts[0] : null;
+      } catch (fallbackError) {
+        console.error('Erreur lors du fallback:', fallbackError);
+        return null;
+      }
     }
   }
 

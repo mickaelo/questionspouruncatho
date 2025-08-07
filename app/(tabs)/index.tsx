@@ -124,7 +124,7 @@ export default function HomeScreen() {
         styles.container,
         {
           backgroundColor: colors.background,
-          paddingTop: Platform.OS === 'android' ? insets.top : 0,
+          paddingTop: Platform.OS === 'android' ? insets.top + 16 : 16,
           // Ajouter un padding à droite sur le web pour compenser la largeur du menu de gauche
           paddingRight: Platform.OS === 'web' ? '15%' : 0,
           paddingLeft: Platform.OS === 'web' ? '15%' : 0,

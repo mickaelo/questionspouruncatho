@@ -98,7 +98,9 @@ export function QuestionCard({
   const getCorrectAnswer = () => {
     switch (question.questionType) {
       case 'multiple-choice':
-        if (question.multipleCorrectAnswers && Array.isArray(question.correctAnswer)) {
+        console.log(question)
+
+        if (Array.isArray(question.correctAnswer)) {
           return question.correctAnswer.map((index: number) => question.options?.[index] || '').filter(Boolean);
         } else if (typeof question.correctAnswer === 'number') {
           return [question.options?.[question.correctAnswer] || ''];
@@ -121,7 +123,7 @@ export function QuestionCard({
     if (!foundWords.includes(wordId)) {
       const newFoundWords = [...foundWords, wordId];
       setFoundWords(newFoundWords);
-      
+
       // Vérifier si tous les mots sont trouvés
       if (question.crosswordData?.words && newFoundWords.length === question.crosswordData.words.length) {
         handleCrosswordComplete();
@@ -133,7 +135,7 @@ export function QuestionCard({
   const handleCrosswordComplete = () => {
     setAnswered(true);
     setShowExplanationPopup(true);
-    
+
     setTimeout(() => {
       const isCorrect = foundWords.length === (question.crosswordData?.words?.length || 0);
       onAnswer(foundWords.map((_, index) => index), isCorrect);
@@ -143,7 +145,7 @@ export function QuestionCard({
   // Fonction pour gérer les changements de cellules dans les mots fléchés
   const handleCellChange = (row: number, col: number, letter: string) => {
     if (!question.crosswordData?.grid) return;
-    
+
     const cellKey = `${row},${col}`;
     const newGrid = { ...question.crosswordData.grid };
     if (newGrid[cellKey]) {
@@ -161,7 +163,7 @@ export function QuestionCard({
     // Bouton de validation selon le type de question
     switch (question.questionType) {
       case 'multiple-choice':
-        if (question.multipleCorrectAnswers && selectedAnswers.length > 0) {
+        if (selectedAnswers.length > 0) {
           validationButtons.push(
             <TouchableOpacity
               key="validate"
@@ -257,15 +259,15 @@ export function QuestionCard({
   const handleAnswerSelect = (answerIndex: number) => {
     if (answered) return;
 
-    if (question.questionType === 'multiple-choice' && question.multipleCorrectAnswers) {
-      // Gestion des questions à choix multiples avec plusieurs réponses
+    if (question.questionType === 'multiple-choice') {
+      // Pour toutes les questions à choix multiples, permettre la sélection multiple
       const newSelectedAnswers = selectedAnswers.includes(answerIndex)
         ? selectedAnswers.filter(id => id !== answerIndex)
         : [...selectedAnswers, answerIndex];
 
       setSelectedAnswers(newSelectedAnswers);
     } else {
-      // Gestion des questions à choix unique
+      // Gestion des autres types de questions (association, sentence-reorder, etc.)
       setSelectedAnswers([answerIndex]);
       setAnswered(true);
 
@@ -289,11 +291,14 @@ export function QuestionCard({
 
     let isCorrect: boolean;
     if (Array.isArray(question.correctAnswer)) {
+      // Question avec plusieurs réponses correctes
       isCorrect = selectedAnswers.length === question.correctAnswer.length &&
         selectedAnswers.every(answer => (question.correctAnswer as number[]).includes(answer));
     } else {
+      // Question avec une seule réponse correcte
       isCorrect = selectedAnswers.length === 1 && selectedAnswers[0] === question.correctAnswer;
     }
+
     setLastAnswerCorrect(isCorrect);
     setLastSelectedAnswers([...selectedAnswers]);
     setShowExplanationPopup(true);
@@ -374,7 +379,7 @@ export function QuestionCard({
       isCorrect
     });
     setLastAnswerCorrect(isCorrect);
-    setLastAssociationSelections({...associationSelections});
+    setLastAssociationSelections({ ...associationSelections });
     setShowExplanationPopup(true);
   };
 
@@ -727,7 +732,7 @@ export function QuestionCard({
         <ThemedText style={[styles.instructions, { color: colors.secondary }]}>
           Utilisez les chevrons pour réorganiser les phrases dans le bon ordre
         </ThemedText>
-        
+
         {sentenceOrder.map((sentenceIndex, index) => (
           <SentenceReorderItem
             key={index}
@@ -758,7 +763,7 @@ export function QuestionCard({
         <ThemedText style={[styles.instructions, { color: colors.secondary }]}>
           Complétez les mots fléchés en utilisant les définitions ci-dessous
         </ThemedText>
-        
+
         <CrosswordGrid
           grid={grid}
           gridSize={gridSize}
@@ -768,7 +773,7 @@ export function QuestionCard({
           onCellChange={handleCellChange}
           isEditable={!answered}
         />
-        
+
         <View style={styles.cluesContainer}>
           <CrosswordClues
             clues={clues}
@@ -821,7 +826,7 @@ export function QuestionCard({
           style={[styles.explanationContinueButton, { backgroundColor: colors.primary }]}
           onPress={() => {
             setShowExplanationPopup(false);
-            
+
             // Gérer les différents types de questions
             if (question.questionType === 'association') {
               const selectedIndices = question.associationPairs?.map((pair, index) =>
@@ -836,7 +841,7 @@ export function QuestionCard({
               onAnswer(lastSelectedAnswers, lastAnswerCorrect);
               setSelectedAnswers([]);
             }
-            
+
             setAnswered(false);
           }}
         >
@@ -848,75 +853,75 @@ export function QuestionCard({
     );
   };
 
-  // Composant popup pour afficher la bonne réponse quand une question est passée
-  const SkipPopup = () => {
+  // Composant footer pour afficher la bonne réponse quand une question est passée
+  const SkipFooter = () => {
     if (!showSkipPopup) return null;
 
     const correctAnswers = getCorrectAnswer();
-
     return (
-      <View style={styles.popupOverlay}>
-        <View style={[styles.popupContainer, { backgroundColor: colors.background }]}>
-          <ScrollView style={styles.popupContent} showsVerticalScrollIndicator={true}>
-            {/* Bonne réponse */}
-            <View style={styles.correctAnswerSection}>
-              <ThemedText style={[styles.correctAnswerTitle, { color: colors.text }]}>
-                Bonne réponse :
-              </ThemedText>
-              {correctAnswers.map((answer, index) => (
-                <View key={index} style={styles.correctAnswerItem}>
-                  <ThemedText style={[styles.correctAnswerText, { color: colors.success }]}>
-                    • {answer}
-                  </ThemedText>
-                </View>
-              ))}
-            </View>
+      <View style={[styles.explanationFooter, { backgroundColor: colors.background, borderTopColor: colors.border }]}>
+        <View style={styles.explanationHeader}>
+          <ThemedText type="subtitle" style={[styles.explanationTitle, { color: colors.text }]}>
+            Bonne réponse
+          </ThemedText>
+        </View>
 
-            {/* Explication */}
-            {question.explanation && (
-              <View style={styles.explanationSection}>
-                <ThemedText style={[styles.explanationTitle, { color: colors.text }]}>
-                  Explication :
+        <ScrollView style={styles.explanationContent} showsVerticalScrollIndicator={true}>
+          {/* Bonne réponse */}
+          <View style={styles.correctAnswerSection}>
+            {correctAnswers.map((answer, index) => (
+              <View key={index} style={styles.correctAnswerItem}>
+                <ThemedText style={[styles.correctAnswerText, { color: colors.success }]}>
+                  • {answer}
                 </ThemedText>
-                <ThemedText style={[styles.popupExplanation, { color: colors.text }]}>
-                  {question.explanation}
+              </View>
+            ))}
+          </View>
+
+          {/* Explication */}
+          {question.explanation && (
+            <View style={styles.explanationSection}>
+              <ThemedText style={[styles.explanationTitle, { color: colors.text }]}>
+                Explication :
+              </ThemedText>
+              <ThemedText style={[styles.explanationText, { color: colors.text }]}>
+                {question.explanation}
+              </ThemedText>
+            </View>
+          )}
+
+          {/* Références */}
+          <View style={styles.explanationReferences}>
+            {question.scripture && (
+              <View style={styles.explanationReference}>
+                <IconSymbol name="book" size={16} color={colors.tint} />
+                <ThemedText style={[styles.explanationReferenceText, { color: colors.tint }]}>
+                  {question.scripture}
                 </ThemedText>
               </View>
             )}
+            {question.catechism && (
+              <View style={styles.explanationReference}>
+                <IconSymbol name="doc.text" size={16} color={colors.tint} />
+                <ThemedText style={[styles.explanationReferenceText, { color: colors.tint }]}>
+                  {question.catechism}
+                </ThemedText>
+              </View>
+            )}
+          </View>
+        </ScrollView>
 
-            {/* Références */}
-            <View style={styles.popupReferences}>
-              {question.scripture && (
-                <View style={styles.popupReference}>
-                  <IconSymbol name="book" size={16} color={colors.tint} />
-                  <ThemedText style={[styles.popupReferenceText, { color: colors.tint }]}>
-                    {question.scripture}
-                  </ThemedText>
-                </View>
-              )}
-              {question.catechism && (
-                <View style={styles.popupReference}>
-                  <IconSymbol name="doc.text" size={16} color={colors.tint} />
-                  <ThemedText style={[styles.popupReferenceText, { color: colors.tint }]}>
-                    {question.catechism}
-                  </ThemedText>
-                </View>
-              )}
-            </View>
-          </ScrollView>
-
-          <TouchableOpacity
-            style={[styles.popupCloseButton, { backgroundColor: colors.primary }]}
-            onPress={() => {
-              setShowSkipPopup(false)
-              onAnswer([], false);
-            }}
-          >
-            <ThemedText style={[styles.popupCloseButtonText, { color: colors.background }]}>
-              Continuer
-            </ThemedText>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={[styles.explanationContinueButton, { backgroundColor: colors.primary }]}
+          onPress={() => {
+            setShowSkipPopup(false)
+            onAnswer([], false);
+          }}
+        >
+          <ThemedText style={[styles.explanationContinueButtonText, { color: colors.background }]}>
+            Continuer
+          </ThemedText>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -960,11 +965,13 @@ export function QuestionCard({
         showsVerticalScrollIndicator={true}
         bounces={true}
       >
-        {/* Rendu conditionnel selon le type de question */}
-        {question.questionType === 'association' ? renderAssociationQuestion() :
-          question.questionType === 'sentence-reorder' ? renderSentenceReorderQuestion() :
-            question.questionType === 'crossword' ? renderCrosswordQuestion() :
-              renderMultipleChoiceQuestion()}
+        <View style={styles.contentWrapper}>
+          {/* Rendu conditionnel selon le type de question */}
+          {question.questionType === 'association' ? renderAssociationQuestion() :
+            question.questionType === 'sentence-reorder' ? renderSentenceReorderQuestion() :
+              question.questionType === 'crossword' ? renderCrosswordQuestion() :
+                renderMultipleChoiceQuestion()}
+        </View>
       </ScrollView>
 
       {/* Boutons de validation - Fixes en bas */}
@@ -972,7 +979,7 @@ export function QuestionCard({
         {renderValidationButton()}
       </View>
       <ExplanationFooter />
-      <SkipPopup />
+      <SkipFooter />
     </ThemedView>
   );
 }
@@ -998,6 +1005,16 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     paddingBottom: 100, // Espace pour les boutons de validation
+    flexGrow: 1,
+    justifyContent: 'center',
+  },
+  contentWrapper: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    maxWidth: 600,
+    alignSelf: 'center',
+    width: '100%',
   },
   progress: {
     fontSize: 14,
@@ -1014,6 +1031,8 @@ const styles = StyleSheet.create({
   },
   optionsContainer: {
     gap: 12,
+    width: '100%',
+    maxWidth: 500,
   },
   option: {
     padding: 16,
@@ -1036,6 +1055,8 @@ const styles = StyleSheet.create({
   },
   associationContainer: {
     marginTop: 20,
+    width: '100%',
+    maxWidth: 600,
   },
   associationInstructions: {
     fontSize: 14,
@@ -1115,6 +1136,8 @@ const styles = StyleSheet.create({
   },
   sentenceReorderContainer: {
     marginTop: 20,
+    width: '100%',
+    maxWidth: 600,
   },
   sentenceList: {
     gap: 8,
@@ -1267,6 +1290,8 @@ const styles = StyleSheet.create({
   },
   crosswordContainer: {
     marginTop: 20,
+    width: '100%',
+    maxWidth: 600,
   },
   instructions: {
     fontSize: 14,
@@ -1355,63 +1380,7 @@ const styles = StyleSheet.create({
   chevronButtonDisabled: {
     opacity: 0.3,
   },
-  popupOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 10,
-  },
-  popupContainer: {
-    width: '90%',
-    maxWidth: 400,
-    borderRadius: 12,
-    overflow: 'hidden',
-    ...(Platform.OS === 'web' ? {
-      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.25)',
-    } : {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 5,
-    }),
-  },
-  popupContent: {
-    padding: 16,
-  },
-  popupExplanation: {
-    fontSize: 16,
-    lineHeight: 22,
-    marginBottom: 15,
-  },
-  popupReferences: {
-    gap: 8,
-  },
-  popupReference: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-  },
-  popupReferenceText: {
-    fontSize: 14,
-    fontStyle: 'italic',
-  },
-  popupCloseButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 15,
-  },
-  popupCloseButtonText: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
+
   explanationFooter: {
     position: 'absolute',
     bottom: 0,
@@ -1422,6 +1391,7 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(0,0,0,0.1)',
     paddingVertical: 15,
     paddingHorizontal: 20,
+    alignItems: 'center',
     ...(Platform.OS === 'web' ? {
       boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
     } : {
@@ -1434,7 +1404,7 @@ const styles = StyleSheet.create({
   },
   explanationHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 10,
   },
@@ -1463,6 +1433,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 8,
     alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 15,
   },
   explanationContinueButtonText: {
