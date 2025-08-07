@@ -1,3 +1,4 @@
+import { GlobalLoadingBar } from '@/components/GlobalLoadingBar';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
@@ -18,7 +19,7 @@ export default function QuizEditScreen() {
   const insets = useSafeAreaInsets();
   const { user } = useAuth();
   const { id } = useLocalSearchParams<{ id: string }>();
-  
+
   const {
     quizzes,
     questions,
@@ -72,10 +73,10 @@ export default function QuizEditScreen() {
           level: foundQuiz.level,
           passingScore: foundQuiz.passingScore
         });
-        
+
         // Extraire les IDs des questions actuelles
         let questionIds: string[] = [];
-        
+
         // Vérifier d'abord s'il y a un tableau questionIds
         if (foundQuiz.questionIds && Array.isArray(foundQuiz.questionIds)) {
           questionIds = foundQuiz.questionIds;
@@ -87,7 +88,7 @@ export default function QuizEditScreen() {
             return null;
           }).filter(id => id !== null) as string[];
         }
-        
+
         setSelectedQuestions(questionIds);
         console.log('📋 Quiz chargé:', foundQuiz.title, 'avec', questionIds.length, 'questions');
       }
@@ -97,7 +98,7 @@ export default function QuizEditScreen() {
   // Détecter les changements
   useEffect(() => {
     if (quiz) {
-      const hasQuizChanges = 
+      const hasQuizChanges =
         editedQuiz.title !== quiz.title ||
         editedQuiz.description !== quiz.description ||
         editedQuiz.category !== quiz.category ||
@@ -116,7 +117,7 @@ export default function QuizEditScreen() {
         }).filter(id => id !== null) as string[];
       }
 
-      const hasQuestionChanges = 
+      const hasQuestionChanges =
         selectedQuestions.length !== currentQuestionIds.length ||
         !selectedQuestions.every(id => currentQuestionIds.includes(id)) ||
         !currentQuestionIds.every(id => selectedQuestions.includes(id));
@@ -172,7 +173,7 @@ export default function QuizEditScreen() {
         }).filter(id => id !== null) as string[];
       }
       if (selectedQuestions.length !== currentQuestionIds.length ||
-          !selectedQuestions.every(id => currentQuestionIds.includes(id))) {
+        !selectedQuestions.every(id => currentQuestionIds.includes(id))) {
         await updateQuizQuestions(quiz.id, selectedQuestions);
       }
 
@@ -187,7 +188,7 @@ export default function QuizEditScreen() {
   };
 
   const toggleQuestionSelection = (questionId: string) => {
-    setSelectedQuestions(prev => 
+    setSelectedQuestions(prev =>
       prev.includes(questionId)
         ? prev.filter(id => id !== questionId)
         : [...prev, questionId]
@@ -209,7 +210,7 @@ export default function QuizEditScreen() {
   // Filtrer les questions
   const filteredQuestions = questions.filter(question => {
     const matchesSearch = question.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         question.category.toLowerCase().includes(searchTerm.toLowerCase());
+      question.category.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = !filterCategory || question.category === filterCategory;
     return matchesSearch && matchesCategory;
   });
@@ -252,7 +253,7 @@ export default function QuizEditScreen() {
         <View style={styles.centerContainer}>
           <MaterialIcons name="error" size={48} color={colors.error} />
           <ThemedText style={[styles.errorText, { color: colors.text }]}>
-            Quiz non trouvé
+            <GlobalLoadingBar />
           </ThemedText>
           <TouchableOpacity onPress={() => router.back()}>
             <ThemedText style={[styles.backLink, { color: colors.primary }]}>
@@ -278,15 +279,15 @@ export default function QuizEditScreen() {
               Retour
             </ThemedText>
           </TouchableOpacity>
-          
+
           <ThemedText type="title" style={[styles.title, { color: colors.text }]}>
             Éditer le Quiz
           </ThemedText>
-          
+
           <TouchableOpacity
             style={[
               styles.saveButton,
-              { 
+              {
                 backgroundColor: hasChanges ? colors.primary : colors.border,
                 opacity: hasChanges ? 1 : 0.5
               }
@@ -313,7 +314,7 @@ export default function QuizEditScreen() {
         </View>
       </ThemedView>
 
-      <ScrollView 
+      <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[
           styles.contentContainer,
@@ -333,7 +334,7 @@ export default function QuizEditScreen() {
                 Informations du Quiz
               </ThemedText>
             </View>
-            
+
             <View style={styles.formGrid}>
               <View style={styles.formGroup}>
                 <ThemedText style={[styles.label, { color: colors.text }]}>
@@ -347,7 +348,7 @@ export default function QuizEditScreen() {
                   onChangeText={(text) => setEditedQuiz({ ...editedQuiz, title: text })}
                 />
               </View>
-              
+
               <View style={styles.formGroup}>
                 <ThemedText style={[styles.label, { color: colors.text }]}>
                   Description
@@ -362,7 +363,7 @@ export default function QuizEditScreen() {
                   numberOfLines={3}
                 />
               </View>
-              
+
               <View style={styles.formRow}>
                 <View style={styles.formGroup}>
                   <ThemedText style={[styles.label, { color: colors.text }]}>
@@ -376,7 +377,7 @@ export default function QuizEditScreen() {
                     onChangeText={(text) => setEditedQuiz({ ...editedQuiz, category: text })}
                   />
                 </View>
-                
+
                 <View style={styles.formGroup}>
                   <ThemedText style={[styles.label, { color: colors.text }]}>
                     Niveau
@@ -391,7 +392,7 @@ export default function QuizEditScreen() {
                   />
                 </View>
               </View>
-              
+
               <View style={styles.formGroup}>
                 <ThemedText style={[styles.label, { color: colors.text }]}>
                   Score de passage (%)
@@ -416,7 +417,7 @@ export default function QuizEditScreen() {
                 Questions Disponibles
               </ThemedText>
             </View>
-            
+
             <View style={styles.searchSection}>
               <TextInput
                 style={[styles.searchInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
@@ -425,7 +426,7 @@ export default function QuizEditScreen() {
                 value={searchTerm}
                 onChangeText={setSearchTerm}
               />
-              
+
               <View style={styles.filterRow}>
                 <TextInput
                   style={[styles.filterInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
@@ -441,7 +442,7 @@ export default function QuizEditScreen() {
                   <MaterialIcons name="clear" size={16} color={colors.background} />
                 </TouchableOpacity>
               </View>
-              
+
               <View style={styles.actionButtons}>
                 <TouchableOpacity
                   style={[styles.actionButton, { backgroundColor: colors.primary }]}
@@ -452,7 +453,7 @@ export default function QuizEditScreen() {
                     Tout sélectionner
                   </ThemedText>
                 </TouchableOpacity>
-                
+
                 <TouchableOpacity
                   style={[styles.actionButton, { backgroundColor: colors.error }]}
                   onPress={deselectAllQuestions}
@@ -479,7 +480,7 @@ export default function QuizEditScreen() {
                 </ThemedText>
               </View>
             </View>
-            
+
             <ScrollView style={styles.questionsList} showsVerticalScrollIndicator={false}>
               {filteredQuestions.length === 0 ? (
                 <View style={styles.emptyState}>
@@ -494,9 +495,9 @@ export default function QuizEditScreen() {
                     key={question.id}
                     style={[
                       styles.questionItem,
-                      { 
-                        backgroundColor: selectedQuestions.includes(question.id) 
-                          ? colors.primary + '20' 
+                      {
+                        backgroundColor: selectedQuestions.includes(question.id)
+                          ? colors.primary + '20'
                           : colors.background,
                         borderColor: selectedQuestions.includes(question.id) ? colors.primary : colors.border
                       }
@@ -546,7 +547,7 @@ export default function QuizEditScreen() {
                 Aperçu du Quiz
               </ThemedText>
             </View>
-            
+
             <View style={[styles.preview, { borderColor: colors.border }]}>
               <ThemedText style={[styles.previewTitle, { color: colors.primary }]}>
                 {editedQuiz.title || 'Titre du quiz'}

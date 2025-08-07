@@ -20,7 +20,7 @@ export default function HomeScreen() {
   const { user, isAuthenticated } = useAuth();
   const { userProgress, isLoading: userProgressLoading, error: userProgressError } = useUserProgress();
   const { getAvailableQuizzes, isLoading: quizLoading, error: quizError } = useQuizDataContext();
-
+  console.log(userProgress)
   // Check if user is admin
   const isAdmin = isAuthenticated && user?.type?.includes('admin');
 
@@ -148,7 +148,7 @@ export default function HomeScreen() {
                     quiz={quiz}
                     onPress={handleQuizPress}
                     completed={progress.completedQuizzes.includes(quiz.id)}
-                    score={progress.completedQuizzes.includes(quiz.id) ? 85 : undefined}
+                    score={progress.completedQuizzes.includes(quiz.id) ? 100 : undefined}
                     index={index}
                   />
                 ))

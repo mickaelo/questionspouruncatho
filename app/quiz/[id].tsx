@@ -1,4 +1,5 @@
 import { FailureAnimation } from '@/components/FailureAnimation';
+import { GlobalLoadingBar } from '@/components/GlobalLoadingBar';
 import { QuestionCard } from '@/components/QuestionCard';
 import { QuizCompletionScreen } from '@/components/QuizCompletionScreen';
 import { useQuizDataContext } from '@/components/QuizDataProvider';
@@ -105,9 +106,7 @@ export default function QuizScreen() {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: colors.background }]}>
         <View style={styles.loadingContainer}>
-          <ThemedText style={[styles.loadingText, { color: colors.text }]}>
-            Quiz non trouvé ou sans questions
-          </ThemedText>
+          <GlobalLoadingBar />
         </View>
         <TouchableOpacity
           style={[styles.backButton, { backgroundColor: colors.card }]}
@@ -272,7 +271,7 @@ export default function QuizScreen() {
   if (!currentQuestion) {
     return (
       <SafeAreaView style={styles.container}>
-        <ThemedText>Quiz non trouvé</ThemedText>
+        <GlobalLoadingBar />
       </SafeAreaView>
     );
   }
