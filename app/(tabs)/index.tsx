@@ -8,6 +8,8 @@ import { Colors } from '@/constants/Colors';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useUserProgress } from '@/hooks/useUserProgress';
+import { quizService } from '@/services/quizService';
+import { UserProgressService } from '@/services/userProgressService';
 import { Quiz } from '@/types/quiz';
 import { router } from 'expo-router';
 import React, { useEffect } from 'react';
@@ -72,7 +74,23 @@ export default function HomeScreen() {
   }, [getAvailableQuizzes, userLevel]);
 
   useEffect(() => {
-    
+    const fetchPopularQuizzes = async () => {
+      setIsLoadingPopular(true);
+      try {
+        const popular = await UserProgressService.getMostPopularQuizzes(3);
+        const quizPromises = popular.map(async ({ quizId }) => {
+          const quiz = await quizService.getQuiz(quizId);
+          return quiz;
+        });
+        const quizzes = (await Promise.all(quizPromises)).filter(Boolean);
+        setPopularQuizzes(quizzes);
+      } catch (error) {
+        setPopularQuizzes([]);
+      } finally {
+        setIsLoadingPopular(false);
+      }
+    };
+    fetchPopularQuizzes();
   }, []);
 
   const handleQuizPress = (quiz: Quiz) => {

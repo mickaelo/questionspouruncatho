@@ -65,7 +65,7 @@ Une application mobile moderne pour se former à la théologie catholique à tra
 1. **Cloner le projet**
    ```bash
    git clone [url-du-repo]
-   cd questionpouruncatho2
+   cd questionspouruncatho
    ```
 
 2. **Installer les dépendances**

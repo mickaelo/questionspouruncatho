@@ -1,9 +1,7 @@
 import { Question, Quiz } from '../types/quiz';
-
 // ========================================
 // QUESTIONS PAR CATÉGORIE ET NIVEAU
 // ========================================
-
 // NIVEAU 1 - DÉCOUVERTE (Questions 1-200)
 export const sampleQuestions: Question[] = [
   // ===== DÉCOUVERTE - QUI EST JÉSUS-CHRIST ? (Questions 1-30) =====
@@ -13,7 +11,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Selon l\'Évangile de Jean, que dit Jésus de lui-même ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Je suis un prophète envoyé par Dieu',
       'Je suis le Fils de l\'homme',
@@ -31,7 +29,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Selon l\'Évangile de Luc, pourquoi Jésus est-il né à Bethléem ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Parce que c\'était la ville de ses parents',
       'À cause du recensement ordonné par César Auguste',
@@ -49,7 +47,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Dans l\'Évangile de Jean, que répond Jésus à Thomas qui demande le chemin ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Suivez la loi de Moïse',
       'Je suis le chemin, la vérité et la vie',
@@ -67,7 +65,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 1,
     question: 'Selon l\'Évangile de Luc, que signifie le nom "Jésus" ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Dieu avec nous',
       'Le Seigneur sauve',
@@ -85,7 +83,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Selon l\'Évangile de Luc, à quel âge Jésus a-t-il commencé son ministère public ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'À 25 ans',
       'À 30 ans',
@@ -103,7 +101,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 1,
     question: 'Dans l\'Évangile de Jean, que dit Jésus à Nicodème sur l\'amour de Dieu ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Dieu a tant aimé le monde qu\'il a donné son Fils unique',
       'Dieu aime ceux qui l\'aiment',
@@ -121,7 +119,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Selon l\'Évangile de Jean, où Jésus a-t-il accompli son premier miracle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'À Jérusalem',
       'À Nazareth',
@@ -139,7 +137,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 1,
     question: 'Selon l\'Évangile de Marc, pourquoi Jésus a-t-il choisi 12 apôtres ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Pour qu\'ils soient avec lui et pour les envoyer prêcher',
       'Pour qu\'ils l\'aident dans ses miracles',
@@ -157,7 +155,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Dans l\'Évangile de Jean, quel est le commandement nouveau que Jésus donne à ses disciples ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Priez sans cesse',
       'Aimez-vous les uns les autres comme je vous ai aimés',
@@ -175,7 +173,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 1,
     question: 'Selon l\'Évangile de Jean, à quelle heure Jésus est-il mort sur la croix ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'À la troisième heure',
       'À la sixième heure',
@@ -187,7 +185,6 @@ export const sampleQuestions: Question[] = [
     points: 15,
     scripture: 'Jean 19:14-30'
   },
-
   // ===== DÉCOUVERTE - PREMIERS GESTES CHRÉTIENS (Questions 11-30) =====
   {
     id: '11',
@@ -195,7 +192,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Selon la tradition chrétienne, que signifie le signe de croix ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un simple geste de bénédiction',
       'Une invocation de la Trinité et un rappel de la croix du Christ',
@@ -205,7 +202,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Le signe de croix est une invocation de la Trinité ("Au nom du Père, du Fils et du Saint-Esprit") et un rappel de la croix du Christ, symbole de notre salut.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 2157'
   },
   {
     id: '12',
@@ -213,7 +209,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Selon l\'Évangile de Matthieu, au nom de qui faut-il baptiser ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Au nom de Jésus-Christ',
       'Au nom du Père, du Fils et du Saint-Esprit',
@@ -231,7 +227,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Selon l\'Évangile de Luc, que demandent les disciples à Jésus ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Comment guérir les malades',
       'Comment chasser les démons',
@@ -249,7 +245,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 1,
     question: 'Selon l\'Évangile de Matthieu, comment Jésus commence-t-il le Notre Père ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Notre Père qui es aux cieux',
       'Père, que ton nom soit sanctifié',
@@ -267,7 +263,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Selon l\'Évangile de Luc, que dit Jésus sur la prière ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Priez seulement en public',
       'Priez sans cesse',
@@ -285,7 +281,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 1,
     question: 'Selon l\'Évangile de Matthieu, que demande Jésus dans le Notre Père ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Que ton règne vienne',
       'Que ta volonté soit faite sur la terre comme au ciel',
@@ -314,7 +310,6 @@ export const sampleQuestions: Question[] = [
     multipleCorrectAnswers: true,
     explanation: 'Tous ces gestes sont des gestes de respect dans l\'Église : s\'incliner, s\'agenouiller brièvement (génuflexion), faire le signe de croix et joindre les mains. Ces gestes expriment notre respect et notre adoration envers Dieu.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 1378'
   },
   {
     id: '18',
@@ -327,7 +322,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Vrai. On fait une génuflexion devant le tabernacle qui contient le Saint-Sacrement. C\'est un geste d\'adoration envers la présence réelle du Christ.',
     points: 10,
-    catechism: 'Catéchisme de l\'Église Catholique 1378'
   },
   {
     id: '19',
@@ -353,7 +347,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 1,
     question: 'Quelle est la prière la plus importante de l\'Église ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le Je vous salue Marie',
       'Le Notre Père',
@@ -365,7 +359,6 @@ export const sampleQuestions: Question[] = [
     points: 15,
     scripture: 'Matthieu 6:9-13'
   },
-
   // ===== DÉCOUVERTE - LA BIBLE ET LES ÉCRITURES (Questions 21-30) =====
   {
     id: '21',
@@ -373,7 +366,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Selon la Deuxième Lettre à Timothée, d\'où vient la Bible ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'De l\'imagination humaine',
       'De l\'inspiration divine',
@@ -391,7 +384,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Selon la tradition chrétienne, que contient l\'Ancien Testament ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Seulement les Évangiles',
       'Les livres écrits avant Jésus-Christ',
@@ -401,7 +394,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'L\'Ancien Testament contient les livres écrits avant Jésus-Christ, qui préparent sa venue. Le Nouveau Testament contient les livres écrits après sa venue. L\'Ancien Testament est la révélation progressive de Dieu à son peuple.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 121-123'
   },
   {
     id: '23',
@@ -409,7 +401,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 1,
     question: 'Selon le livre de la Genèse, que dit Dieu après avoir créé l\'homme ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'C\'est bien',
       'C\'est très bien',
@@ -427,7 +419,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Selon la tradition chrétienne, quel est le premier Évangile écrit ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'Évangile de Matthieu',
       'L\'Évangile de Marc',
@@ -437,7 +429,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'L\'Évangile de Marc est généralement considéré comme le premier Évangile écrit, vers l\'an 65-70 après Jésus-Christ. Il est le plus court et le plus direct des quatre Évangiles.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 120'
   },
   {
     id: '25',
@@ -445,7 +436,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 1,
     question: 'Selon le livre de la Genèse, comment Dieu a-t-il créé l\'homme ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Avec de la poussière du sol',
       'Avec de l\'argile',
@@ -463,7 +454,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Selon le livre des Psaumes, que dit le Psaume 1 sur l\'homme heureux ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Il est riche',
       'Il médite la loi du Seigneur jour et nuit',
@@ -509,7 +500,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Saint Paul a écrit 13 épîtres du Nouveau Testament, plus que tout autre apôtre. Il est l\'apôtre des nations et le missionnaire par excellence.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 120'
   },
   {
     id: '29',
@@ -527,7 +517,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'L\'Apocalypse de Saint Jean est le dernier livre du Nouveau Testament et de la Bible entière. Il contient les révélations sur la fin des temps.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 120'
   },
   {
     id: '30',
@@ -583,7 +572,6 @@ export const sampleQuestions: Question[] = [
     points: 15,
     scripture: 'Matthieu 2:1-12'
   },
-
   // ===== DÉCOUVERTE - L'ÉGLISE ET LA MESSE (Questions 31-40) =====
   {
     id: '31',
@@ -637,7 +625,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'La messe commence par les rites d\'ouverture : signe de croix, salutation, acte pénitentiel, etc. C\'est la préparation à la célébration eucharistique.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 1348'
   },
   {
     id: '34',
@@ -655,7 +642,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'L\'autel symbolise le Christ lui-même, comme l\'enseigne la tradition liturgique de l\'Église. C\'est sur l\'autel que se renouvelle le sacrifice du Christ.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 1383'
   },
   {
     id: '35',
@@ -673,7 +659,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Le prêtre dit : "Le Seigneur soit avec vous" et l\'assemblée répond : "Et avec votre esprit." Cette salutation liturgique exprime la présence du Christ dans l\'assemblée.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 1348'
   },
   {
     id: '36',
@@ -681,7 +666,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Qu\'est-ce que le tabernacle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un meuble de rangement',
       'Le lieu où est conservé le Saint-Sacrement',
@@ -691,7 +676,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Le tabernacle est le lieu où est conservé le Saint-Sacrement (le Corps du Christ). C\'est le lieu de la présence réelle du Christ.',
     points: 10,
-    catechism: 'Catéchisme de l\'Église Catholique 1378'
   },
   {
     id: '37',
@@ -704,7 +688,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Vrai. On peut communier à chaque messe si on est en état de grâce. La communion est recommandée à chaque participation à la messe.',
     points: 10,
-    catechism: 'Catéchisme de l\'Église Catholique 1415'
   },
   {
     id: '38',
@@ -712,7 +695,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Qu\'est-ce que l\'encens ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un parfum',
       'Une résine aromatique brûlée en signe de prière',
@@ -722,7 +705,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'L\'encens est une résine aromatique brûlée en signe de prière qui monte vers Dieu. Il symbolise nos prières qui montent vers le ciel.',
     points: 10,
-    catechism: 'Catéchisme de l\'Église Catholique 1152'
   },
   {
     id: '39',
@@ -748,7 +730,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Qu\'est-ce que le ciboire ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un vase pour l\'eau',
       'Un vase pour conserver les hosties consacrées',
@@ -758,9 +740,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Le ciboire est un vase sacré pour conserver les hosties consacrées. Il est utilisé pour la communion et la conservation du Saint-Sacrement.',
     points: 10,
-    catechism: 'Catéchisme de l\'Église Catholique 1378'
   },
-
   // ===== DÉCOUVERTE - LE BAPTÊME ET LES SACREMENTS (Questions 41-50) =====
   {
     id: '41',
@@ -768,7 +748,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Qu\'est-ce que le baptême ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une simple cérémonie',
       'Le sacrement qui nous fait enfants de Dieu',
@@ -778,7 +758,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Le baptême est le sacrement qui nous fait enfants de Dieu et nous incorpore à l\'Église.',
     points: 10,
-    catechism: 'Catéchisme de l\'Église Catholique 1213'
   },
   {
     id: '42',
@@ -791,7 +770,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Vrai. Le baptême efface le péché originel et tous les péchés personnels. Il nous fait renaître à la vie divine.',
     points: 10,
-    catechism: 'Catéchisme de l\'Église Catholique 1263'
   },
   {
     id: '43',
@@ -828,7 +806,6 @@ export const sampleQuestions: Question[] = [
     multipleCorrectAnswers: true,
     explanation: 'Les sacrements de guérison sont la Réconciliation (confession) et l\'Onction des malades. Ils apportent la guérison spirituelle et parfois physique.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 1420-1421'
   },
   {
     id: '45',
@@ -836,7 +813,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 1,
     question: 'Quel est le sacrement le plus important ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le baptême',
       'L\'Eucharistie',
@@ -846,7 +823,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'L\'Eucharistie est le sacrement le plus important car elle contient le Christ lui-même.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 1324'
   },
   {
     id: '46',
@@ -859,7 +835,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Faux. Le baptême ne peut être reçu qu\'une seule fois, il imprime un caractère indélébile. C\'est un sacrement qui ne peut être répété.',
     points: 10,
-    catechism: 'Catéchisme de l\'Église Catholique 1272'
   },
   {
     id: '47',
@@ -896,7 +871,6 @@ export const sampleQuestions: Question[] = [
     multipleCorrectAnswers: true,
     explanation: 'Les sacrements de l\'initiation chrétienne sont le Baptême, la Confirmation et l\'Eucharistie. Ils nous introduisent dans la vie chrétienne.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 1212'
   },
   {
     id: '49',
@@ -909,7 +883,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Faux. Pour communier, il faut être baptisé et en état de grâce. Le baptême est la porte d\'entrée dans la vie chrétienne.',
     points: 10,
-    catechism: 'Catéchisme de l\'Église Catholique 1415'
   },
   {
     id: '50',
@@ -917,7 +890,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 1,
     question: 'Qu\'est-ce que la communion ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une simple cérémonie',
       'Recevoir le Corps du Christ',
@@ -927,11 +900,8 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'La communion est le fait de recevoir le Corps du Christ dans l\'Eucharistie. C\'est l\'union intime avec le Christ.',
     points: 10,
-    catechism: 'Catéchisme de l\'Église Catholique 1391'
   },
-
   // ===== NIVEAU 2 - FONDAMENTAUX DE LA FOI (Questions 51-200) =====
-
   // ===== FONDAMENTAUX - LES DOGMES DE LA FOI (Questions 51-80) =====
   {
     id: '51',
@@ -939,7 +909,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce qu\'un dogme ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une simple opinion',
       'Une vérité de foi définie par l\'Église',
@@ -949,7 +919,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Un dogme est une vérité de foi définie solennellement par l\'Église comme révélée par Dieu.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 88'
   },
   {
     id: '52',
@@ -962,7 +931,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Vrai. La Trinité est le dogme central : un seul Dieu en trois personnes.',
     points: 10,
-    catechism: 'Catéchisme de l\'Église Catholique 253'
   },
   {
     id: '53',
@@ -1017,7 +985,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que l\'Assomption de Marie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La mort de Marie',
       'L\'élévation de Marie au ciel en corps et en âme',
@@ -1051,7 +1019,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la transsubstantiation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La transformation du pain en corps du Christ',
       'La résurrection du Christ',
@@ -1080,7 +1048,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que l\'Incarnation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La résurrection du Christ',
       'Le Fils de Dieu fait homme',
@@ -1090,7 +1058,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'L\'Incarnation est le Fils de Dieu fait homme en Jésus-Christ.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 464'
   },
   {
     id: '61',
@@ -1115,7 +1082,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la Résurrection ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La naissance de Jésus',
       'Le retour à la vie de Jésus après sa mort',
@@ -1144,7 +1111,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la Pentecôte ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La naissance de l\'Église',
       'La mort de Jésus',
@@ -1178,7 +1145,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la communion des saints ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La communion eucharistique',
       'La solidarité entre tous les membres de l\'Église',
@@ -1213,7 +1180,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la rémission des péchés ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'oubli des péchés',
       'Le pardon des péchés par Dieu',
@@ -1247,7 +1214,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la vie éternelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une vie très longue',
       'La vie avec Dieu après la mort',
@@ -1276,7 +1243,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que l\'enfer ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un lieu de souffrance temporaire',
       'L\'état de séparation définitive d\'avec Dieu',
@@ -1310,7 +1277,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la virginité de Marie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Marie n\'a jamais eu d\'enfants',
       'Marie est restée vierge avant, pendant et après la naissance de Jésus',
@@ -1339,7 +1306,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la grâce sanctifiante ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une prière',
       'La vie divine en nous',
@@ -1373,7 +1340,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la rédemption ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La création du monde',
       'Le rachat de l\'humanité par le sacrifice du Christ',
@@ -1402,7 +1369,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la justification ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une excuse',
       'L\'action de Dieu qui nous rend justes',
@@ -1413,7 +1380,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La justification est l\'action de Dieu qui nous rend justes par la grâce du Christ.',
     points: 15
   },
-
   // ===== FONDAMENTAUX - LES 7 SACREMENTS (Questions 81-120) =====
   {
     id: '81',
@@ -1461,7 +1427,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Les sacrements sont des signes efficaces de la grâce, institués par le Christ et confiés à l\'Église, par lesquels nous est dispensée la vie divine.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 1131'
   },
   {
     id: '84',
@@ -1469,7 +1434,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Quel est le premier sacrement ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'Eucharistie',
       'Le baptême',
@@ -1498,7 +1463,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la confirmation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un simple rite de passage',
       'Le sacrement qui confirme et fortifie la grâce baptismale',
@@ -1525,7 +1490,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'L\'Eucharistie est la source et le sommet de toute la vie chrétienne et ecclésiale.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 1324'
   },
   {
     id: '88',
@@ -1533,7 +1497,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Quel est le sacrement le plus important ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le baptême',
       'L\'Eucharistie',
@@ -1562,7 +1526,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que l\'onction des malades ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un simple geste de réconfort',
       'Le sacrement pour les malades et les mourants',
@@ -1589,7 +1553,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'L\'ordre est le sacrement par lequel la mission confiée par le Christ à ses apôtres continue à être exercée dans l\'Église jusqu\'à la fin des temps.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 1536'
   },
   {
     id: '92',
@@ -1597,7 +1560,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que le mariage ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un simple contrat civil',
       'Le sacrement de l\'alliance entre un homme et une femme',
@@ -1626,7 +1589,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la communion ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une simple cérémonie',
       'Recevoir le Corps du Christ dans l\'Eucharistie',
@@ -1661,7 +1624,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la transsubstantiation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La transformation du pain en corps du Christ',
       'La résurrection du Christ',
@@ -1690,7 +1653,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que l\'absolution ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une prière',
       'La formule de pardon prononcée par le prêtre',
@@ -1724,7 +1687,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que le sacerdoce ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un simple métier',
       'Le ministère sacerdotal conféré par l\'ordination',
@@ -1735,7 +1698,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'Le sacerdoce est le ministère sacerdotal conféré par l\'ordination.',
     points: 15
   },
-
   // ===== FONDAMENTAUX - LA MORALE CHRÉTIENNE (Questions 101-140) =====
   {
     id: '101',
@@ -1743,7 +1705,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la morale chrétienne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un ensemble de règles arbitraires',
       'L\'art de vivre selon la volonté de Dieu',
@@ -1807,7 +1769,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que le péché mortel ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un péché grave',
       'Un péché qui détruit la charité en nous',
@@ -1836,7 +1798,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la charité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'amour de Dieu et du prochain',
       'Une simple bonté',
@@ -1870,7 +1832,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la justice ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui rend à chacun son dû',
       'L\'égalité',
@@ -1899,7 +1861,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la prudence ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait discerner le bien',
       'La peur',
@@ -1963,7 +1925,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la force ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait persévérer dans le bien',
       'La violence',
@@ -1997,7 +1959,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que l\'espérance ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait désirer le ciel',
       'Un simple espoir',
@@ -2026,7 +1988,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la foi ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait croire en Dieu',
       'Une simple croyance',
@@ -2054,9 +2016,7 @@ export const sampleQuestions: Question[] = [
     explanation: 'Le deuxième commandement interdit les idoles et les représentations fausses de Dieu.',
     points: 15
   },
-
   // ===== NIVEAU 3 - APPROFONDISSEMENT (Questions 141-300) =====
-
   // ===== APPROFONDISSEMENT - L'ANCIEN TESTAMENT (Questions 141-180) =====
   {
     id: '141',
@@ -2064,7 +2024,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Combien y a-t-il de livres dans l\'Ancien Testament ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: ['39', '46', '27', '73'],
     correctAnswer: 1,
     explanation: 'L\'Ancien Testament catholique compte 46 livres.',
@@ -2106,7 +2066,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était Abraham ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le premier roi d\'Israël',
       'Le père des croyants',
@@ -2135,7 +2095,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que l\'Exode ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La sortie d\'Égypte du peuple hébreu',
       'Un livre de prières',
@@ -2200,7 +2160,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la Torah ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Les cinq premiers livres de la Bible',
       'Toute la Bible',
@@ -2235,7 +2195,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était Salomon ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le fils de David',
       'Le roi sage d\'Israël',
@@ -2264,7 +2224,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que l\'Alliance ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un contrat entre Dieu et son peuple',
       'Une promesse',
@@ -2299,7 +2259,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était Élie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un roi',
       'Un grand prophète',
@@ -2328,7 +2288,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que l\'Exil à Babylone ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La déportation du peuple juif',
       'Un voyage',
@@ -2393,7 +2353,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la circoncision ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le signe de l\'alliance avec Dieu',
       'Une simple coutume',
@@ -2428,7 +2388,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était Jonas ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un prophète récalcitrant',
       'Un roi',
@@ -2457,7 +2417,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que le Temple de Jérusalem ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La maison de Dieu',
       'Un simple bâtiment',
@@ -2492,7 +2452,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était Ézéchiel ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un prophète de l\'exil',
       'Un roi',
@@ -2521,7 +2481,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la Pâque juive ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La fête de la libération d\'Égypte',
       'Une simple fête',
@@ -2556,7 +2516,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était Jérémie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le prophète des larmes',
       'Un roi',
@@ -2585,7 +2545,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que le sabbat ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le jour de repos consacré à Dieu',
       'Un simple jour de repos',
@@ -2650,7 +2610,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la Loi mosaïque ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'ensemble des lois données par Moïse',
       'Les dix commandements',
@@ -2685,7 +2645,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était Samuel ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le dernier juge et premier prophète',
       'Un roi',
@@ -2696,7 +2656,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'Samuel était le dernier juge et le premier prophète d\'Israël.',
     points: 20
   },
-
   // ===== APPROFONDISSEMENT - LE NOUVEAU TESTAMENT (Questions 181-220) =====
   {
     id: '181',
@@ -2704,7 +2663,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Combien y a-t-il de livres dans le Nouveau Testament ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: ['27', '39', '46', '73'],
     correctAnswer: 0,
     explanation: 'Le Nouveau Testament compte 27 livres.',
@@ -2746,7 +2705,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Paul ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'apôtre des nations',
       'Un évangéliste',
@@ -2775,7 +2734,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que l\'Apocalypse ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le dernier livre de la Bible',
       'Un livre de révélations',
@@ -2840,7 +2799,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que les Béatitudes ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Les huit béatitudes du Sermon sur la montagne',
       'Des prières',
@@ -2875,7 +2834,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Jean ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'apôtre bien-aimé',
       'Un évangéliste',
@@ -2904,7 +2863,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la parabole ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une histoire avec un enseignement spirituel',
       'Une légende',
@@ -2939,7 +2898,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Matthieu ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'évangéliste publicain',
       'Un apôtre',
@@ -2968,7 +2927,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que le Royaume de Dieu ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La présence de Dieu parmi les hommes',
       'Un royaume terrestre',
@@ -3033,7 +2992,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la Révélation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La manifestation de Dieu aux hommes',
       'Une découverte',
@@ -3068,7 +3027,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Marc ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'évangéliste compagnon de Pierre',
       'Un apôtre',
@@ -3097,7 +3056,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que l\'Église primitive ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La première communauté chrétienne',
       'Une secte',
@@ -3132,7 +3091,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Jacques ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'apôtre frère de Jean',
       'Un évangéliste',
@@ -3161,7 +3120,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la Pentecôte ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La descente de l\'Esprit Saint',
       'Une fête juive',
@@ -3196,7 +3155,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint André ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'apôtre frère de Pierre',
       'Un évangéliste',
@@ -3225,7 +3184,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la conversion ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le retournement vers Dieu',
       'Un simple changement',
@@ -3260,7 +3219,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Thomas ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'apôtre incrédule',
       'Un évangéliste',
@@ -3289,7 +3248,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la foi ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La confiance en Dieu',
       'Une simple croyance',
@@ -3324,7 +3283,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Philippe ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'apôtre qui amena Nathanaël',
       'Un évangéliste',
@@ -3335,7 +3294,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'Saint Philippe était l\'apôtre qui amena Nathanaël à Jésus.',
     points: 20
   },
-
   // ===== APPROFONDISSEMENT - L'ÉGLISE ET SON HISTOIRE (Questions 221-260) =====
   {
     id: '221',
@@ -3343,7 +3301,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que l\'Église catholique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La communauté des croyants fondée par le Christ',
       'Un simple bâtiment',
@@ -3390,7 +3348,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était le premier pape ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Saint Pierre',
       'Saint Paul',
@@ -3419,7 +3377,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que l\'édit de Milan ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La liberté religieuse accordée par Constantin',
       'Une loi',
@@ -3453,7 +3411,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Augustin ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un Père de l\'Église',
       'Un pape',
@@ -3482,7 +3440,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que le monachisme ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vie religieuse en communauté',
       'Une secte',
@@ -3516,7 +3474,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Benoît ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le père du monachisme occidental',
       'Un pape',
@@ -3545,7 +3503,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la Réforme protestante ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le mouvement de séparation du XVIe siècle',
       'Une réforme interne',
@@ -3579,7 +3537,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint François d\'Assise ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le saint de la pauvreté',
       'Un pape',
@@ -3608,7 +3566,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que le Vatican II ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le concile de 1962-1965',
       'Un synode',
@@ -3642,7 +3600,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Thomas d\'Aquin ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le docteur angélique',
       'Un pape',
@@ -3671,7 +3629,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que l\'œcuménisme ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le dialogue entre les Églises',
       'Une union',
@@ -3705,7 +3663,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Ignace de Loyola ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le fondateur des jésuites',
       'Un pape',
@@ -3734,7 +3692,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la succession apostolique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La transmission de l\'autorité des apôtres',
       'Une tradition',
@@ -3768,7 +3726,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Thérèse d\'Avila ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La réformatrice du Carmel',
       'Une pape',
@@ -3797,7 +3755,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la mission de l\'Église ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Évangéliser le monde',
       'Gouverner',
@@ -3831,7 +3789,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Jean-Paul II ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le pape polonais',
       'Un évêque',
@@ -3860,7 +3818,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que la hiérarchie de l\'Église ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'organisation de l\'Église',
       'Une structure',
@@ -3895,7 +3853,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Pie X ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le pape de l\'Eucharistie',
       'Un évêque',
@@ -3924,7 +3882,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qu\'est-ce que le magistère de l\'Église ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'autorité d\'enseignement de l\'Église',
       'Un pouvoir',
@@ -3958,7 +3916,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 3,
     question: 'Qui était saint Léon le Grand ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le pape qui arrêta Attila',
       'Un évêque',
@@ -3969,9 +3927,7 @@ export const sampleQuestions: Question[] = [
     explanation: 'Saint Léon le Grand était le pape qui arrêta Attila (440-461).',
     points: 20
   },
-
   // ===== NIVEAU 4 - MAÎTRISE (Questions 261-600) =====
-
   // ===== MAÎTRISE - THÉOLOGIE AVANCÉE (Questions 261-300) =====
   {
     id: '261',
@@ -3979,7 +3935,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude rationnelle de la foi',
       'Une simple croyance',
@@ -4025,7 +3981,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie dogmatique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des vérités de foi',
       'Une doctrine',
@@ -4054,7 +4010,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie spirituelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la vie spirituelle',
       'Une mystique',
@@ -4088,7 +4044,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie sacramentelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des sacrements',
       'Une liturgie',
@@ -4117,7 +4073,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie fondamentale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des fondements de la foi',
       'Une base',
@@ -4152,7 +4108,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie pastorale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude du ministère pastoral',
       'Une pastorale',
@@ -4181,7 +4137,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie patristique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des Pères de l\'Église',
       'Une tradition',
@@ -4216,7 +4172,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'expérience mystique',
       'Une mystique',
@@ -4245,7 +4201,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie positive ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des sources de la révélation',
       'Une approche',
@@ -4280,7 +4236,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie systématique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'organisation systématique de la doctrine',
       'Un système',
@@ -4309,7 +4265,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie pratique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'application pratique de la théologie',
       'Une pratique',
@@ -4344,7 +4300,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie contextuelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'adaptation de la théologie au contexte',
       'Un contexte',
@@ -4373,7 +4329,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la grâce ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la grâce divine',
       'Une grâce',
@@ -4408,7 +4364,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la Trinité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude du mystère de la Trinité',
       'Un mystère',
@@ -4437,7 +4393,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la Rédemption ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'œuvre rédemptrice du Christ',
       'Une rédemption',
@@ -4472,7 +4428,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de l\'Église ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la nature de l\'Église',
       'Une nature',
@@ -4501,7 +4457,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la prière ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la prière chrétienne',
       'Une prière',
@@ -4536,7 +4492,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la sainteté ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la sainteté chrétienne',
       'Une sainteté',
@@ -4565,7 +4521,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la création ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la création divine',
       'Une création',
@@ -4600,7 +4556,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la fin des temps ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'eschatologie',
       'Une fin',
@@ -4611,7 +4567,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La théologie de la fin des temps étudie l\'eschatologie.',
     points: 30
   },
-
   // ===== MAÎTRISE - PHILOSOPHIE CHRÉTIENNE (Questions 301-340) =====
   {
     id: '301',
@@ -4619,7 +4574,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la philosophie chrétienne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'usage de la raison éclairée par la foi',
       'Une simple philosophie',
@@ -4665,7 +4620,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'existence de Dieu ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une vérité accessible à la raison',
       'Une simple croyance',
@@ -4694,7 +4649,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la preuve cosmologique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La preuve par la cause première',
       'Une preuve scientifique',
@@ -4728,7 +4683,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la preuve téléologique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La preuve par l\'ordre du monde',
       'Une preuve scientifique',
@@ -4757,7 +4712,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la preuve morale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La preuve par la conscience morale',
       'Une preuve scientifique',
@@ -4791,7 +4746,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la nature humaine ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'essence de l\'homme',
       'Un simple concept',
@@ -4820,7 +4775,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la liberté humaine ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La capacité de choisir le bien',
       'Une simple volonté',
@@ -4855,7 +4810,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la loi naturelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La loi morale inscrite dans le cœur',
       'Une loi civile',
@@ -4884,7 +4839,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le bien objectif ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le bien en soi',
       'Un bien relatif',
@@ -4918,7 +4873,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la vertu ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une disposition stable au bien',
       'Une simple qualité',
@@ -4947,7 +4902,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le bonheur ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La fin ultime de l\'homme',
       'Un simple plaisir',
@@ -4981,7 +4936,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'amour ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La volonté du bien de l\'autre',
       'Un simple sentiment',
@@ -5010,7 +4965,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la personne humaine ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un être unique et irremplaçable',
       'Un simple individu',
@@ -5045,7 +5000,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la dignité humaine ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La valeur intrinsèque de l\'homme',
       'Un simple respect',
@@ -5074,7 +5029,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la solidarité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La responsabilité mutuelle entre les hommes',
       'Un simple lien',
@@ -5108,7 +5063,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le bien commun ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le bien de tous et de chacun',
       'Un bien collectif',
@@ -5137,7 +5092,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la subsidiarité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le principe de non-intervention',
       'Un principe politique',
@@ -5172,7 +5127,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la justice sociale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La justice dans les relations sociales',
       'Une justice politique',
@@ -5201,7 +5156,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la paix ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le fruit de la justice',
       'Une simple absence de guerre',
@@ -5236,7 +5191,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la sagesse ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La connaissance des fins dernières',
       'Une simple intelligence',
@@ -5247,7 +5202,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La sagesse est la connaissance des fins dernières.',
     points: 30
   },
-
   // ===== MAÎTRISE - LITURGIE ET SACREMENTS (Questions 341-380) =====
   {
     id: '341',
@@ -5255,7 +5209,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la liturgie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le culte public de l\'Église',
       'Une simple cérémonie',
@@ -5301,7 +5255,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'année liturgique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le cycle des fêtes chrétiennes',
       'Une année civile',
@@ -5330,7 +5284,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le Carême ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le temps de préparation à Pâques',
       'Un simple jeûne',
@@ -5364,7 +5318,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la messe ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le sacrifice eucharistique',
       'Une simple prière',
@@ -5393,7 +5347,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'Eucharistie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le sacrement du Corps et du Sang du Christ',
       'Un simple repas',
@@ -5428,7 +5382,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la transsubstantiation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La transformation du pain en Corps du Christ',
       'Un simple changement',
@@ -5457,7 +5411,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la communion ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Recevoir le Corps du Christ',
       'Une simple participation',
@@ -5492,7 +5446,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le baptême ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le sacrement de la nouvelle naissance',
       'Un simple rite',
@@ -5521,7 +5475,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la confirmation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le sacrement de la force',
       'Un simple rite',
@@ -5556,7 +5510,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pénitence ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le sacrement du pardon',
       'Un simple aveu',
@@ -5585,7 +5539,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'absolution ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La formule de pardon',
       'Un simple pardon',
@@ -5619,7 +5573,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'onction des malades ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le sacrement des malades',
       'Un simple geste',
@@ -5648,7 +5602,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'ordre ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le sacrement du ministère',
       'Un simple ordre',
@@ -5682,7 +5636,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le mariage ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le sacrement de l\'alliance',
       'Un simple contrat',
@@ -5711,7 +5665,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la liturgie des Heures ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière officielle de l\'Église',
       'Une simple prière',
@@ -5746,7 +5700,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la liturgie funéraire ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Les rites pour les défunts',
       'Un simple rite',
@@ -5775,7 +5729,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la liturgie baptismale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Les rites du baptême',
       'Un simple rite',
@@ -5809,7 +5763,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la liturgie eucharistique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Les rites de l\'Eucharistie',
       'Un simple rite',
@@ -5838,7 +5792,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la liturgie de la Parole ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La proclamation de la Parole de Dieu',
       'Un simple rite',
@@ -5873,7 +5827,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la liturgie pénitentielle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Les rites de la pénitence',
       'Un simple rite',
@@ -5884,7 +5838,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La liturgie pénitentielle comprend les rites de la pénitence.',
     points: 30
   },
-
   // ===== MAÎTRISE - ÉTHIQUE ET MORALE (Questions 381-420) =====
   {
     id: '381',
@@ -5892,7 +5845,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'éthique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La science du bien et du mal',
       'Une simple morale',
@@ -5939,7 +5892,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la conscience morale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La voix de Dieu dans le cœur',
       'Une simple intuition',
@@ -5968,7 +5921,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le péché ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un acte contraire à la loi de Dieu',
       'Une simple erreur',
@@ -6003,7 +5956,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le péché mortel ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un péché grave qui tue la grâce',
       'Un simple péché',
@@ -6032,7 +5985,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la vertu ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une disposition stable au bien',
       'Une simple qualité',
@@ -6067,7 +6020,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la charité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu théologale de l\'amour',
       'Un simple don',
@@ -6096,7 +6049,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la justice ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui rend à chacun son dû',
       'Un simple principe',
@@ -6131,7 +6084,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prudence ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui discerne le bien',
       'Une simple sagesse',
@@ -6160,7 +6113,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la force ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui surmonte les difficultés',
       'Une simple courage',
@@ -6195,7 +6148,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la tempérance ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui modère les désirs',
       'Une simple modération',
@@ -6224,7 +6177,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'humilité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui reconnaît la vérité',
       'Une simple modestie',
@@ -6259,7 +6212,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la chasteté ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui ordonne la sexualité',
       'Une simple pureté',
@@ -6288,7 +6241,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pauvreté évangélique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La liberté par rapport aux biens',
       'Une simple pauvreté',
@@ -6323,7 +6276,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'obéissance ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui soumet la volonté',
       'Une simple soumission',
@@ -6352,7 +6305,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la miséricorde ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'amour qui pardonne',
       'Un simple pardon',
@@ -6387,7 +6340,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la vérité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'adéquation de l\'esprit à la réalité',
       'Une simple exactitude',
@@ -6416,7 +6369,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la liberté ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La capacité de choisir le bien',
       'Une simple indépendance',
@@ -6451,7 +6404,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la responsabilité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La capacité de répondre de ses actes',
       'Une simple obligation',
@@ -6480,7 +6433,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la solidarité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La responsabilité mutuelle',
       'Un simple lien',
@@ -6514,7 +6467,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le bien commun ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le bien de tous et de chacun',
       'Un bien collectif',
@@ -6525,7 +6478,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'Le bien commun est le bien de tous et de chacun.',
     points: 30
   },
-
   // ===== MAÎTRISE - SPIRITUALITÉ ET PRIÈRE (Questions 421-460) =====
   {
     id: '421',
@@ -6533,7 +6485,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la spiritualité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vie de l\'Esprit en nous',
       'Une simple dévotion',
@@ -6580,7 +6532,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'élévation de l\'âme vers Dieu',
       'Une simple demande',
@@ -6609,7 +6561,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière de demande ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière qui demande à Dieu',
       'Une simple demande',
@@ -6644,7 +6596,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière d\'action de grâce ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière qui remercie Dieu',
       'Un simple merci',
@@ -6673,7 +6625,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière de louange ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière qui glorifie Dieu',
       'Un simple chant',
@@ -6708,7 +6660,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière de pénitence ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière qui demande pardon',
       'Un simple aveu',
@@ -6737,7 +6689,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière d\'adoration ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière qui adore Dieu',
       'Un simple culte',
@@ -6772,7 +6724,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière contemplative ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière qui contemple Dieu',
       'Une simple méditation',
@@ -6801,7 +6753,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière vocale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière qui utilise des mots',
       'Une simple prière',
@@ -6836,7 +6788,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière mentale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière qui se fait en silence',
       'Une simple pensée',
@@ -6865,7 +6817,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière liturgique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière officielle de l\'Église',
       'Une simple prière',
@@ -6900,7 +6852,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière personnelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière faite seul avec Dieu',
       'Une simple prière',
@@ -6929,7 +6881,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière familiale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière faite en famille',
       'Une simple prière',
@@ -6963,7 +6915,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière du cœur ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière qui vient du cœur',
       'Une simple prière',
@@ -6992,7 +6944,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière de Jésus ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière du Notre Père',
       'Une simple prière',
@@ -7027,7 +6979,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière du rosaire ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière mariale par excellence',
       'Une simple prière',
@@ -7056,7 +7008,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière de l\'Angelus ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière de l\'Incarnation',
       'Une simple prière',
@@ -7090,7 +7042,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière de la Divine Miséricorde ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière de la miséricorde divine',
       'Une simple prière',
@@ -7119,7 +7071,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière de la Divine Liturgie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La messe dans les Églises orientales',
       'Une simple prière',
@@ -7153,7 +7105,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière d\'intercession ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière pour les autres',
       'Une simple prière',
@@ -7164,7 +7116,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La prière d\'intercession est la prière pour les autres.',
     points: 30
   },
-
   // ===== MAÎTRISE - APOLOGÉTIQUE (Questions 461-500) =====
   {
     id: '461',
@@ -7172,7 +7123,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'apologétique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La défense de la foi',
       'Une simple explication',
@@ -7219,7 +7170,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'existence de Dieu ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une vérité accessible à la raison',
       'Une simple croyance',
@@ -7248,7 +7199,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la preuve cosmologique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La preuve par la cause première',
       'Une preuve scientifique',
@@ -7282,7 +7233,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la preuve téléologique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La preuve par l\'ordre du monde',
       'Une preuve scientifique',
@@ -7311,7 +7262,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la preuve morale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La preuve par la conscience morale',
       'Une preuve scientifique',
@@ -7345,7 +7296,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la révélation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'auto-communication de Dieu',
       'Une simple révélation',
@@ -7374,7 +7325,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'inspiration biblique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'action de l\'Esprit Saint sur les auteurs',
       'Une simple inspiration',
@@ -7409,7 +7360,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'infaillibilité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La protection contre l\'erreur',
       'Une simple certitude',
@@ -7438,7 +7389,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'autorité de l\'Église ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le pouvoir d\'enseigner au nom du Christ',
       'Une simple autorité',
@@ -7473,7 +7424,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la succession apostolique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La transmission de l\'autorité apostolique',
       'Une simple succession',
@@ -7502,7 +7453,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la tradition ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La transmission vivante de la Parole de Dieu',
       'Une simple tradition',
@@ -7537,7 +7488,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le magistère ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'autorité d\'enseigner de l\'Église',
       'Une simple autorité',
@@ -7566,7 +7517,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'œcuménisme ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le mouvement vers l\'unité des chrétiens',
       'Un simple dialogue',
@@ -7601,7 +7552,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le dialogue interreligieux ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le dialogue avec les autres religions',
       'Un simple dialogue',
@@ -7630,7 +7581,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la liberté religieuse ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le droit de professer sa religion',
       'Un simple droit',
@@ -7664,7 +7615,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la laïcité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La séparation de l\'Église et de l\'État',
       'Une simple séparation',
@@ -7693,7 +7644,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la sécularisation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le processus de désacralisation',
       'Un simple processus',
@@ -7728,7 +7679,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'athéisme ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La négation de l\'existence de Dieu',
       'Une simple négation',
@@ -7757,7 +7708,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'agnosticisme ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La suspension du jugement sur Dieu',
       'Une simple suspension',
@@ -7791,7 +7742,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'évangélisation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'annonce de l\'Évangile',
       'Une simple annonce',
@@ -7802,7 +7753,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'L\'évangélisation est l\'annonce de l\'Évangile.',
     points: 30
   },
-
   // ===== MAÎTRISE - THÉOLOGIE MORALE (Questions 501-540) =====
   {
     id: '501',
@@ -7810,7 +7760,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie morale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'agir humain à la lumière de la foi',
       'Une simple morale',
@@ -7856,7 +7806,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la conscience morale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La voix de Dieu dans le cœur',
       'Une simple intuition',
@@ -7885,7 +7835,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le péché ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un acte contraire à la loi de Dieu',
       'Une simple erreur',
@@ -7920,7 +7870,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le péché mortel ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un péché grave qui tue la grâce',
       'Un simple péché',
@@ -7949,7 +7899,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la vertu ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une disposition stable au bien',
       'Une simple qualité',
@@ -7984,7 +7934,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la charité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu théologale de l\'amour',
       'Un simple don',
@@ -8013,7 +7963,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la justice ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui rend à chacun son dû',
       'Un simple principe',
@@ -8048,7 +7998,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prudence ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui discerne le bien',
       'Une simple sagesse',
@@ -8077,7 +8027,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la force ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui surmonte les difficultés',
       'Une simple courage',
@@ -8112,7 +8062,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la tempérance ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui modère les désirs',
       'Une simple modération',
@@ -8141,7 +8091,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'humilité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui reconnaît la vérité',
       'Une simple modestie',
@@ -8176,7 +8126,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la chasteté ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui ordonne la sexualité',
       'Une simple pureté',
@@ -8205,7 +8155,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pauvreté évangélique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La liberté par rapport aux biens',
       'Une simple pauvreté',
@@ -8240,7 +8190,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'obéissance ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui soumet la volonté',
       'Une simple soumission',
@@ -8269,7 +8219,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la miséricorde ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'amour qui pardonne',
       'Un simple pardon',
@@ -8304,7 +8254,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la vérité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'adéquation de l\'esprit à la réalité',
       'Une simple exactitude',
@@ -8333,7 +8283,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la liberté ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La capacité de choisir le bien',
       'Une simple indépendance',
@@ -8368,7 +8318,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la responsabilité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La capacité de répondre de ses actes',
       'Une simple obligation',
@@ -8397,7 +8347,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la solidarité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La responsabilité mutuelle',
       'Un simple lien',
@@ -8431,7 +8381,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le bien commun ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le bien de tous et de chacun',
       'Un bien collectif',
@@ -8442,7 +8392,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'Le bien commun est le bien de tous et de chacun.',
     points: 30
   },
-
   // ===== MAÎTRISE - THÉOLOGIE DOGMATIQUE (Questions 541-580) =====
   {
     id: '541',
@@ -8450,7 +8399,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie dogmatique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des vérités de la foi',
       'Une simple théologie',
@@ -8497,7 +8446,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la Trinité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le mystère d\'un seul Dieu en trois personnes',
       'Un simple mystère',
@@ -8526,7 +8475,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'Incarnation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le Fils de Dieu fait homme',
       'Un simple mystère',
@@ -8561,7 +8510,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la Rédemption ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le rachat de l\'humanité par le Christ',
       'Un simple rachat',
@@ -8590,7 +8539,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la Résurrection ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La victoire du Christ sur la mort',
       'Un simple retour',
@@ -8625,7 +8574,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'Ascension ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'élévation du Christ au ciel',
       'Un simple départ',
@@ -8654,7 +8603,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la Pentecôte ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La descente de l\'Esprit Saint',
       'Un simple événement',
@@ -8689,7 +8638,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'Église ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le Corps mystique du Christ',
       'Un simple corps',
@@ -8718,7 +8667,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la Communion des Saints ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La communion entre tous les fidèles',
       'Un simple lien',
@@ -8753,7 +8702,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la Vie éternelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vie avec Dieu pour toujours',
       'Un simple temps',
@@ -8782,7 +8731,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le Royaume de Dieu ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La souveraineté de Dieu sur toutes choses',
       'Un simple royaume',
@@ -8817,7 +8766,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la Parousie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le retour glorieux du Christ',
       'Un simple retour',
@@ -8846,7 +8795,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la Résurrection des morts ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La résurrection de tous les hommes',
       'Un simple retour',
@@ -8881,7 +8830,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le Jugement dernier ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le jugement de tous les hommes par le Christ',
       'Un simple jugement',
@@ -8910,7 +8859,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le Ciel ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vie avec Dieu dans la gloire',
       'Un simple lieu',
@@ -8945,7 +8894,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'Enfer ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'éloignement définitif de Dieu',
       'Un simple lieu',
@@ -8974,7 +8923,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le Purgatoire ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La purification des âmes avant le Ciel',
       'Un simple lieu',
@@ -9009,7 +8958,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la Grâce ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le don gratuit de Dieu',
       'Un simple don',
@@ -9038,7 +8987,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la Justification ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'acte par lequel Dieu rend juste',
       'Un simple acte',
@@ -9073,7 +9022,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la Sanctification ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le processus de sanctification',
       'Un simple processus',
@@ -9084,7 +9033,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La Sanctification est le processus de sanctification.',
     points: 30
   },
-
   // ===== MAÎTRISE - THÉOLOGIE BIBLIQUE (Questions 581-620) =====
   {
     id: '581',
@@ -9092,7 +9040,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie biblique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la révélation divine dans la Bible',
       'Une simple étude',
@@ -9139,7 +9087,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'exégèse ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'interprétation scientifique des textes',
       'Une simple lecture',
@@ -9168,7 +9116,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'herméneutique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La science de l\'interprétation',
       'Une simple interprétation',
@@ -9203,7 +9151,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la critique textuelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des manuscrits bibliques',
       'Une simple critique',
@@ -9232,7 +9180,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la critique historique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude du contexte historique',
       'Une simple critique',
@@ -9267,7 +9215,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la critique littéraire ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la composition littéraire',
       'Une simple critique',
@@ -9296,7 +9244,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la critique de la forme ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des formes littéraires',
       'Une simple critique',
@@ -9331,7 +9279,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la critique de la rédaction ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'œuvre des rédacteurs',
       'Une simple critique',
@@ -9360,7 +9308,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de l\'Ancien Testament ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la révélation dans l\'Ancien Testament',
       'Une simple étude',
@@ -9395,7 +9343,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie du Nouveau Testament ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la révélation dans le Nouveau Testament',
       'Une simple étude',
@@ -9424,7 +9372,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie paulinienne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la théologie de saint Paul',
       'Une simple étude',
@@ -9459,7 +9407,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie johannique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la théologie de saint Jean',
       'Une simple étude',
@@ -9488,7 +9436,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie synoptique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des évangiles synoptiques',
       'Une simple étude',
@@ -9523,7 +9471,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de l\'histoire du salut ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'action de Dieu dans l\'histoire',
       'Une simple étude',
@@ -9552,7 +9500,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de l\'alliance ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des alliances de Dieu avec l\'homme',
       'Une simple étude',
@@ -9587,7 +9535,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la promesse ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des promesses de Dieu',
       'Une simple étude',
@@ -9616,7 +9564,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la création ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la création selon la Bible',
       'Une simple étude',
@@ -9651,7 +9599,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la chute ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude du péché originel',
       'Une simple étude',
@@ -9680,7 +9628,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la rédemption ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude du rachat par le Christ',
       'Une simple étude',
@@ -9715,7 +9663,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la fin des temps ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'eschatologie biblique',
       'Une simple étude',
@@ -9726,7 +9674,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La théologie de la fin des temps est l\'étude de l\'eschatologie biblique.',
     points: 30
   },
-
   // ===== MAÎTRISE - THÉOLOGIE HISTORIQUE (Questions 621-660) =====
   {
     id: '621',
@@ -9734,7 +9681,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie historique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'histoire de la théologie',
       'Une simple histoire',
@@ -9780,7 +9727,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la patristique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des Pères de l\'Église',
       'Une simple étude',
@@ -9809,7 +9756,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la scolastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie médiévale',
       'Une simple théologie',
@@ -9843,7 +9790,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie moderne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie des temps modernes',
       'Une simple théologie',
@@ -9872,7 +9819,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie contemporaine ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie d\'aujourd\'hui',
       'Une simple théologie',
@@ -9906,7 +9853,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie systématique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'organisation systématique de la théologie',
       'Une simple organisation',
@@ -9935,7 +9882,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie fondamentale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des fondements de la foi',
       'Une simple étude',
@@ -9969,7 +9916,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie spéculative ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie qui réfléchit sur les mystères',
       'Une simple réflexion',
@@ -9998,7 +9945,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie positive ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie basée sur les sources',
       'Une simple théologie',
@@ -10032,7 +9979,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie pastorale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie au service du ministère',
       'Une simple théologie',
@@ -10061,7 +10008,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie spirituelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la vie spirituelle',
       'Une simple étude',
@@ -10095,7 +10042,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'expérience mystique',
       'Une simple étude',
@@ -10124,7 +10071,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie ascétique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'ascèse chrétienne',
       'Une simple étude',
@@ -10158,7 +10105,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée dans les monastères',
       'Une simple théologie',
@@ -10187,7 +10134,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie universitaire ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie enseignée dans les universités',
       'Une simple théologie',
@@ -10221,7 +10168,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie contextuelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie adaptée au contexte',
       'Une simple théologie',
@@ -10250,7 +10197,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la libération ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie qui prône la libération',
       'Une simple théologie',
@@ -10284,7 +10231,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie féministe ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie qui défend les droits des femmes',
       'Une simple théologie',
@@ -10313,7 +10260,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie écologique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie qui défend l\'environnement',
       'Une simple théologie',
@@ -10347,7 +10294,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie œcuménique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie qui cherche l\'unité des chrétiens',
       'Une simple théologie',
@@ -10358,7 +10305,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La théologie œcuménique est la théologie qui cherche l\'unité des chrétiens.',
     points: 30
   },
-
   // ===== MAÎTRISE - THÉOLOGIE PASTORALE (Questions 661-700) =====
   {
     id: '661',
@@ -10366,7 +10312,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie pastorale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie au service du ministère pastoral',
       'Une simple théologie',
@@ -10413,7 +10359,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la catéchèse ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'enseignement de la foi',
       'Un simple enseignement',
@@ -10442,7 +10388,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'évangélisation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'annonce de l\'Évangile',
       'Une simple annonce',
@@ -10477,7 +10423,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale des jeunes ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral des jeunes',
       'Un simple accompagnement',
@@ -10506,7 +10452,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale familiale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral des familles',
       'Un simple accompagnement',
@@ -10540,7 +10486,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale des malades ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral des malades',
       'Un simple accompagnement',
@@ -10569,7 +10515,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale des mourants ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral des mourants',
       'Un simple accompagnement',
@@ -10604,7 +10550,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale des prisonniers ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral des prisonniers',
       'Un simple accompagnement',
@@ -10633,7 +10579,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale des migrants ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral des migrants',
       'Un simple accompagnement',
@@ -10668,7 +10614,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale des pauvres ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral des pauvres',
       'Un simple accompagnement',
@@ -10697,7 +10643,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale des travailleurs ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral des travailleurs',
       'Un simple accompagnement',
@@ -10731,7 +10677,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale des intellectuels ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral des intellectuels',
       'Un simple accompagnement',
@@ -10760,7 +10706,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale des artistes ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral des artistes',
       'Un simple accompagnement',
@@ -10794,7 +10740,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale des médias ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral dans les médias',
       'Un simple accompagnement',
@@ -10823,7 +10769,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale de la santé ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral dans le domaine de la santé',
       'Un simple accompagnement',
@@ -10858,7 +10804,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale de l\'éducation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral dans l\'éducation',
       'Un simple accompagnement',
@@ -10887,7 +10833,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale de la culture ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral dans la culture',
       'Un simple accompagnement',
@@ -10921,7 +10867,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale de la politique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral dans la politique',
       'Un simple accompagnement',
@@ -10950,7 +10896,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale de l\'économie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral dans l\'économie',
       'Un simple accompagnement',
@@ -10984,7 +10930,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pastorale de l\'environnement ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accompagnement pastoral pour l\'environnement',
       'Un simple accompagnement',
@@ -10995,7 +10941,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La pastorale de l\'environnement est l\'accompagnement pastoral pour l\'environnement.',
     points: 30
   },
-
   // ===== MAÎTRISE - THÉOLOGIE SPIRITUELLE (Questions 701-740) =====
   {
     id: '701',
@@ -11003,7 +10948,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie spirituelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la vie spirituelle chrétienne',
       'Une simple étude',
@@ -11049,7 +10994,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la grâce sanctifiante ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La grâce qui sanctifie l\'âme',
       'Une simple grâce',
@@ -11078,7 +11023,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la grâce actuelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La grâce qui nous aide à agir',
       'Une simple grâce',
@@ -11113,7 +11058,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que les dons du Saint Esprit ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Les dons spirituels donnés par l\'Esprit Saint',
       'De simples dons',
@@ -11142,7 +11087,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que les fruits du Saint Esprit ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Les vertus produites par l\'Esprit Saint',
       'De simples vertus',
@@ -11177,7 +11122,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la vie mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vie d\'union intime avec Dieu',
       'Une simple vie',
@@ -11206,7 +11151,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la contemplation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le regard de foi fixé sur Dieu',
       'Un simple regard',
@@ -11241,7 +11186,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'élévation de l\'âme vers Dieu',
       'Une simple élévation',
@@ -11270,7 +11215,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière vocale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière exprimée par des paroles',
       'Une simple prière',
@@ -11305,7 +11250,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière mentale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière intérieure de l\'esprit',
       'Une simple prière',
@@ -11334,7 +11279,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la méditation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La réflexion sur les vérités de la foi',
       'Une simple réflexion',
@@ -11369,7 +11314,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'oraison ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière silencieuse et contemplative',
       'Une simple prière',
@@ -11398,7 +11343,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'adoration ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'acte de rendre gloire à Dieu',
       'Un simple acte',
@@ -11433,7 +11378,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'action de grâces ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'expression de reconnaissance envers Dieu',
       'Une simple expression',
@@ -11462,7 +11407,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la supplication ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La demande humble à Dieu',
       'Une simple demande',
@@ -11497,7 +11442,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'intercession ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière pour les autres',
       'Une simple prière',
@@ -11526,7 +11471,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la louange ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'expression de la gloire de Dieu',
       'Une simple expression',
@@ -11561,7 +11506,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la bénédiction ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'invocation de la grâce de Dieu',
       'Une simple invocation',
@@ -11590,7 +11535,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pénitence ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le repentir et la conversion',
       'Un simple repentir',
@@ -11625,7 +11570,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la sainteté ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La participation à la sainteté de Dieu',
       'Une simple participation',
@@ -11636,7 +11581,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La sainteté est la participation à la sainteté de Dieu.',
     points: 30
   },
-
   // ===== MAÎTRISE - THÉOLOGIE MYSTIQUE (Questions 741-780) =====
   {
     id: '741',
@@ -11644,7 +11588,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'expérience mystique',
       'Une simple étude',
@@ -11690,7 +11634,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'extase mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'état d\'union profonde avec Dieu',
       'Un simple état',
@@ -11719,7 +11663,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la vision mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vision spirituelle de Dieu',
       'Une simple vision',
@@ -11754,7 +11698,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la révélation mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La révélation directe de Dieu',
       'Une simple révélation',
@@ -11783,7 +11727,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'illumination mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'éclairement spirituel de l\'âme',
       'Un simple éclairement',
@@ -11818,7 +11762,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'union mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'union intime avec Dieu',
       'Une simple union',
@@ -11847,7 +11791,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la transformation mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La transformation de l\'âme par Dieu',
       'Une simple transformation',
@@ -11882,7 +11826,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la déification ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La participation à la nature divine',
       'Une simple participation',
@@ -11911,7 +11855,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théosis ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La divinisation de l\'homme',
       'Une simple divinisation',
@@ -11945,7 +11889,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la contemplation mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La contemplation de Dieu dans l\'union mystique',
       'Une simple contemplation',
@@ -11974,7 +11918,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'oraison mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière dans l\'union mystique',
       'Une simple prière',
@@ -12008,7 +11952,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'amour mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'amour divin dans l\'union mystique',
       'Un simple amour',
@@ -12037,7 +11981,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la joie mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La joie de l\'union avec Dieu',
       'Une simple joie',
@@ -12072,7 +12016,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la paix mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La paix de l\'union avec Dieu',
       'Une simple paix',
@@ -12101,7 +12045,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la sagesse mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La sagesse divine reçue dans l\'union mystique',
       'Une simple sagesse',
@@ -12136,7 +12080,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la connaissance mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La connaissance de Dieu par expérience',
       'Une simple connaissance',
@@ -12165,7 +12109,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la foi mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La foi dans l\'union mystique',
       'Une simple foi',
@@ -12200,7 +12144,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'espérance mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'espérance dans l\'union avec Dieu',
       'Une simple espérance',
@@ -12229,7 +12173,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la charité mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'amour divin dans l\'union mystique',
       'Un simple amour',
@@ -12264,7 +12208,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la sainteté mystique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La sainteté dans l\'union mystique',
       'Une simple sainteté',
@@ -12275,7 +12219,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La sainteté mystique est la sainteté dans l\'union mystique.',
     points: 30
   },
-
   // ===== MAÎTRISE - THÉOLOGIE ASCÉTIQUE (Questions 781-820) =====
   {
     id: '781',
@@ -12283,7 +12226,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie ascétique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'ascèse chrétienne',
       'Une simple étude',
@@ -12329,7 +12272,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la mortification ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La maîtrise des désirs sensuels',
       'Une simple maîtrise',
@@ -12358,7 +12301,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le jeûne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'abstinence de nourriture pour des raisons spirituelles',
       'Une simple abstinence',
@@ -12393,7 +12336,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la veille ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La privation de sommeil pour la prière',
       'Une simple privation',
@@ -12422,7 +12365,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pauvreté volontaire ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le renoncement aux biens matériels',
       'Un simple renoncement',
@@ -12457,7 +12400,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la chasteté ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La maîtrise de la sexualité',
       'Une simple maîtrise',
@@ -12486,7 +12429,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'obéissance ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La soumission à la volonté de Dieu',
       'Une simple soumission',
@@ -12521,7 +12464,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'humilité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait reconnaître notre dépendance de Dieu',
       'Une simple vertu',
@@ -12550,7 +12493,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la patience ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait supporter les épreuves',
       'Une simple vertu',
@@ -12585,7 +12528,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la persévérance ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait persister dans le bien',
       'Une simple vertu',
@@ -12614,7 +12557,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la tempérance ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait maîtriser nos appétits',
       'Une simple vertu',
@@ -12649,7 +12592,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la force ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait surmonter les difficultés',
       'Une simple vertu',
@@ -12678,7 +12621,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prudence ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait discerner le bien du mal',
       'Une simple vertu',
@@ -12713,7 +12656,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la justice ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait rendre à chacun son dû',
       'Une simple vertu',
@@ -12742,7 +12685,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la charité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait aimer Dieu et le prochain',
       'Une simple vertu',
@@ -12777,7 +12720,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'espérance ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait espérer en Dieu',
       'Une simple vertu',
@@ -12806,7 +12749,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la foi ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait croire en Dieu',
       'Une simple vertu',
@@ -12841,7 +12784,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la douceur ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait être doux avec les autres',
       'Une simple vertu',
@@ -12870,7 +12813,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la bonté ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait être bons envers les autres',
       'Une simple vertu',
@@ -12905,7 +12848,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la fidélité ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vertu qui nous fait être fidèles à nos engagements',
       'Une simple vertu',
@@ -12916,7 +12859,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La fidélité est la vertu qui nous fait être fidèles à nos engagements.',
     points: 30
   },
-
   // ===== MAÎTRISE - THÉOLOGIE MONASTIQUE (Questions 821-860) =====
   {
     id: '821',
@@ -12924,7 +12866,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée dans les monastères',
       'Une simple théologie',
@@ -12970,7 +12912,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la règle monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le code de vie des moines',
       'Un simple code',
@@ -12999,7 +12941,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'ora et labora ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La devise bénédictine : prie et travaille',
       'Une simple devise',
@@ -13033,7 +12975,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la lectio divina ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La lecture spirituelle de la Bible',
       'Une simple lecture',
@@ -13062,7 +13004,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la prière liturgique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière officielle de l\'Église',
       'Une simple prière',
@@ -13097,7 +13039,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'office divin ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière quotidienne des moines',
       'Une simple prière',
@@ -13126,7 +13068,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le silence monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le silence pour favoriser la prière',
       'Un simple silence',
@@ -13161,7 +13103,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la stabilité monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'engagement à rester dans le même monastère',
       'Un simple engagement',
@@ -13190,7 +13132,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la conversion des mœurs ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le changement de vie pour suivre le Christ',
       'Un simple changement',
@@ -13225,7 +13167,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'obéissance monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La soumission à l\'abbé et à la règle',
       'Une simple soumission',
@@ -13254,7 +13196,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la pauvreté monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le renoncement aux biens personnels',
       'Un simple renoncement',
@@ -13289,7 +13231,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la chasteté monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le renoncement au mariage pour le Christ',
       'Un simple renoncement',
@@ -13318,7 +13260,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'hospitalité monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'accueil des hôtes comme le Christ',
       'Un simple accueil',
@@ -13353,7 +13295,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le travail monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le travail manuel pour subvenir aux besoins',
       'Un simple travail',
@@ -13382,7 +13324,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la communauté monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La vie fraternelle des moines',
       'Une simple vie',
@@ -13417,7 +13359,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'abbé ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le père spirituel de la communauté',
       'Un simple père',
@@ -13446,7 +13388,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que le noviciat ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La période de formation des novices',
       'Une simple période',
@@ -13481,7 +13423,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la profession monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'engagement définitif dans la vie monastique',
       'Un simple engagement',
@@ -13510,7 +13452,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la solitude monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le temps de prière personnelle',
       'Un simple temps',
@@ -13545,7 +13487,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la contemplation monastique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le regard de foi fixé sur Dieu',
       'Un simple regard',
@@ -13556,7 +13498,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La contemplation monastique est le regard de foi fixé sur Dieu.',
     points: 30
   },
-
   // ===== MAÎTRISE - THÉOLOGIE UNIVERSITAIRE (Questions 861-900) =====
   {
     id: '861',
@@ -13564,7 +13505,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie universitaire ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie enseignée dans les universités',
       'Une simple théologie',
@@ -13610,7 +13551,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'exégèse biblique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'interprétation scientifique des textes bibliques',
       'Une simple interprétation',
@@ -13639,7 +13580,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la critique textuelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des manuscrits bibliques',
       'Une simple étude',
@@ -13674,7 +13615,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la critique historique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude du contexte historique des textes',
       'Une simple étude',
@@ -13703,7 +13644,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la critique littéraire ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la composition littéraire des textes',
       'Une simple étude',
@@ -13738,7 +13679,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la critique de la rédaction ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'intention théologique des rédacteurs',
       'Une simple étude',
@@ -13767,7 +13708,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la critique de la forme ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des genres littéraires bibliques',
       'Une simple étude',
@@ -13802,7 +13743,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie systématique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'organisation systématique de la théologie',
       'Une simple organisation',
@@ -13831,7 +13772,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie fondamentale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des fondements de la foi',
       'Une simple étude',
@@ -13865,7 +13806,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie dogmatique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude des vérités de la foi',
       'Une simple étude',
@@ -13894,7 +13835,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie morale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'agir humain à la lumière de la foi',
       'Une simple étude',
@@ -13928,7 +13869,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie spirituelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la vie spirituelle',
       'Une simple étude',
@@ -13957,7 +13898,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie pastorale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la pratique pastorale',
       'Une simple étude',
@@ -13991,7 +13932,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie œcuménique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de l\'unité des chrétiens',
       'Une simple étude',
@@ -14020,7 +13961,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie contextuelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la théologie dans son contexte',
       'Une simple étude',
@@ -14054,7 +13995,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la libération ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la libération des pauvres',
       'Une simple étude',
@@ -14083,7 +14024,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie féministe ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la théologie du point de vue des femmes',
       'Une simple étude',
@@ -14117,7 +14058,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie écologique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude de la théologie de l\'environnement',
       'Une simple étude',
@@ -14146,7 +14087,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie interreligieuse ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude du dialogue entre les religions',
       'Une simple étude',
@@ -14180,7 +14121,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie de la culture ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'étude du dialogue entre foi et culture',
       'Une simple étude',
@@ -14191,7 +14132,6 @@ export const sampleQuestions: Question[] = [
     explanation: 'La théologie de la culture est l\'étude du dialogue entre foi et culture.',
     points: 30
   },
-
   // ===== MAÎTRISE - THÉOLOGIE CONTEXTUELLE (Questions 901-940) =====
   {
     id: '901',
@@ -14199,7 +14139,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie contextuelle ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie adaptée au contexte culturel',
       'Une simple théologie',
@@ -14245,7 +14185,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que l\'inculturation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'adaptation de la foi à la culture locale',
       'Une simple adaptation',
@@ -14274,7 +14214,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie africaine ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée en Afrique',
       'Une simple théologie',
@@ -14308,7 +14248,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie asiatique ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée en Asie',
       'Une simple théologie',
@@ -14337,7 +14277,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie latino-américaine ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée en Amérique latine',
       'Une simple théologie',
@@ -14371,7 +14311,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie indienne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée en Inde',
       'Une simple théologie',
@@ -14400,7 +14340,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie chinoise ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée en Chine',
       'Une simple théologie',
@@ -14434,7 +14374,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie japonaise ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée au Japon',
       'Une simple théologie',
@@ -14463,7 +14403,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie coréenne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée en Corée',
       'Une simple théologie',
@@ -14497,7 +14437,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie philippine ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée aux Philippines',
       'Une simple théologie',
@@ -14526,7 +14466,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie indonésienne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée en Indonésie',
       'Une simple théologie',
@@ -14560,7 +14500,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie thaïlandaise ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée en Thaïlande',
       'Une simple théologie',
@@ -14589,7 +14529,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie vietnamienne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée au Vietnam',
       'Une simple théologie',
@@ -14623,7 +14563,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie cambodgienne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée au Cambodge',
       'Une simple théologie',
@@ -14652,7 +14592,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie laotienne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée au Laos',
       'Une simple théologie',
@@ -14686,7 +14626,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie birmane ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée en Birmanie',
       'Une simple théologie',
@@ -14715,7 +14655,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie malaisienne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée en Malaisie',
       'Une simple théologie',
@@ -14749,7 +14689,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie singapourienne ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée à Singapour',
       'Une simple théologie',
@@ -14778,7 +14718,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie hongkongaise ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée à Hong Kong',
       'Une simple théologie',
@@ -14812,7 +14752,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'difficile',
     level: 4,
     question: 'Qu\'est-ce que la théologie taïwanaise ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La théologie développée à Taïwan',
       'Une simple théologie',
@@ -14823,9 +14763,7 @@ export const sampleQuestions: Question[] = [
     explanation: 'La théologie taïwanaise est la théologie développée à Taïwan.',
     points: 30
   },
-
   // ===== QUESTIONS SUR LA VIERGE MARIE =====
-
   // ===== MARIE - LA VIE DE MARIE SELON LES ÉVANGILES (Questions marie-1 à marie-10) =====
   {
     id: 'marie-1',
@@ -14833,15 +14771,15 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Selon l\'Évangile de Luc, qui a annoncé à Marie qu\'elle serait la mère du Sauveur ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'L\'ange Michel',
-      'L\'ange Gabriel',
-      'L\'ange Raphaël',
-      'L\'ange Uriel'
+      'L\'ange Michel, prince des armées célestes',
+      'L\'ange Gabriel, messager de Dieu',
+      'L\'ange Raphaël, gardien des voyageurs',
+      'L\'ange Uriel, ange de la lumière'
     ],
     correctAnswer: 1,
-    explanation: 'L\'ange Gabriel a annoncé à Marie qu\'elle serait la mère du Sauveur (Luc 1:26-38). C\'est l\'Annonciation.',
+    explanation: 'L\'ange Gabriel a annoncé à Marie qu\'elle serait la mère du Sauveur. "L\'ange Gabriel fut envoyé par Dieu dans une ville de Galilée, appelée Nazareth, vers une vierge fiancée à un homme de la maison de David, nommé Joseph" (Luc 1:26-27). C\'est l\'Annonciation, moment central de l\'histoire du salut.',
     points: 15,
     scripture: 'Luc 1:26-38'
   },
@@ -14851,15 +14789,15 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Selon l\'Évangile de Luc, que répond Marie à l\'ange Gabriel ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'Je ne comprends pas',
-      'Comment cela se fera-t-il ?',
+      'Je ne comprends pas cette parole',
+      'Comment cela se fera-t-il, puisque je ne connais point d\'homme ?',
       'Voici la servante du Seigneur, qu\'il me soit fait selon ta parole',
-      'Je ne suis pas digne'
+      'Je ne suis pas digne de cette grâce'
     ],
     correctAnswer: 2,
-    explanation: 'Marie répond : "Voici la servante du Seigneur, qu\'il me soit fait selon ta parole" (Luc 1:38). C\'est son "Fiat".',
+    explanation: 'Marie répond par son "Fiat" : "Voici la servante du Seigneur, qu\'il me soit fait selon ta parole" (Luc 1:38). Cette réponse humble et confiante de Marie marque son consentement total au plan de Dieu et inaugure la nouvelle alliance.',
     points: 15,
     scripture: 'Luc 1:38'
   },
@@ -14869,15 +14807,15 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Selon l\'Évangile de Luc, où Marie a-t-elle rendu visite à sa cousine Élisabeth ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'À Nazareth',
-      'À Bethléem',
-      'Dans une ville de Juda',
-      'À Jérusalem'
+      'À Nazareth, en Galilée',
+      'À Bethléem, ville de David',
+      'Dans une ville de Juda, dans la montagne',
+      'À Jérusalem, près du Temple'
     ],
     correctAnswer: 2,
-    explanation: 'Marie est allée rendre visite à Élisabeth "dans une ville de Juda" (Luc 1:39). C\'est la Visitation.',
+    explanation: 'Marie se rendit "en hâte vers la montagne, dans une ville de Juda" pour visiter Élisabeth (Luc 1:39). Cette Visitation montre la charité de Marie et préfigure sa mission d\'intercession pour tous les hommes.',
     points: 15,
     scripture: 'Luc 1:39'
   },
@@ -14887,17 +14825,17 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Selon l\'Évangile de Luc, que dit Marie dans le Magnificat ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'Mon âme exalte le Seigneur',
-      'Gloire à Dieu',
-      'Béni soit le Seigneur',
-      'Louange à Dieu'
+      'Mon âme exalte le Seigneur, et mon esprit tressaille de joie en Dieu mon Sauveur',
+      'Gloire à Dieu au plus haut des cieux',
+      'Béni soit le Seigneur, le Dieu d\'Israël',
+      'Louange à Dieu, créateur du ciel et de la terre'
     ],
     correctAnswer: 0,
-    explanation: 'Marie dit : "Mon âme exalte le Seigneur" (Luc 1:46). C\'est le début du Magnificat.',
+    explanation: 'Marie dit : "Mon âme exalte le Seigneur, et mon esprit tressaille de joie en Dieu mon Sauveur" (Luc 1:46-47). Le Magnificat est le chant de louange de Marie, inspiré des cantiques de l\'Ancien Testament, particulièrement celui d\'Anne (1 Samuel 2:1-10).',
     points: 15,
-    scripture: 'Luc 1:46'
+    scripture: 'Luc 1:46-47'
   },
   {
     id: 'marie-5',
@@ -14905,15 +14843,15 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Selon l\'Évangile de Luc, où Jésus est-il né ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'À Nazareth',
-      'À Bethléem',
-      'À Jérusalem',
-      'À Capharnaüm'
+      'À Nazareth, ville de Marie et Joseph',
+      'À Bethléem, ville de David, selon la prophétie',
+      'À Jérusalem, ville sainte',
+      'À Capharnaüm, ville de Galilée'
     ],
     correctAnswer: 1,
-    explanation: 'Jésus est né à Bethléem, comme le rapporte l\'Évangile de Luc (Luc 2:1-7).',
+    explanation: 'Jésus est né à Bethléem, "ville de David" (Luc 2:4), accomplissant ainsi la prophétie de Michée : "Et toi, Bethléem Ephrata, le moindre des clans de Juda, de toi sortira pour moi celui qui dominera sur Israël" (Michée 5:1). Marie et Joseph durent s\'y rendre à cause du recensement ordonné par César Auguste.',
     points: 15,
     scripture: 'Luc 2:1-7'
   },
@@ -14923,17 +14861,17 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Selon l\'Évangile de Luc, que font les bergers après avoir vu l\'enfant Jésus ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'Ils rentrent chez eux',
-      'Ils racontent ce qui leur a été dit',
-      'Ils partent en voyage',
-      'Ils se taisent'
+      'Ils rentrent silencieusement chez eux',
+      'Ils racontent ce qui leur a été dit au sujet de cet enfant',
+      'Ils partent en voyage pour annoncer la nouvelle',
+      'Ils se taisent par crainte des autorités'
     ],
     correctAnswer: 1,
-    explanation: 'Les bergers "racontèrent ce qui leur avait été dit au sujet de cet enfant" (Luc 2:17).',
+    explanation: 'Les bergers "racontèrent ce qui leur avait été dit au sujet de cet enfant" (Luc 2:17). Marie, quant à elle, "gardait toutes ces choses, les repassant dans son cœur" (Luc 2:19), montrant sa méditation profonde sur les mystères de la vie de son Fils.',
     points: 15,
-    scripture: 'Luc 2:17'
+    scripture: 'Luc 2:17-19'
   },
   {
     id: 'marie-7',
@@ -14941,15 +14879,15 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Selon l\'Évangile de Luc, que dit Siméon à Marie lors de la Présentation au Temple ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'Votre enfant sera grand',
-      'Un glaive transpercera votre âme',
-      'Votre enfant sera roi',
-      'Votre enfant sera prophète'
+      'Votre enfant sera grand devant le Seigneur',
+      'Un glaive transpercera votre âme, afin que les pensées de beaucoup de cœurs soient dévoilées',
+      'Votre enfant sera roi d\'Israël',
+      'Votre enfant sera prophète du Très-Haut'
     ],
     correctAnswer: 1,
-    explanation: 'Siméon dit à Marie : "Un glaive transpercera votre âme" (Luc 2:35).',
+    explanation: 'Siméon dit à Marie : "Un glaive transpercera votre âme, afin que les pensées de beaucoup de cœurs soient dévoilées" (Luc 2:35). Cette prophétie annonce la souffrance de Marie au pied de la croix, où elle participera mystérieusement aux souffrances rédemptrices de son Fils.',
     points: 15,
     scripture: 'Luc 2:35'
   },
@@ -14959,17 +14897,17 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Selon l\'Évangile de Luc, où Marie et Joseph ont-ils trouvé Jésus à l\'âge de 12 ans ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'Dans la synagogue',
-      'Dans le Temple',
-      'Dans la rue',
-      'Chez des amis'
+      'Dans la synagogue de Nazareth',
+      'Dans le Temple, assis au milieu des docteurs',
+      'Dans la rue, avec d\'autres enfants',
+      'Chez des amis de la famille'
     ],
     correctAnswer: 1,
-    explanation: 'Marie et Joseph ont trouvé Jésus dans le Temple, assis au milieu des docteurs (Luc 2:46).',
+    explanation: 'Marie et Joseph trouvèrent Jésus "dans le Temple, assis au milieu des docteurs, les écoutant et les interrogeant" (Luc 2:46). Quand Marie lui demanda pourquoi il les avait fait chercher, Jésus répondit : "Ne saviez-vous pas qu\'il faut que je m\'occupe des affaires de mon Père ?" (Luc 2:49).',
     points: 15,
-    scripture: 'Luc 2:46'
+    scripture: 'Luc 2:46-49'
   },
   {
     id: 'marie-9',
@@ -14977,17 +14915,17 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Selon l\'Évangile de Jean, que dit Jésus à Marie lors des noces de Cana ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'Femme, qu\'y a-t-il entre moi et toi ?',
-      'Mère, que puis-je faire ?',
-      'Femme, que veux-tu ?',
-      'Mère, je ne peux rien faire'
+      'Femme, qu\'y a-t-il entre moi et toi ? Mon heure n\'est pas encore venue',
+      'Mère, que puis-je faire pour vous ?',
+      'Femme, que veux-tu que je fasse ?',
+      'Mère, je ne peux rien faire maintenant'
     ],
     correctAnswer: 0,
-    explanation: 'Jésus dit à Marie : "Femme, qu\'y a-t-il entre moi et toi ? Mon heure n\'est pas encore venue" (Jean 2:4).',
+    explanation: 'Jésus dit à Marie : "Femme, qu\'y a-t-il entre moi et toi ? Mon heure n\'est pas encore venue" (Jean 2:4). Malgré cette réponse, Marie dit aux serviteurs : "Faites tout ce qu\'il vous dira" (Jean 2:5), montrant sa confiance totale en son Fils. Jésus accomplit alors son premier miracle, transformant l\'eau en vin.',
     points: 15,
-    scripture: 'Jean 2:4'
+    scripture: 'Jean 2:4-5'
   },
   {
     id: 'marie-10',
@@ -14995,19 +14933,18 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Selon l\'Évangile de Jean, que dit Jésus à Marie depuis la croix ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Femme, voici ton fils',
-      'Mère, prends soin de Jean',
-      'Femme, Jean sera ton fils',
-      'Mère, je te confie Jean'
+      'Mère, prends soin de Jean comme de ton fils',
+      'Femme, Jean sera ton fils désormais',
+      'Mère, je te confie Jean à ta garde'
     ],
     correctAnswer: 0,
-    explanation: 'Jésus dit à Marie : "Femme, voici ton fils" et à Jean : "Voici ta mère" (Jean 19:26-27).',
+    explanation: 'Jésus dit à Marie : "Femme, voici ton fils" et à Jean : "Voici ta mère" (Jean 19:26-27). Par ces paroles, Jésus confie Marie à Jean et Jean à Marie, établissant ainsi Marie comme mère spirituelle de tous les disciples et de l\'Église naissante. "Dès cette heure-là, le disciple la prit chez lui" (Jean 19:27).',
     points: 15,
     scripture: 'Jean 19:26-27'
   },
-
   // ===== MARIE - LES DOGMES MARIAUX (Questions marie-11 à marie-20) =====
   {
     id: 'marie-11',
@@ -15015,17 +14952,17 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que l\'Immaculée Conception ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'La naissance de Jésus',
-      'Marie préservée du péché originel dès sa conception',
-      'La résurrection de Marie',
-      'L\'ascension de Marie'
+      'La naissance miraculeuse de Jésus-Christ',
+      'Marie préservée du péché originel dès sa conception par une grâce spéciale',
+      'La résurrection corporelle de Marie au ciel',
+      'L\'ascension de Marie dans la gloire divine'
     ],
     correctAnswer: 1,
-    explanation: 'L\'Immaculée Conception est le dogme selon lequel Marie a été préservée du péché originel dès sa conception.',
+    explanation: 'L\'Immaculée Conception est le dogme selon lequel Marie a été préservée du péché originel dès sa conception par une grâce spéciale de Dieu. Cette doctrine trouve son fondement dans l\'Annonciation où l\'ange salue Marie comme "pleine de grâce" (Luc 1:28) et dans la Genèse où Dieu promet que la femme écrasera la tête du serpent (Genèse 3:15).',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 490-493'
+    scripture: 'Luc 1:28, Genèse 3:15',
   },
   {
     id: 'marie-12',
@@ -15033,17 +14970,17 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que l\'Assomption de Marie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'La mort de Marie',
-      'L\'élévation de Marie au ciel en corps et en âme',
-      'La résurrection de Marie',
-      'L\'ascension de Marie'
+      'La mort naturelle de Marie à Éphèse',
+      'L\'élévation de Marie au ciel en corps et en âme à la fin de sa vie terrestre',
+      'La résurrection miraculeuse de Marie après sa mort',
+      'L\'ascension volontaire de Marie vers le Père'
     ],
     correctAnswer: 1,
-    explanation: 'L\'Assomption est l\'élévation de Marie au ciel en corps et en âme à la fin de sa vie terrestre.',
+    explanation: 'L\'Assomption est l\'élévation de Marie au ciel en corps et en âme à la fin de sa vie terrestre. Cette doctrine s\'appuie sur la dignité unique de Marie comme Mère de Dieu et sur sa participation intime à la vie de son Fils. L\'Apocalypse 12:1-6 présente la femme "revêtue du soleil" qui peut être interprétée comme une figure de Marie glorifiée.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 966'
+    scripture: 'Apocalypse 12:1-6',
   },
   {
     id: 'marie-13',
@@ -15051,17 +14988,17 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la virginité perpétuelle de Marie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'Marie n\'a jamais eu d\'enfants',
+      'Marie n\'a jamais eu d\'enfants biologiques',
       'Marie est restée vierge avant, pendant et après la naissance de Jésus',
-      'Marie était célibataire',
-      'Marie n\'a eu que Jésus'
+      'Marie était célibataire toute sa vie',
+      'Marie n\'a eu que Jésus comme enfant unique'
     ],
     correctAnswer: 1,
-    explanation: 'La virginité perpétuelle signifie que Marie est restée vierge avant, pendant et après la naissance de Jésus.',
+    explanation: 'La virginité perpétuelle signifie que Marie est restée vierge avant, pendant et après la naissance de Jésus. Cette doctrine s\'appuie sur l\'Évangile où Marie dit à l\'ange : "Comment cela se fera-t-il, puisque je ne connais point d\'homme ?" (Luc 1:34) et sur la prophétie d\'Isaïe : "Voici, la vierge concevra et enfantera un fils" (Isaïe 7:14).',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 499-501'
+    scripture: 'Luc 1:34, Isaïe 7:14',
   },
   {
     id: 'marie-14',
@@ -15069,17 +15006,17 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que la maternité divine de Marie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'Marie est la mère de Dieu',
-      'Marie est la mère de Jésus',
-      'Marie est la mère de l\'Église',
-      'Marie est la mère de tous les hommes'
+      'Marie est la mère de Dieu (Theotokos)',
+      'Marie est la mère de Jésus-Christ homme',
+      'Marie est la mère spirituelle de l\'Église',
+      'Marie est la mère adoptive de tous les hommes'
     ],
     correctAnswer: 0,
-    explanation: 'La maternité divine signifie que Marie est la mère de Dieu, car elle a donné naissance à Jésus, qui est Dieu.',
+    explanation: 'La maternité divine signifie que Marie est la mère de Dieu (Theotokos), car elle a donné naissance à Jésus, qui est Dieu fait homme. Cette doctrine fut défendue au concile d\'Éphèse (431) contre Nestorius. Élisabeth salue Marie : "Et d\'où me vient que la mère de mon Seigneur vienne à moi ?" (Luc 1:43).',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 495'
+    scripture: 'Luc 1:43',
   },
   {
     id: 'marie-15',
@@ -15087,17 +15024,16 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Quand l\'Immaculée Conception a-t-elle été proclamée dogme ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'En 1854 par le pape Pie IX',
-      'En 1950 par le pape Pie XII',
-      'En 1964 par le pape Paul VI',
-      'En 1870 par le pape Pie IX'
+      'En 1854 par le pape Pie IX dans la bulle "Ineffabilis Deus"',
+      'En 1950 par le pape Pie XII dans "Munificentissimus Deus"',
+      'En 1964 par le pape Paul VI dans "Lumen Gentium"',
+      'En 1870 par le pape Pie IX au concile Vatican I'
     ],
     correctAnswer: 0,
-    explanation: 'L\'Immaculée Conception a été proclamée dogme en 1854 par le pape Pie IX dans la bulle "Ineffabilis Deus".',
+    explanation: 'L\'Immaculée Conception a été proclamée dogme le 8 décembre 1854 par le pape Pie IX dans la bulle "Ineffabilis Deus". Cette proclamation fut confirmée par les apparitions de Lourdes en 1858 où la Vierge se présenta à Bernadette Soubirous en disant : "Je suis l\'Immaculée Conception".',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 491'
   },
   {
     id: 'marie-16',
@@ -15105,17 +15041,16 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Quand l\'Assomption a-t-elle été proclamée dogme ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'En 1854 par le pape Pie IX',
-      'En 1950 par le pape Pie XII',
-      'En 1964 par le pape Paul VI',
-      'En 1870 par le pape Pie IX'
+      'En 1854 par le pape Pie IX dans "Ineffabilis Deus"',
+      'En 1950 par le pape Pie XII dans "Munificentissimus Deus"',
+      'En 1964 par le pape Paul VI dans "Lumen Gentium"',
+      'En 1870 par le pape Pie IX au concile Vatican I'
     ],
     correctAnswer: 1,
-    explanation: 'L\'Assomption a été proclamée dogme en 1950 par le pape Pie XII dans la constitution apostolique "Munificentissimus Deus".',
+    explanation: 'L\'Assomption a été proclamée dogme le 1er novembre 1950 par le pape Pie XII dans la constitution apostolique "Munificentissimus Deus". Cette proclamation eut lieu en l\'Année Sainte et fut précédée d\'une consultation mondiale de l\'épiscopat catholique.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 966'
   },
   {
     id: 'marie-17',
@@ -15123,17 +15058,17 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la médiation de Marie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'Marie remplace Jésus',
-      'Marie intercède pour nous auprès de son Fils',
-      'Marie est égale à Jésus',
-      'Marie n\'a aucun rôle'
+      'Marie remplace Jésus-Christ dans son rôle de Sauveur',
+      'Marie intercède pour nous auprès de son Fils Jésus-Christ',
+      'Marie est coégale à Jésus dans la Trinité',
+      'Marie n\'a aucun rôle dans l\'économie du salut'
     ],
     correctAnswer: 1,
-    explanation: 'La médiation de Marie signifie qu\'elle intercède pour nous auprès de son Fils Jésus-Christ.',
+    explanation: 'La médiation de Marie signifie qu\'elle intercède pour nous auprès de son Fils Jésus-Christ. Cette médiation est subordonnée à celle du Christ, unique médiateur. Marie intercède "comme mère" (Jean 2:1-11 aux noces de Cana) et "comme mère de l\'Église" (Jean 19:26-27 au pied de la croix).',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 969'
+    scripture: 'Jean 2:1-11, Jean 19:26-27',
   },
   {
     id: 'marie-18',
@@ -15141,17 +15076,17 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que la corédemption mariale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'Marie a sauvé l\'humanité',
-      'Marie a participé au salut par son "Fiat"',
-      'Marie est coégale au Christ',
-      'Marie n\'a pas participé au salut'
+      'Marie a sauvé l\'humanité par ses propres mérites',
+      'Marie a participé au salut par son "Fiat" et sa présence au pied de la croix',
+      'Marie est coégale au Christ dans l\'œuvre rédemptrice',
+      'Marie n\'a pas participé au salut de l\'humanité'
     ],
     correctAnswer: 1,
-    explanation: 'La corédemption mariale signifie que Marie a participé au salut de l\'humanité par son "Fiat" et sa collaboration.',
+    explanation: 'La corédemption mariale signifie que Marie a participé au salut par son "Fiat" (Luc 1:38) et sa présence au pied de la croix (Jean 19:25). Cette participation est subordonnée et dépendante de l\'unique rédemption du Christ. Marie a souffert avec son Fils et a offert ses souffrances en union avec les siennes.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 968'
+    scripture: 'Luc 1:38, Jean 19:25',
   },
   {
     id: 'marie-19',
@@ -15159,7 +15094,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la maternité spirituelle de Marie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Marie est la mère de tous les hommes',
       'Marie est la mère de l\'Église',
@@ -15169,7 +15104,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'La maternité spirituelle signifie que Marie est la mère de l\'Église et de tous les fidèles.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 963'
   },
   {
     id: 'marie-20',
@@ -15177,7 +15111,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que la rédemption préservatrice ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Marie a été rachetée après sa naissance',
       'Marie a été préservée du péché originel par anticipation des mérites du Christ',
@@ -15187,9 +15121,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'La rédemption préservatrice signifie que Marie a été préservée du péché originel par anticipation des mérites du Christ.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 492'
   },
-
   // ===== MARIE - LES APPARITIONS MARIALES (Questions marie-21 à marie-30) =====
   {
     id: 'marie-21',
@@ -15197,17 +15129,16 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Où la Vierge Marie est-elle apparue à sainte Bernadette Soubirous ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'À Fatima',
-      'À Lourdes',
-      'À Guadalupe',
-      'À La Salette'
+      'À Fatima, au Portugal',
+      'À Lourdes, dans les Pyrénées',
+      'À Guadalupe, au Mexique',
+      'À La Salette, dans les Alpes'
     ],
     correctAnswer: 1,
-    explanation: 'La Vierge Marie est apparue à sainte Bernadette Soubirous à Lourdes en 1858.',
+    explanation: 'La Vierge Marie est apparue à sainte Bernadette Soubirous à Lourdes, dans les Pyrénées, du 11 février au 16 juillet 1858. Elle se présenta comme "l\'Immaculée Conception", confirmant ainsi le dogme proclamé quatre ans plus tôt par le pape Pie IX.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
   {
     id: 'marie-22',
@@ -15215,17 +15146,16 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Quand ont eu lieu les apparitions de Fatima ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'En 1917',
-      'En 1858',
-      'En 1931',
-      'En 1945'
+      'En 1917, du 13 mai au 13 octobre',
+      'En 1858, du 11 février au 16 juillet',
+      'En 1931, pendant la guerre civile espagnole',
+      'En 1945, après la Seconde Guerre mondiale'
     ],
     correctAnswer: 0,
-    explanation: 'Les apparitions de Fatima ont eu lieu en 1917, du 13 mai au 13 octobre.',
+    explanation: 'Les apparitions de Fatima ont eu lieu en 1917, du 13 mai au 13 octobre, à trois enfants : Lucie, François et Jacinthe. La Vierge demanda la prière du chapelet, la pénitence et la consécration au Cœur Immaculé de Marie pour la conversion des pécheurs et la paix dans le monde.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
   {
     id: 'marie-23',
@@ -15233,17 +15163,16 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'À qui la Vierge Marie est-elle apparue à Guadalupe ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'À sainte Bernadette',
-      'À saint Juan Diego',
-      'À sainte Thérèse',
-      'À saint François'
+      'À sainte Bernadette Soubirous',
+      'À saint Juan Diego Cuauhtlatoatzin',
+      'À sainte Thérèse d\'Avila',
+      'À saint François d\'Assise'
     ],
     correctAnswer: 1,
-    explanation: 'La Vierge Marie est apparue à saint Juan Diego à Guadalupe en 1531.',
+    explanation: 'La Vierge Marie est apparue à saint Juan Diego Cuauhtlatoatzin à Guadalupe, au Mexique, du 9 au 12 décembre 1531. Elle se présenta comme "la Mère du vrai Dieu" et demanda la construction d\'une église. L\'image miraculeuse imprimée sur le tilma de Juan Diego est conservée jusqu\'à aujourd\'hui.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
   {
     id: 'marie-24',
@@ -15251,17 +15180,16 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Quel message principal la Vierge a-t-elle donné à Fatima ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'La prière et la pénitence',
-      'La construction d\'églises',
-      'La guerre sainte',
-      'La richesse matérielle'
+      'La prière du chapelet et la pénitence pour la conversion des pécheurs',
+      'La construction d\'églises et de basiliques',
+      'La guerre sainte contre les ennemis de la foi',
+      'La recherche de la richesse matérielle et du confort'
     ],
     correctAnswer: 0,
-    explanation: 'À Fatima, la Vierge a demandé la prière, la pénitence et la consécration au Cœur Immaculé de Marie.',
+    explanation: 'À Fatima, la Vierge a demandé la prière du chapelet quotidien, la pénitence et la consécration au Cœur Immaculé de Marie pour la conversion des pécheurs et la paix dans le monde. Elle révéla aussi trois secrets concernant l\'enfer, la dévotion à son Cœur Immaculé et la persécution de l\'Église.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
   {
     id: 'marie-25',
@@ -15269,7 +15197,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Quel est le nom de la Vierge de Guadalupe ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Notre-Dame de Guadalupe',
       'Notre-Dame de Lourdes',
@@ -15279,7 +15207,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La Vierge de Guadalupe est appelée "Notre-Dame de Guadalupe".',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
   {
     id: 'marie-26',
@@ -15287,7 +15214,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Quel miracle a eu lieu lors de l\'apparition de Guadalupe ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La guérison de malades',
       'L\'image de la Vierge sur le tilma',
@@ -15297,7 +15224,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Le miracle de Guadalupe est l\'image de la Vierge qui s\'est imprimée miraculeusement sur le tilma de Juan Diego.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
   {
     id: 'marie-27',
@@ -15305,7 +15231,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Quel est le nom de la Vierge de Lourdes ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Notre-Dame de Lourdes',
       'Notre-Dame de Fatima',
@@ -15315,7 +15241,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La Vierge de Lourdes est appelée "Notre-Dame de Lourdes".',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
   {
     id: 'marie-28',
@@ -15323,7 +15248,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Quel message la Vierge a-t-elle donné à Lourdes ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La prière pour les pécheurs',
       'La construction de cathédrales',
@@ -15333,7 +15258,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'À Lourdes, la Vierge a demandé la prière pour les pécheurs et la pénitence.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
   {
     id: 'marie-29',
@@ -15341,7 +15265,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Quel est le nom de la Vierge de Fatima ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Notre-Dame de Fatima',
       'Notre-Dame de Lourdes',
@@ -15351,7 +15275,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La Vierge de Fatima est appelée "Notre-Dame de Fatima".',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
   {
     id: 'marie-30',
@@ -15359,7 +15282,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Quel est le statut des apparitions mariales dans l\'Église ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Elles sont des dogmes de foi',
       'Elles sont des révélations privées',
@@ -15369,9 +15292,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Les apparitions mariales sont des révélations privées, non des dogmes de foi, mais elles peuvent être approuvées par l\'Église.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
-
   // ===== MARIE - LES PRIÈRES MARIALES (Questions marie-31 à marie-40) =====
   {
     id: 'marie-31',
@@ -15379,17 +15300,17 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Comment commence le "Je vous salue Marie" ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'Je vous salue Marie, pleine de grâce',
-      'Ave Maria, gratia plena',
-      'Salve Regina',
-      'Magnificat'
+      'Je vous salue Marie, pleine de grâce, le Seigneur est avec vous',
+      'Ave Maria, gratia plena, Dominus tecum',
+      'Salve Regina, Mater misericordiae',
+      'Magnificat anima mea Dominum'
     ],
     correctAnswer: 0,
-    explanation: 'Le "Je vous salue Marie" commence par : "Je vous salue Marie, pleine de grâce".',
+    explanation: 'Le "Je vous salue Marie" commence par : "Je vous salue Marie, pleine de grâce, le Seigneur est avec vous" (Luc 1:28). Cette prière combine les paroles de l\'ange Gabriel à l\'Annonciation et celles d\'Élisabeth à la Visitation : "Bénie êtes-vous entre toutes les femmes" (Luc 1:42).',
     points: 15,
-    scripture: 'Luc 1:28'
+    scripture: 'Luc 1:28, Luc 1:42'
   },
   {
     id: 'marie-32',
@@ -15397,17 +15318,16 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que le Rosaire ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      'Une simple prière',
+      'Une simple prière répétitive',
       'Une méditation sur les mystères de la vie du Christ avec Marie',
-      'Un chant',
-      'Un psaume'
+      'Un chant liturgique traditionnel',
+      'Un psaume de louange à Dieu'
     ],
     correctAnswer: 1,
-    explanation: 'Le Rosaire est une méditation sur les mystères de la vie du Christ avec Marie, en récitant des "Je vous salue Marie".',
+    explanation: 'Le Rosaire est une méditation sur les mystères de la vie du Christ avec Marie, en récitant des "Je vous salue Marie". Cette prière, transmise par saint Dominique, permet de contempler avec Marie les événements salvifiques de la vie de Jésus. Le pape Jean-Paul II l\'a appelé "un résumé de l\'Évangile".',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-33',
@@ -15415,17 +15335,16 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Combien y a-t-il de mystères du Rosaire ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
-      '10 mystères',
-      '15 mystères',
-      '20 mystères',
-      '25 mystères'
+      '10 mystères (5 joyeux et 5 douloureux)',
+      '15 mystères (5 joyeux, 5 douloureux, 5 glorieux)',
+      '20 mystères (5 joyeux, 5 lumineux, 5 douloureux, 5 glorieux)',
+      '25 mystères (5 séries de 5 mystères chacune)'
     ],
     correctAnswer: 2,
-    explanation: 'Il y a 20 mystères du Rosaire : 5 mystères joyeux, 5 mystères lumineux, 5 mystères douloureux et 5 mystères glorieux.',
+    explanation: 'Il y a 20 mystères du Rosaire : 5 mystères joyeux (Annonciation, Visitation, Nativité, Présentation, Jésus au Temple), 5 mystères lumineux (Baptême, Noces de Cana, Annonce du Royaume, Transfiguration, Institution de l\'Eucharistie), 5 mystères douloureux (Agonie, Flagellation, Couronnement d\'épines, Portement de croix, Crucifixion) et 5 mystères glorieux (Résurrection, Ascension, Pentecôte, Assomption, Couronnement de Marie).',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-34',
@@ -15433,7 +15352,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que le Magnificat ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une prière de Marie',
       'Le cantique de Marie lors de la Visitation',
@@ -15451,7 +15370,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Comment commence le "Salve Regina" ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Salve Regina, Mater misericordiae',
       'Ave Maria, gratia plena',
@@ -15461,7 +15380,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Le "Salve Regina" commence par : "Salve Regina, Mater misericordiae" (Salut, ô Reine, Mère de miséricorde).',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-36',
@@ -15469,7 +15387,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que l\'Angelus ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une prière du matin',
       'Une prière qui commémore l\'Annonciation',
@@ -15479,7 +15397,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'L\'Angelus est une prière qui commémore l\'Annonciation, récitée trois fois par jour (matin, midi, soir).',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-37',
@@ -15487,7 +15404,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la consécration à Marie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une simple prière',
       'Un acte par lequel on se donne totalement à Marie',
@@ -15497,7 +15414,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'La consécration à Marie est un acte par lequel on se donne totalement à Marie pour qu\'elle nous conduise à Jésus.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-38',
@@ -15505,7 +15421,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que la neuvaine mariale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une prière de neuf jours',
       'Une prière de neuf heures',
@@ -15515,7 +15431,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La neuvaine mariale est une prière de neuf jours dédiée à la Vierge Marie.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-39',
@@ -15523,7 +15438,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que le chapelet ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un objet de décoration',
       'Un instrument de prière avec des grains',
@@ -15533,7 +15448,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 1,
     explanation: 'Le chapelet est un instrument de prière avec des grains pour réciter le Rosaire.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-40',
@@ -15541,7 +15455,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que la prière du "Memorare" ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une prière de saint Bernard',
       'Une prière de saint François',
@@ -15551,9 +15465,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Le "Memorare" est une prière de saint Bernard à la Vierge Marie : "Souvenez-vous, ô très pieuse Vierge Marie..."',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
-
   // ===== MARIE - MARIE DANS LA LITURGIE (Questions marie-41 à marie-50) =====
   {
     id: 'marie-41',
@@ -15561,7 +15473,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Quelle est la fête de l\'Annonciation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le 25 mars',
       'Le 15 août',
@@ -15571,7 +15483,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La fête de l\'Annonciation est célébrée le 25 mars, neuf mois avant Noël.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 484'
   },
   {
     id: 'marie-42',
@@ -15579,7 +15490,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Quelle est la fête de l\'Assomption ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le 15 août',
       'Le 8 décembre',
@@ -15589,7 +15500,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La fête de l\'Assomption est célébrée le 15 août.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 966'
   },
   {
     id: 'marie-43',
@@ -15597,7 +15507,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Quelle est la fête de l\'Immaculée Conception ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le 8 décembre',
       'Le 15 août',
@@ -15607,7 +15517,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La fête de l\'Immaculée Conception est célébrée le 8 décembre.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 491'
   },
   {
     id: 'marie-44',
@@ -15615,7 +15524,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Quelle est la fête de la Visitation ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le 31 mai',
       'Le 25 mars',
@@ -15625,7 +15534,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La fête de la Visitation est célébrée le 31 mai.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 495'
   },
   {
     id: 'marie-45',
@@ -15633,7 +15541,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Quelle est la fête de la Nativité de Marie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le 8 septembre',
       'Le 15 août',
@@ -15643,7 +15551,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La fête de la Nativité de Marie est célébrée le 8 septembre.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 484'
   },
   {
     id: 'marie-46',
@@ -15651,7 +15558,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que le mois de mai dans l\'Église ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le mois de Marie',
       'Le mois de la Pentecôte',
@@ -15661,7 +15568,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Le mois de mai est traditionnellement dédié à la Vierge Marie dans l\'Église catholique.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-47',
@@ -15669,7 +15575,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que le mois d\'octobre dans l\'Église ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le mois du Rosaire',
       'Le mois de Marie',
@@ -15679,7 +15585,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Le mois d\'octobre est traditionnellement dédié au Rosaire dans l\'Église catholique.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-48',
@@ -15687,7 +15592,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que la fête de la Présentation de Marie au Temple ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le 21 novembre',
       'Le 2 février',
@@ -15697,7 +15602,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La fête de la Présentation de Marie au Temple est célébrée le 21 novembre.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 484'
   },
   {
     id: 'marie-49',
@@ -15705,7 +15609,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la fête de Marie, Mère de Dieu ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le 1er janvier',
       'Le 25 mars',
@@ -15715,7 +15619,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La fête de Marie, Mère de Dieu est célébrée le 1er janvier.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 495'
   },
   {
     id: 'marie-50',
@@ -15723,7 +15626,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que la fête de Notre-Dame de Lourdes ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Le 11 février',
       'Le 15 août',
@@ -15733,9 +15636,7 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La fête de Notre-Dame de Lourdes est célébrée le 11 février.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
-
   // ===== MARIE - LA DÉVOTION MARIALE (Questions marie-51 à marie-60) =====
   {
     id: 'marie-51',
@@ -15743,7 +15644,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la dévotion mariale ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'L\'amour et la vénération envers la Vierge Marie',
       'L\'adoration de Marie',
@@ -15753,7 +15654,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La dévotion mariale est l\'amour et la vénération envers la Vierge Marie, qui nous conduit à Jésus.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-52',
@@ -15761,7 +15661,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que le Cœur Immaculé de Marie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un symbole de l\'amour de Marie',
       'Un organe physique',
@@ -15771,7 +15671,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Le Cœur Immaculé de Marie est un symbole de l\'amour de Marie pour Dieu et pour l\'humanité.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-53',
@@ -15779,7 +15678,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la consécration au Cœur Immaculé de Marie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un acte de dévotion',
       'Un sacrement',
@@ -15789,7 +15688,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La consécration au Cœur Immaculé de Marie est un acte de dévotion par lequel on se confie à Marie.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-54',
@@ -15797,7 +15695,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que le scapulaire marial ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un signe de dévotion à Marie',
       'Un vêtement religieux',
@@ -15807,7 +15705,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Le scapulaire marial est un signe de dévotion à Marie et de confiance en sa protection.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-55',
@@ -15815,7 +15712,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la médaille miraculeuse ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une médaille de la Vierge Marie',
       'Un objet magique',
@@ -15825,7 +15722,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La médaille miraculeuse est une médaille de la Vierge Marie, créée selon les instructions de la Vierge à sainte Catherine Labouré.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
   {
     id: 'marie-56',
@@ -15833,7 +15729,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que le pèlerinage marial ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un voyage vers un sanctuaire marial',
       'Une simple promenade',
@@ -15843,7 +15739,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Le pèlerinage marial est un voyage vers un sanctuaire dédié à la Vierge Marie pour prier et demander des grâces.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-57',
@@ -15851,7 +15746,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce qu\'un sanctuaire marial ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Un lieu de pèlerinage dédié à Marie',
       'Une simple église',
@@ -15861,7 +15756,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Un sanctuaire marial est un lieu de pèlerinage dédié à la Vierge Marie, souvent lié à une apparition.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-58',
@@ -15869,7 +15763,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que la dévotion des premiers samedis ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une dévotion demandée à Fatima',
       'Une simple coutume',
@@ -15879,7 +15773,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La dévotion des premiers samedis a été demandée par la Vierge à Fatima pour réparer les offenses contre son Cœur Immaculé.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 67'
   },
   {
     id: 'marie-59',
@@ -15887,7 +15780,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'facile',
     level: 2,
     question: 'Qu\'est-ce que la prière du "Sub tuum praesidium" ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'La plus ancienne prière mariale',
       'Une prière moderne',
@@ -15897,7 +15790,6 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'Le "Sub tuum praesidium" est la plus ancienne prière mariale connue, datant du IIIe siècle.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   },
   {
     id: 'marie-60',
@@ -15905,7 +15797,7 @@ export const sampleQuestions: Question[] = [
     difficulty: 'moyen',
     level: 2,
     question: 'Qu\'est-ce que la dévotion au Cœur Immaculé de Marie ?',
-    questionType: 'multiple-choice',
+    questionType: 'single-choice',
     options: [
       'Une dévotion à l\'amour de Marie',
       'Un culte idolâtrique',
@@ -15915,14 +15807,11 @@ export const sampleQuestions: Question[] = [
     correctAnswer: 0,
     explanation: 'La dévotion au Cœur Immaculé de Marie est une dévotion à l\'amour de Marie pour Dieu et pour l\'humanité.',
     points: 15,
-    catechism: 'Catéchisme de l\'Église Catholique 971'
   }
 ];
-
 // ========================================
 // QUIZ ORGANISÉS PAR COURS
 // ========================================
-
 export const sampleQuizzes: Quiz[] = [
   // COURS 1 - DÉCOUVERTE / PREMIERS PAS DANS LA FOI (Niveau 1)
   {
@@ -15985,7 +15874,6 @@ export const sampleQuizzes: Quiz[] = [
     passingScore: 70,
     timeLimit: 15
   },
-
   // COURS 2 - FONDAMENTAUX DE LA FOI CATHOLIQUE (Niveau 2)
   {
     id: 'quiz-6',
@@ -16251,7 +16139,6 @@ export const sampleQuizzes: Quiz[] = [
     passingScore: 85,
     timeLimit: 30
   },
-
   // ===== QUIZ SUR LA VIERGE MARIE =====
   {
     id: 'quiz-marie-vie',
@@ -16326,11 +16213,9 @@ export const sampleQuizzes: Quiz[] = [
     timeLimit: 20
   }
 ];
-
 // ========================================
 // CATÉGORIES ET ICÔNES
 // ========================================
-
 export const categoryNames: Record<string, string> = {
   'decouverte-jesus': 'Qui est Jésus-Christ ?',
   'decouverte-gestes': 'Premiers gestes chrétiens',
@@ -16359,7 +16244,6 @@ export const categoryNames: Record<string, string> = {
   'marie-liturgie': 'Marie dans la liturgie',
   'marie-devotion': 'La dévotion mariale'
 };
-
 export const categoryIcons: Record<string, string> = {
   'decouverte-jesus': 'person',
   'decouverte-gestes': 'pan-tool',
@@ -16388,25 +16272,21 @@ export const categoryIcons: Record<string, string> = {
   'marie-liturgie': 'celebration',
   'marie-devotion': 'heart'
 };
-
 // ========================================
 // FONCTIONS UTILITAIRES
 // ========================================
-
 export function getAvailableQuizzes(userLevel: number, isAdmin: boolean = false): Quiz[] {
   return sampleQuizzes.filter(quiz => {
     if (isAdmin) return true;
     return quiz.level <= userLevel;
   });
 }
-
 export function getQuizzesByCategory(category: string, userLevel: number, isAdmin: boolean = false): Quiz[] {
   return sampleQuizzes.filter(quiz => {
     if (!isAdmin && quiz.level > userLevel) return false;
     return quiz.category === category;
   });
 }
-
 export function getQuizzesByCourse(level: number, userLevel: number, isAdmin: boolean = false): Quiz[] {
   return sampleQuizzes.filter(quiz => {
     if (!isAdmin && quiz.level > userLevel) return false;

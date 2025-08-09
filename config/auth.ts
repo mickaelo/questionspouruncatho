@@ -1,7 +1,7 @@
 // Configuration d'authentification
 export const AUTH_CONFIG = {
   google: {
-    clientId: '9483993562-09gt4nvdru9bcapscbevfngn3i37ohco.apps.googleusercontent.com', // Web
+    clientId: '9483993562-g23qrpbscnc934u05i9uolhgkir3sbkf.apps.googleusercontent.com', // Web
     androidClientId: '9483993562-fvk8nb3l2uie5hh0iot7nk7t1melir3h.apps.googleusercontent.com', // Android
     projectId: 'helical-theater-308116', // Project ID Google Cloud
     clientSecret: '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',

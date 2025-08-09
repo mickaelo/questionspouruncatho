@@ -15,7 +15,7 @@ Cette erreur indique un problème de configuration dans Google Cloud Console ou 
 - Vérifiez que vous avez un client OAuth 2.0 de type **Android**
 
 **Configuration requise :**
-- **Package name** : `com.anonymous.questionpouruncatho2`
+- **Package name** : `com.anonymous.questionspouruncatho`
 - **SHA-1 fingerprint** : `AE:10:DD:74:96:F6:98:D5:51:4F:2A:65:35:6A:DF:28:3D:90:C0:C8`
 - **Client ID** : `9483993562-fvk8nb3l2uie5hh0iot7nk7t1melir3h.apps.googleusercontent.com`
 

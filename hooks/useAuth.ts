@@ -2,7 +2,7 @@ import { AUTH_CONFIG } from '@/config/auth';
 import { auth } from '@/config/firebase';
 import { FirebaseAuthService } from '@/services/firebaseAuthService';
 import { localStorageService } from '@/services/localStorageService';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, isErrorWithCode, statusCodes } from '@react-native-google-signin/google-signin';
 import { getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
@@ -19,30 +19,18 @@ export function useAuth() {
   // Initialiser l'état d'authentification avec Firebase
   useEffect(() => {
     console.log('🔐 Initialisation de l\'état d\'authentification Firebase...');
-    
-    // Configurer Google Sign-In
-    try {
-      GoogleSignin.configure({
-        webClientId: AUTH_CONFIG.google.clientId,
-        offlineAccess: true,
-        forceCodeForRefreshToken: true,
-      });
-      console.log('✅ Google Sign-In configuré avec succès');
-    } catch (error) {
-      console.error('❌ Erreur lors de la configuration Google Sign-In:', error);
-    }
-    
+
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       console.log('🔄 Changement d\'état d\'authentification Firebase:', firebaseUser ? 'Utilisateur connecté' : 'Aucun utilisateur');
-      
+
       if (firebaseUser) {
         console.log('👤 Utilisateur Firebase détecté:', firebaseUser.uid, firebaseUser.email);
-        
+
         // Récupérer les données utilisateur depuis Firestore
         const userData = await FirebaseAuthService.getCurrentUser();
         if (userData) {
           console.log('📊 Données utilisateur récupérées depuis Firestore:', userData.displayName);
-          
+
           // Convertir FirebaseUser en AuthUser
           const authUser: AuthUser = {
             id: userData.uid,
@@ -55,7 +43,7 @@ export function useAuth() {
             lastLoginAt: userData.lastLoginAt instanceof Date ? userData.lastLoginAt : new Date(userData.lastLoginAt),
             provider: userData.provider as "google" | "facebook" | "email" | "apple" | "microsoft",
           };
-          
+
           console.log('✅ État d\'authentification mis à jour: Utilisateur connecté');
           setAuthState({
             user: authUser,
@@ -74,7 +62,7 @@ export function useAuth() {
         }
       } else {
         console.log('❌ Aucun utilisateur Firebase détecté, vérification des données locales...');
-        
+
         // Vérifier s'il existe un utilisateur anonyme en local
         try {
           if (!localStorageService) {
@@ -87,11 +75,11 @@ export function useAuth() {
             });
             return;
           }
-          
+
           const anonymousUser = await localStorageService.getAnonymousUser();
           if (anonymousUser) {
             console.log('👤 Utilisateur anonyme trouvé en local:', anonymousUser.name);
-            
+
             // Convertir LocalUserData en AuthUser
             const authUser: AuthUser = {
               id: anonymousUser.id,
@@ -104,7 +92,7 @@ export function useAuth() {
               lastLoginAt: new Date(anonymousUser.lastLoginAt),
               provider: (anonymousUser.provider as any) || 'anonymous',
             };
-            
+
             console.log('✅ État d\'authentification mis à jour: Utilisateur anonyme local');
             setAuthState({
               user: authUser,
@@ -154,17 +142,17 @@ export function useAuth() {
 
         console.log('🔄 Tentative de récupération du résultat de redirection...');
         const result = await getRedirectResult(auth);
-        
+
         if (result) {
           console.log('🔄 Résultat de redirection Google détecté');
           const user = result.user;
-          
+
           if (user) {
             console.log('👤 Utilisateur Google connecté via redirection:', user.email);
-            
+
             // Créer ou mettre à jour l'utilisateur dans Firestore
             const userData = await FirebaseAuthService.createOrUpdateGoogleUser(user);
-            
+
             if (userData) {
               // Convertir en AuthUser
               const authUser: AuthUser = {
@@ -178,14 +166,14 @@ export function useAuth() {
                 lastLoginAt: userData.lastLoginAt instanceof Date ? userData.lastLoginAt : new Date(userData.lastLoginAt),
                 provider: 'google',
               };
-              
+
               setAuthState({
                 user: authUser,
                 isLoading: false,
                 isAuthenticated: true,
                 error: null,
               });
-              
+
               console.log('🎉 Authentification Google via redirection terminée avec succès');
             }
           }
@@ -194,13 +182,13 @@ export function useAuth() {
         }
       } catch (error) {
         console.error('❌ Erreur lors du traitement du résultat de redirection:', error);
-        
+
         // Ne pas afficher d'erreur si c'est juste que la fonction n'est pas disponible
         if (error instanceof TypeError && error.message.includes('getRedirectResult is not a function')) {
           console.log('ℹ️ getRedirectResult non supporté sur cette plateforme - ignoré');
           return;
         }
-        
+
         setAuthState(prev => ({
           ...prev,
           isLoading: false,
@@ -220,25 +208,25 @@ export function useAuth() {
   // Connexion SSO Google avec Firebase
   const loginWithGoogle = useCallback(async (): Promise<SSOLoginResult> => {
     setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
-    
+
     try {
       console.log('🚀 Début authentification Google avec Firebase...');
-      
+
       // Détecter la plateforme
       const isWeb = Platform.OS === 'web';
       const isAndroid = Platform.OS === 'android';
       const isIOS = Platform.OS === 'ios';
-      
+
       console.log('📱 Plateforme détectée:', { isWeb, isAndroid, isIOS });
-      
+
       if (isWeb) {
         // Sur le web, utiliser Firebase Auth avec popup/redirect
         const googleProvider = new GoogleAuthProvider();
         googleProvider.addScope('profile');
         googleProvider.addScope('email');
-        
+
         let userCredential;
-        
+
         // Vérifier si signInWithPopup est disponible
         if (typeof signInWithPopup === 'function') {
           try {
@@ -246,7 +234,7 @@ export function useAuth() {
             console.log('✅ Authentification Google réussie avec popup');
           } catch (popupError: any) {
             console.log('⚠️ Popup bloqué ou échoué:', popupError.code);
-            
+
             // Si le popup est bloqué, essayer avec redirect si disponible
             if (popupError.code === 'auth/popup-blocked' || popupError.code === 'auth/popup-closed-by-user') {
               if (typeof signInWithRedirect === 'function') {
@@ -268,14 +256,14 @@ export function useAuth() {
         } else {
           throw new Error('Authentification Google non supportée sur cette plateforme');
         }
-        
+
         if (userCredential) {
           const user = userCredential.user;
           console.log('👤 Utilisateur Google connecté:', user.email);
-          
+
           // Créer ou mettre à jour l'utilisateur dans Firestore
           const userData = await FirebaseAuthService.createOrUpdateGoogleUser(user);
-          
+
           if (userData) {
             // Convertir en AuthUser
             const authUser: AuthUser = {
@@ -289,14 +277,14 @@ export function useAuth() {
               lastLoginAt: userData.lastLoginAt instanceof Date ? userData.lastLoginAt : new Date(userData.lastLoginAt),
               provider: 'google',
             };
-            
+
             setAuthState({
               user: authUser,
               isLoading: false,
               isAuthenticated: true,
               error: null,
             });
-            
+
             console.log('🎉 Authentification Google terminée avec succès');
             return { success: true, user: authUser };
           }
@@ -304,16 +292,19 @@ export function useAuth() {
       } else {
         // Sur mobile (Android/iOS), utiliser Google Sign-In natif
         console.log('📱 Utilisation de Google Sign-In natif pour mobile');
-        
+
         try {
           // Vérifier que Google Play Services est disponible
           await GoogleSignin.hasPlayServices();
-          
+          GoogleSignin.configure({
+            webClientId: AUTH_CONFIG.google.clientId,
+          });
+          console.log('✅ Google Sign-In configuré avec succès');
           // Lancer l'authentification Google Sign-In
           const userInfo = await GoogleSignin.signIn();
-          
+
           console.log('✅ Authentification Google Sign-In réussie:', userInfo);
-          
+
           // Pour l'instant, utiliser une structure simple pour éviter les erreurs de linter
           // TODO: Adapter selon la structure réelle de l'API
           const firebaseUser = {
@@ -330,10 +321,10 @@ export function useAuth() {
               photoURL: '',
             }],
           };
-          
+
           // Créer ou mettre à jour l'utilisateur dans Firestore
           const userData = await FirebaseAuthService.createOrUpdateGoogleUser(firebaseUser as any);
-          
+
           if (userData) {
             // Convertir en AuthUser
             const authUser: AuthUser = {
@@ -347,14 +338,14 @@ export function useAuth() {
               lastLoginAt: userData.lastLoginAt instanceof Date ? userData.lastLoginAt : new Date(userData.lastLoginAt),
               provider: 'google',
             };
-            
+
             setAuthState({
               user: authUser,
               isLoading: false,
               isAuthenticated: true,
               error: null,
             });
-            
+
             console.log('🎉 Authentification Google Sign-In terminée avec succès');
             return { success: true, user: authUser };
           } else {
@@ -362,9 +353,14 @@ export function useAuth() {
           }
         } catch (error: any) {
           console.error('❌ Erreur lors de l\'authentification Google Sign-In:', error);
-          
+
+          if (isErrorWithCode(error)) {
+            console.log('Erreur avec code:', error.code);
+          } else {
+            console.log('Erreur sans code:', error);
+          }
           let errorMessage = 'Erreur lors de l\'authentification Google';
-          
+
           if (error.code) {
             switch (error.code) {
               case statusCodes.SIGN_IN_CANCELLED:
@@ -385,23 +381,23 @@ export function useAuth() {
           } else if (error.message) {
             errorMessage = error.message;
           }
-          
+
           setAuthState(prev => ({
             ...prev,
             isLoading: false,
             error: errorMessage,
           }));
-          
+
           return { success: false, error: errorMessage };
         }
       }
-      
+
       return { success: false, error: 'Erreur lors de l\'authentification Google' };
     } catch (error: any) {
       console.error('❌ Erreur lors de l\'authentification Google:', error);
-      
+
       let errorMessage = 'Erreur lors de l\'authentification Google';
-      
+
       if (error.code) {
         switch (error.code) {
           case 'auth/popup-closed-by-user':
@@ -425,13 +421,13 @@ export function useAuth() {
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
+
       setAuthState(prev => ({
         ...prev,
         isLoading: false,
         error: errorMessage,
       }));
-      
+
       return { success: false, error: errorMessage };
     }
   }, []);
@@ -439,7 +435,7 @@ export function useAuth() {
   // Connexion SSO Facebook (pour l'instant, retourne une erreur)
   const loginWithFacebook = useCallback(async (): Promise<SSOLoginResult> => {
     setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
-    
+
     try {
       // TODO: Implémenter Facebook OAuth avec Firebase
       setAuthState(prev => ({
@@ -462,13 +458,13 @@ export function useAuth() {
   // Fonction pour passer la connexion (utilisateur anonyme)
   const skipLogin = useCallback(async () => {
     console.log('👤 Utilisateur anonyme - passage de la connexion');
-    
+
     try {
       // Vérifier s'il existe déjà un utilisateur anonyme
       const existingAnonymousUser = await localStorageService.getAnonymousUser();
-      
+
       let anonymousUser: AuthUser;
-      
+
       if (existingAnonymousUser) {
         // Utiliser l'utilisateur anonyme existant
         console.log('📖 Utilisation de l\'utilisateur anonyme existant');
@@ -483,7 +479,7 @@ export function useAuth() {
           lastLoginAt: new Date(existingAnonymousUser.lastLoginAt),
           provider: (existingAnonymousUser.provider as any) || 'anonymous',
         };
-        
+
         // Mettre à jour la dernière connexion
         const updatedUser = {
           ...existingAnonymousUser,
@@ -504,7 +500,7 @@ export function useAuth() {
           lastLoginAt: new Date(),
           provider: 'anonymous',
         };
-        
+
         // Sauvegarder l'utilisateur anonyme dans le stockage local
         await localStorageService.saveAnonymousUser({
           id: anonymousUser.id,
@@ -518,19 +514,19 @@ export function useAuth() {
           provider: anonymousUser.provider,
         });
       }
-      
+
       setAuthState({
         user: anonymousUser,
         isLoading: false,
         isAuthenticated: true, // Considérer comme authentifié pour l'accès à l'app
         error: null,
       });
-      
+
       console.log('✅ Utilisateur anonyme connecté avec succès');
       return { success: true, user: anonymousUser };
     } catch (error) {
       console.error('❌ Erreur lors de la création de l\'utilisateur anonyme:', error);
-      
+
       // En cas d'erreur, créer un utilisateur temporaire sans stockage
       const fallbackUser: AuthUser = {
         id: 'anonymous-' + Date.now(),
@@ -543,14 +539,14 @@ export function useAuth() {
         lastLoginAt: new Date(),
         provider: 'anonymous',
       };
-      
+
       setAuthState({
         user: fallbackUser,
         isLoading: false,
         isAuthenticated: true,
         error: null,
       });
-      
+
       return { success: true, user: fallbackUser };
     }
   }, []);
@@ -559,7 +555,7 @@ export function useAuth() {
   const loginWithEmail = useCallback(async (credentials: LoginCredentials): Promise<SSOLoginResult> => {
     console.log('🔐 Début de la connexion avec email:', credentials.email);
     setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
-    
+
     try {
       // Validation des données côté client
       if (!credentials.email || !credentials.password) {
@@ -574,10 +570,10 @@ export function useAuth() {
       }
 
       const result = await FirebaseAuthService.signInWithEmail(credentials.email, credentials.password);
-      
+
       if (result.success && result.user) {
         console.log('✅ Connexion réussie pour:', result.user.email);
-        
+
         // Convertir FirebaseUser en AuthUser
         const authUser: AuthUser = {
           id: result.user.uid,
@@ -590,14 +586,14 @@ export function useAuth() {
           lastLoginAt: result.user.lastLoginAt instanceof Date ? result.user.lastLoginAt : new Date(result.user.lastLoginAt),
           provider: result.user.provider as "google" | "facebook" | "apple" | "microsoft" | "email",
         };
-        
+
         setAuthState({
           user: authUser,
           isLoading: false,
           isAuthenticated: true,
           error: null,
         });
-        
+
         return { success: true, user: authUser };
       } else {
         const errorMsg = result.error || 'Erreur de connexion';
@@ -624,14 +620,14 @@ export function useAuth() {
   // Inscription avec email/mot de passe
   const registerWithEmail = useCallback(async (data: RegisterData): Promise<SSOLoginResult> => {
     setAuthState(prev => ({ ...prev, isLoading: true, error: null }));
-    
+
     try {
       const result = await FirebaseAuthService.createAccountWithEmail(
         data.email,
         data.password,
         data.name
       );
-      
+
       if (result.success && result.user) {
         // Convertir FirebaseUser en AuthUser
         const authUser: AuthUser = {
@@ -645,14 +641,14 @@ export function useAuth() {
           lastLoginAt: result.user.lastLoginAt instanceof Date ? result.user.lastLoginAt : new Date(result.user.lastLoginAt),
           provider: result.user.provider as "google" | "facebook" | "apple" | "microsoft" | "email",
         };
-        
+
         setAuthState({
           user: authUser,
           isLoading: false,
           isAuthenticated: true,
           error: null,
         });
-        
+
         return { success: true, user: authUser };
       } else {
         setAuthState(prev => ({
@@ -677,10 +673,10 @@ export function useAuth() {
   const logout = useCallback(async (): Promise<void> => {
     console.log('🔄 Tentative de déconnexion...');
     setAuthState(prev => ({ ...prev, isLoading: true }));
-    
+
     try {
       const result = await FirebaseAuthService.signOut();
-      
+
       if (result.success) {
         console.log('✅ Déconnexion Firebase réussie');
         setAuthState({
@@ -707,7 +703,7 @@ export function useAuth() {
   // Mettre à jour le profil (pour l'instant, retourne null)
   const updateProfile = useCallback(async (updates: Partial<AuthUser>): Promise<AuthUser | null> => {
     if (!authState.user) return null;
-    
+
     try {
       // TODO: Implémenter la mise à jour du profil avec Firebase
       setAuthState(prev => ({

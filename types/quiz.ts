@@ -1,6 +1,7 @@
 export interface Question {
   id: string;
   category: string;
+  slug?: string; // Identifiant original conservé lors de l'import Firebase
   difficulty: 'facile' | 'moyen' | 'difficile' | 'tres-difficile';
   level: number; // Niveau de formation requis (1-5)
   question: string;
@@ -10,7 +11,6 @@ export interface Question {
   explanation: string;
   points: number;
   scripture?: string;
-  catechism?: string;
   author?: string; // Auteur de la question ou de la doctrine
   reference?: string; // Référence bibliographique
   imageUrl?: string; // Pour les questions d'image à reconnaître
@@ -109,6 +109,7 @@ export interface CrosswordQuestion extends Question {
 
 export interface Quiz {
   id: string;
+  slug?: string; // Identifiant original conservé lors de l'import Firebase
   title: string;
   description: string;
   category: string;
@@ -263,6 +264,7 @@ export interface FidelityScore {
 // Nouveaux types pour le système de niveaux
 export interface Course {
   id: string;
+  slug?: string; // Identifiant original conservé lors de l'import Firebase
   title: string;
   level: number;
   color: string;

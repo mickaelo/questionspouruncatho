@@ -1,23 +1,25 @@
 {
   "expo": {
-    "name": "questionpouruncatho2",
-    "slug": "questionpouruncatho2",
+    "name": "questionspouruncatho",
+    "slug": "questionspouruncatho2",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "questionpouruncatho2",
+    "scheme": "questionspouruncatho",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.questionpouruncatho2"
+      "package": "com.anonymous.questionspouruncatho2"
     },
     "web": {
       "bundler": "metro",
@@ -25,6 +27,8 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
+      "@react-native-firebase/crashlytics",
+      "@react-native-google-signin/google-signin",
       "expo-router",
       [
         "expo-splash-screen",
@@ -35,10 +39,17 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "@react-native-google-signin/google-signin"
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "f57567ae-7a28-42e0-9338-8158c2b68b19"
+      }
+    },
+    "owner": "mottmann"
   }
 }

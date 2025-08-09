@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>762800880851-j40ms8vktotk8sjd58m9eporqmjctpu6.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.762800880851-j40ms8vktotk8sjd58m9eporqmjctpu6</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>762800880851-gkpdgv34rcm8iq10d81ihqs805p0guq1.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCxmWnLwsxDSKLoKF9Kv8sSeHZljn4oljE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>762800880851</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.anonymous.questionspouruncatho2</string>
+	<key>PROJECT_ID</key>
+	<string>questionspouruncatho</string>
+	<key>STORAGE_BUCKET</key>
+	<string>questionspouruncatho.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:762800880851:ios:7337e0cafb6d434f7be826</string>
+</dict>
+</plist>

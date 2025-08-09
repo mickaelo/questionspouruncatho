@@ -43,6 +43,28 @@ export function QuestionCard({
   const colors = Colors[colorScheme ?? 'light'];
   const insets = useSafeAreaInsets();
 
+  // Fonction pour obtenir le label du type de question
+  const getQuestionTypeLabel = (questionType: string) => {
+    switch (questionType) {
+      case 'multiple-choice':
+        return 'Choix multiple';
+      case 'single-choice':
+        return 'Choix unique';
+      case 'association':
+        return 'Association';
+      case 'sentence-reorder':
+        return 'Réorganisation';
+      case 'crossword':
+        return 'Mots fléchés';
+      case 'true-false':
+        return 'Vrai/Faux';
+      case 'quote-completion':
+        return 'Complétion';
+      default:
+        return questionType;
+    }
+  };
+
   // Couleurs pour différencier les associations
   const associationColors = [
     '#FF6B6B', // Rouge
@@ -858,14 +880,7 @@ export function QuestionCard({
                 </ThemedText>
               </View>
             )}
-            {question.catechism && (
-              <View style={styles.explanationReference}>
-                <IconSymbol name="doc.text" size={16} color={colors.tint} />
-                <ThemedText style={[styles.explanationReferenceText, { color: colors.tint }]}>
-                  {question.catechism}
-                </ThemedText>
-              </View>
-            )}
+
           </View>
         </ScrollView>
 
@@ -950,14 +965,7 @@ export function QuestionCard({
                 </ThemedText>
               </View>
             )}
-            {question.catechism && (
-              <View style={styles.explanationReference}>
-                <IconSymbol name="doc.text" size={16} color={colors.tint} />
-                <ThemedText style={[styles.explanationReferenceText, { color: colors.tint }]}>
-                  {question.catechism}
-                </ThemedText>
-              </View>
-            )}
+
           </View>
         </ScrollView>
 
@@ -989,9 +997,16 @@ export function QuestionCard({
       ]}
     >
       {/* Question - Fixe */}
-      <ThemedText type="subtitle" style={styles.question}>
-        {question.question}
-      </ThemedText>
+      <View style={styles.questionHeader}>
+        <ThemedText type="subtitle" style={styles.question}>
+          {question.question}
+        </ThemedText>
+        <View style={[styles.questionTypeBadge, { backgroundColor: colors.tint }]}>
+          <ThemedText style={[styles.questionTypeText, { color: colors.background }]}>
+            {getQuestionTypeLabel(question.questionType)}
+          </ThemedText>
+        </View>
+      </View>
 
       {/* Réponses scrollables */}
       <ScrollView
@@ -1031,10 +1046,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     zIndex: 1,
   },
+  questionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 20,
+    gap: 12,
+  },
   question: {
     fontSize: 18,
-    marginBottom: 20,
     lineHeight: 24,
+    flex: 1,
+  },
+  questionTypeBadge: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 12,
+    minWidth: 80,
+    alignItems: 'center',
+  },
+  questionTypeText: {
+    fontSize: 12,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   scrollView: {
     flex: 1,

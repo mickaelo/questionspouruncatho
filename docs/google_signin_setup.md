@@ -51,7 +51,7 @@ Le fichier `app.json` a été configuré avec :
 ### 4. Configuration Google Cloud Console
 
 #### Client OAuth 2.0 Android
-- **Package name** : `com.anonymous.questionpouruncatho2`
+- **Package name** : `com.anonymous.questionspouruncatho`
 - **SHA-1 fingerprint** : `AE:10:DD:74:96:F6:98:D5:51:4F:2A:65:35:6A:DF:28:3D:90:C0:C8`
 - **Client ID** : `9483993562-fvk8nb3l2uie5hh0iot7nk7t1melir3h.apps.googleusercontent.com`
 
@@ -59,7 +59,7 @@ Le fichier `app.json` a été configuré avec :
 - **Client ID** : `9483993562-09gt4nvdru9bcapscbevfngn3i37ohco.apps.googleusercontent.com`
 - **Authorized redirect URIs** : 
   ```
-  questionpouruncatho2://auth/callback
+  questionspouruncatho://auth/callback
   exp://localhost:19000/--/auth/callback
   ```
 

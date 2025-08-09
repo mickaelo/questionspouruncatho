@@ -7,7 +7,7 @@ import { AuthUser, SSOLoginResult } from '../types/auth';
 
 // Configuration des redirections
 const redirectUri = AuthSession.makeRedirectUri({
-  scheme: 'questionpouruncatho2',
+  scheme: 'questionspouruncatho',
   path: 'auth/callback',
 });
 

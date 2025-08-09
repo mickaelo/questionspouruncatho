@@ -18,7 +18,7 @@ Le hook `useAuth` a été modifié pour :
 #### Configuration Google OAuth
 
 1. **Client ID** : Utilise le client ID configuré dans `config/auth.ts`
-2. **Redirect URI** : Utilise le schéma `questionpouruncatho2://auth/callback`
+2. **Redirect URI** : Utilise le schéma `questionspouruncatho://auth/callback`
 3. **Endpoints OAuth** : Utilise les endpoints configurés dans `config/auth.ts`
 
 #### Configuration Expo
@@ -30,7 +30,7 @@ Le plugin `expo-auth-session` a été ajouté dans `app.json` avec le schéma de
 1. L'utilisateur clique sur "Se connecter avec Google"
 2. `expo-auth-session` ouvre le navigateur avec l'URL d'autorisation Google
 3. L'utilisateur s'authentifie sur Google
-4. Google redirige vers `questionpouruncatho2://auth/callback`
+4. Google redirige vers `questionspouruncatho://auth/callback`
 5. L'app récupère le code d'autorisation
 6. Le code est échangé contre un token d'accès
 7. Les informations utilisateur sont récupérées via l'API Google
@@ -51,7 +51,7 @@ Pour que l'authentification fonctionne, vous devez configurer dans Google Cloud 
 
 #### 4.2 Configuration du client Android
 
-**Package name :** `com.anonymous.questionpouruncatho2`
+**Package name :** `com.anonymous.questionspouruncatho`
 
 **SHA-1 fingerprint :** `AE:10:DD:74:96:F6:98:D5:51:4F:2A:65:35:6A:DF:28:3D:90:C0:C8`
 
@@ -63,7 +63,7 @@ Pour que l'authentification fonctionne, vous devez configurer dans Google Cloud 
 
 Ajoutez cette URI dans la section "Authorized redirect URIs" :
 ```
-questionpouruncatho2://auth/callback
+questionspouruncatho://auth/callback
 ```
 
 ### 5. Obtenir le SHA-1 fingerprint
@@ -97,7 +97,7 @@ Pour tester l'authentification Google sur Android :
 ### 7. Dépannage
 
 #### Erreur "redirect_uri_mismatch"
-- Vérifier que l'URI de redirection dans Google Cloud Console correspond exactement à `questionpouruncatho2://auth/callback`
+- Vérifier que l'URI de redirection dans Google Cloud Console correspond exactement à `questionspouruncatho://auth/callback`
 
 #### Erreur "invalid_client"
 - Vérifier que le client ID dans `config/auth.ts` correspond à celui de Google Cloud Console
@@ -115,20 +115,20 @@ Cette erreur est très courante sur Android. Voici les solutions par ordre de pr
 
 **2. Vérifier la configuration Google Cloud Console**
 - Le client OAuth doit être de type **Android** (pas Web)
-- Le package name doit être exactement : `com.anonymous.questionpouruncatho2`
+- Le package name doit être exactement : `com.anonymous.questionspouruncatho`
 - Le SHA-1 doit correspondre au keystore utilisé
 
 **3. Vérifier les URI de redirection autorisés**
 - Dans Google Cloud Console > Credentials > OAuth 2.0 Client IDs
 - Ajouter ces URI :
   ```
-  questionpouruncatho2://auth/callback
+  questionspouruncatho://auth/callback
   exp://localhost:19000/--/auth/callback
   ```
 
 **4. Tester avec Expo Go vs Build natif**
 - **Expo Go** : Utilise le proxy Expo (`exp://localhost:19000/--/auth/callback`)
-- **Build natif** : Utilise le schéma natif (`questionpouruncatho2://auth/callback`)
+- **Build natif** : Utilise le schéma natif (`questionspouruncatho://auth/callback`)
 
 **5. Vérifier les paramètres OAuth**
 - L'URL d'autorisation doit être : `https://accounts.google.com/o/oauth2/v2/auth`
@@ -146,7 +146,7 @@ Si l'erreur persiste, essayer de :
 
 #### L'authentification ne se lance pas
 - Vérifier que `expo-auth-session` est bien installé et configuré
-- Vérifier que le schéma `questionpouruncatho2` est bien configuré dans `app.json`
+- Vérifier que le schéma `questionspouruncatho` est bien configuré dans `app.json`
 
 ### 8. Avantages de cette solution
 
@@ -165,7 +165,7 @@ Si l'erreur persiste, essayer de :
 
 ### 10. Informations spécifiques à ce projet
 
-**Package name :** `com.anonymous.questionpouruncatho2`
+**Package name :** `com.anonymous.questionspouruncatho`
 **SHA-1 Debug :** `AE:10:DD:74:96:F6:98:D5:51:4F:2A:65:35:6A:DF:28:3D:90:C0:C8`
 **Client ID Android :** `9483993562-fvk8nb3l2uie5hh0iot7nk7t1melir3h.apps.googleusercontent.com`
 **Client ID Web :** `9483993562-09gt4nvdru9bcapscbevfngn3i37ohco.apps.googleusercontent.com`
@@ -173,4 +173,4 @@ Si l'erreur persiste, essayer de :
 **Auth URI :** `https://accounts.google.com/o/oauth2/v2/auth`
 **Token URI :** `https://oauth2.googleapis.com/token`
 **Auth Provider X509 Cert URL :** `https://www.googleapis.com/oauth2/v1/certs`
-**Redirect URI :** `questionpouruncatho2://auth/callback` 
+**Redirect URI :** `questionspouruncatho://auth/callback` 
