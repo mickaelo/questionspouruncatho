@@ -12,6 +12,7 @@ import '@/config/firebase';
 
 import { GlobalLoadingBar } from '@/components/GlobalLoadingBar';
 import { QuizDataProvider } from '@/components/QuizDataProvider';
+import { HelpSystemProvider } from '@/contexts/HelpSystemContext';
 import { LoadingBarProvider } from '@/contexts/LoadingBarContext';
 import { useAuth } from '@/hooks/useAuth';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -48,9 +49,10 @@ export default function RootLayout() {
     <SafeAreaProvider>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <LoadingBarProvider>
-          <QuizDataProvider>
-            <GlobalLoadingBar />
-            <Stack>
+          <HelpSystemProvider enableContextualHelp={true}>
+            <QuizDataProvider>
+              <GlobalLoadingBar />
+              <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
               <Stack.Screen name="auth" options={{ headerShown: false }} />
               <Stack.Screen name="quiz/[id]" options={{ title: 'Modifier la question', headerShown: false }} />
@@ -66,7 +68,8 @@ export default function RootLayout() {
               <Stack.Screen name="admin/question-edit/[id]" options={{ title: 'Modifier la question', headerShown: false }} />
               <Stack.Screen name="+not-found" />
             </Stack>
-          </QuizDataProvider>
+            </QuizDataProvider>
+          </HelpSystemProvider>
         </LoadingBarProvider>
       </ThemeProvider>
     </SafeAreaProvider>

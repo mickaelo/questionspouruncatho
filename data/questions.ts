@@ -1,4 +1,4 @@
-import { Question, Quiz } from '../types/quiz';
+import { Course, Question, Quiz } from '../types/quiz';
 // ========================================
 // QUESTIONS PAR CATÉGORIE ET NIVEAU
 // ========================================
@@ -16287,6 +16287,1316 @@ export function getQuizzesByCategory(category: string, userLevel: number, isAdmi
     return quiz.category === category;
   });
 }
+// ================================
+// COURS SUR LA MESSE
+// ================================
+
+// Quiz 1: Les parties de la messe
+const messePartiesQuestions: Question[] = [
+  {
+    id: 'messe-parties-1',
+    question: 'Quelle est la première partie de la messe appelée ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Liturgie de la Parole', 'Rites initiaux', 'Liturgie eucharistique', 'Rites de conclusion'],
+    correctAnswer: 1,
+    explanation: 'Les rites initiaux ouvrent la célébration et préparent l\'assemblée à entendre la Parole et à célébrer l\'Eucharistie.'
+  },
+  {
+    id: 'messe-parties-2',
+    question: 'Que signifie "Kyrie eleison" ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Gloire à Dieu', 'Seigneur, prends pitié', 'Paix sur la terre', 'Alléluia'],
+    correctAnswer: 1,
+    explanation: '"Kyrie eleison" est une expression grecque qui signifie "Seigneur, prends pitié".'
+  },
+  {
+    id: 'messe-parties-3',
+    question: 'Combien de lectures y a-t-il généralement le dimanche ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Une seule', 'Deux', 'Trois', 'Quatre'],
+    correctAnswer: 2,
+    explanation: 'Le dimanche, il y a généralement trois lectures : une de l\'Ancien Testament, une du Nouveau Testament (épîtres) et l\'Évangile.'
+  },
+  {
+    id: 'messe-parties-4',
+    question: 'Quel est le moment central de la messe ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['L\'homélie', 'La consécration', 'Le chant d\'entrée', 'La bénédiction finale'],
+    correctAnswer: 1,
+    explanation: 'La consécration est le moment central où le pain et le vin deviennent le Corps et le Sang du Christ.'
+  },
+  {
+    id: 'messe-parties-5',
+    question: 'Que dit le prêtre pendant la consécration ?',
+    questionType: 'multiple-choice' as const,
+    difficulty: 'moyen' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      '"Ceci est mon Corps livré pour vous"',
+      '"Ceci est la coupe de mon Sang"',
+      '"Vous ferez cela en mémoire de moi"',
+      '"Gloire à Dieu au plus haut des cieux"'
+    ],
+    correctAnswer: [0, 1, 2],
+    multipleCorrectAnswers: true,
+    explanation: 'Pendant la consécration, le prêtre répète les paroles du Christ lors de la Dernière Cène.'
+  },
+  {
+    id: 'messe-parties-6',
+    question: 'Qu\'est-ce que l\'anamnèse ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Le chant d\'entrée',
+      'La prière qui fait mémoire de la Passion, Résurrection et Ascension',
+      'La bénédiction finale',
+      'La lecture de l\'Évangile'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'anamnèse est la prière qui fait mémoire des mystères du salut : Passion, mort, Résurrection et Ascension du Christ.'
+  },
+  {
+    id: 'messe-parties-7',
+    question: 'Quand dit-on le "Notre Père" dans la messe ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Avant les lectures',
+      'Après la consécration',
+      'Pendant l\'offertoire',
+      'À la fin de la messe'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le "Notre Père" est récité après la prière eucharistique, avant la communion.'
+  },
+  {
+    id: 'messe-parties-8',
+    question: 'Que signifie "Amen" ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Merci', 'Oui, c\'est vrai', 'Au revoir', 'Pardon'],
+    correctAnswer: 1,
+    explanation: '"Amen" signifie "Oui, c\'est vrai" ou "Qu\'il en soit ainsi", exprimant notre adhésion à ce qui vient d\'être dit.'
+  },
+  {
+    id: 'messe-parties-9',
+    question: 'Quelles sont les quatre parties principales de la messe ?',
+    questionType: 'multiple-choice' as const,
+    difficulty: 'moyen' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Rites initiaux',
+      'Liturgie de la Parole',
+      'Liturgie eucharistique',
+      'Rites de conclusion'
+    ],
+    correctAnswer: [0, 1, 2, 3],
+    multipleCorrectAnswers: true,
+    explanation: 'La messe se divise en quatre parties : rites initiaux, liturgie de la Parole, liturgie eucharistique et rites de conclusion.'
+  },
+  {
+    id: 'messe-parties-10',
+    question: 'Qu\'est-ce que la doxologie ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Une lecture de l\'Évangile',
+      'La prière finale "Par lui, avec lui et en lui..."',
+      'Le chant d\'entrée',
+      'La bénédiction du pain'
+    ],
+    correctAnswer: 1,
+    explanation: 'La doxologie est la prière finale de la prière eucharistique : "Par lui, avec lui et en lui, à toi Dieu le Père tout-puissant..."'
+  },
+  {
+    id: 'messe-parties-11',
+    question: 'Que fait l\'assemblée après l\'Évangile ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Elle chante', 'Elle s\'assoit pour l\'homélie', 'Elle sort', 'Elle communie'],
+    correctAnswer: 1,
+    explanation: 'Après l\'Évangile, l\'assemblée s\'assoit pour écouter l\'homélie du prêtre qui explique les lectures.'
+  },
+  {
+    id: 'messe-parties-12',
+    question: 'À quel moment dit-on le Credo ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Avant les lectures',
+      'Après l\'homélie',
+      'Pendant l\'offertoire',
+      'Avant la communion'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le Credo est récité après l\'homélie, comme profession de foi en réponse à la Parole de Dieu.'
+  },
+  {
+    id: 'messe-parties-13',
+    question: 'Qu\'apporte-t-on pendant l\'offertoire ?',
+    questionType: 'multiple-choice' as const,
+    difficulty: 'moyen' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Le pain', 'Le vin', 'L\'eau', 'Les fleurs'],
+    correctAnswer: [0, 1, 2],
+    multipleCorrectAnswers: true,
+    explanation: 'Pendant l\'offertoire, on apporte le pain, le vin et un peu d\'eau qui seront consacrés.'
+  },
+  {
+    id: 'messe-parties-14',
+    question: 'Que dit l\'assemblée après "Le Corps du Christ" ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Merci', 'Amen', 'Alléluia', 'Kyrie'],
+    correctAnswer: 1,
+    explanation: 'Quand le ministre dit "Le Corps du Christ", la personne répond "Amen" avant de recevoir la communion.'
+  },
+  {
+    id: 'messe-parties-15',
+    question: 'Qu\'est-ce que l\'oraison ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Un chant liturgique',
+      'Une prière officielle du prêtre',
+      'Une lecture biblique',
+      'Un geste liturgique'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'oraison est une prière officielle prononcée par le prêtre au nom de toute l\'assemblée.'
+  }
+];
+
+// Quiz 2: Reconnaissance d'objets liturgiques
+const messeObjetsQuestions: Question[] = [
+  {
+    id: 'messe-objets-1',
+    question: 'Comment appelle-t-on la coupe utilisée pour le vin consacré ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Calice', 'Ciboire', 'Patène', 'Burettes'],
+    correctAnswer: 0,
+    explanation: 'Le calice est la coupe sacrée dans laquelle le vin est consacré et devient le Sang du Christ.'
+  },
+  {
+    id: 'messe-objets-2',
+    question: 'Qu\'est-ce qu\'un ciboire ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Un vase pour les fleurs',
+      'Un récipient pour les hosties consacrées',
+      'Une coupe pour le vin',
+      'Un livre de prières'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le ciboire est le vase sacré qui contient les hosties consacrées pour la communion.'
+  },
+  {
+    id: 'messe-objets-3',
+    question: 'À quoi sert la patène ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'À tenir le calice',
+      'À poser l\'hostie qui sera consacrée',
+      'À contenir l\'eau bénite',
+      'À porter les burettes'
+    ],
+    correctAnswer: 1,
+    explanation: 'La patène est le petit plat doré sur lequel est posée l\'hostie qui sera consacrée par le prêtre.'
+  },
+  {
+    id: 'messe-objets-4',
+    question: 'Que contiennent les burettes ?',
+    questionType: 'multiple-choice' as const,
+    difficulty: 'moyen' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Du vin', 'De l\'eau', 'De l\'huile sainte', 'Du parfum'],
+    correctAnswer: [0, 1],
+    multipleCorrectAnswers: true,
+    explanation: 'Les burettes contiennent le vin et l\'eau nécessaires pour la célébration eucharistique.'
+  },
+  {
+    id: 'messe-objets-5',
+    question: 'Comment appelle-t-on le linge blanc qui recouvre le calice ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: ['Corporal', 'Purificatoire', 'Pale', 'Manuterge'],
+    correctAnswer: 2,
+    explanation: 'La pale est le linge carré rigide qui recouvre le calice avant et après la consécration.'
+  },
+  {
+    id: 'messe-objets-6',
+    question: 'Qu\'est-ce que le corporal ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Un vêtement liturgique',
+      'Le linge blanc étendu sur l\'autel',
+      'Un livre de chants',
+      'Un objet décoratif'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le corporal est le linge blanc carré étendu sur l\'autel sur lequel sont posés le calice et la patène.'
+  },
+  {
+    id: 'messe-objets-7',
+    question: 'À quoi sert l\'encensoir ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'À porter les livres',
+      'À contenir et brûler l\'encens',
+      'À sonner pendant la messe',
+      'À éclairer l\'autel'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'encensoir est utilisé pour brûler l\'encens, dont la fumée monte vers Dieu comme symbole de prière.'
+  },
+  {
+    id: 'messe-objets-8',
+    question: 'Quels sont les livres liturgiques principaux ?',
+    questionType: 'multiple-choice' as const,
+    difficulty: 'moyen' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: ['Missel', 'Lectionnaire', 'Évangéliaire', 'Dictionnaire'],
+    correctAnswer: [0, 1, 2],
+    multipleCorrectAnswers: true,
+    explanation: 'Les principaux livres liturgiques sont le Missel (prières), le Lectionnaire (lectures) et l\'Évangéliaire (Évangiles).'
+  },
+  {
+    id: 'messe-objets-9',
+    question: 'Comment appelle-t-on la petite clochette de la messe ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Carillon', 'Clarine', 'Sonnette de consécration', 'Grelot'],
+    correctAnswer: 2,
+    explanation: 'La sonnette de consécration sonne aux moments les plus solennels de la messe, notamment pendant la consécration.'
+  },
+  {
+    id: 'messe-objets-10',
+    question: 'Qu\'est-ce que l\'ambon ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'L\'autel',
+      'Le pupitre où sont proclamées les lectures',
+      'Le tabernacle',
+      'Le confessionnal'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'ambon est le pupitre ou la tribune d\'où sont proclamées les lectures, les psaumes et l\'Évangile.'
+  },
+  {
+    id: 'messe-objets-11',
+    question: 'Que contient le tabernacle ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Les vêtements liturgiques',
+      'Les hosties consacrées',
+      'Les livres saints',
+      'L\'huile sainte'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le tabernacle est l\'armoire sacrée où sont conservées les hosties consacrées entre les célébrations.'
+  },
+  {
+    id: 'messe-objets-12',
+    question: 'Comment appelle-t-on les chandeliers de l\'autel ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: ['Flambeaux', 'Candélabres', 'Cierges pascaux', 'Luminaires'],
+    correctAnswer: 1,
+    explanation: 'Les candélabres sont les chandeliers placés sur ou près de l\'autel pour éclairer la célébration.'
+  },
+  {
+    id: 'messe-objets-13',
+    question: 'Qu\'est-ce que la crédence ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Un siège pour le prêtre',
+      'Une petite table près de l\'autel',
+      'Un coussin pour s\'agenouiller',
+      'Un rideau décoratif'
+    ],
+    correctAnswer: 1,
+    explanation: 'La crédence est la petite table près de l\'autel où sont placés les objets liturgiques avant et après leur usage.'
+  },
+  {
+    id: 'messe-objets-14',
+    question: 'À quoi sert la navette ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'À transporter les livres',
+      'À contenir l\'encens en grains',
+      'À porter l\'eau bénite',
+      'À ranger les hosties'
+    ],
+    correctAnswer: 1,
+    explanation: 'La navette est le petit récipient en forme de bateau qui contient l\'encens en grains.'
+  },
+  {
+    id: 'messe-objets-15',
+    question: 'Quels objets sont nécessaires pour la purification ?',
+    questionType: 'multiple-choice' as const,
+    difficulty: 'moyen' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: ['Purificatoire', 'Manuterge', 'Eau', 'Vin'],
+    correctAnswer: [0, 1, 2],
+    multipleCorrectAnswers: true,
+    explanation: 'Pour la purification des vases sacrés, on utilise le purificatoire (linge), le manuterge (essuie-mains) et de l\'eau.'
+  }
+];
+
+// Quiz 3: Les prières et réponses
+const messePrieresQuestions: Question[] = [
+  {
+    id: 'messe-prieres-1',
+    question: 'Que répond l\'assemblée après "Le Seigneur soit avec vous" ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Amen', 'Et avec votre esprit', 'Gloire à Dieu', 'Alléluia'],
+    correctAnswer: 1,
+    explanation: 'À la salutation "Le Seigneur soit avec vous", l\'assemblée répond "Et avec votre esprit".'
+  },
+  {
+    id: 'messe-prieres-2',
+    question: 'Complétez: "Gloire à Dieu au plus haut des cieux et..." ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Alléluia sur la terre',
+      'Paix sur la terre aux hommes qu\'il aime',
+      'Joie dans le monde entier',
+      'Bénédiction à tous'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le Gloria continue par "Gloire à Dieu au plus haut des cieux et paix sur la terre aux hommes qu\'il aime".'
+  },
+  {
+    id: 'messe-prieres-3',
+    question: 'Quelle est la réponse traditionnelle au Psaume ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Amen', 'Le refrain chanté', 'Alléluia', 'Merci Seigneur'],
+    correctAnswer: 1,
+    explanation: 'Pendant le Psaume responsorial, l\'assemblée répond en chantant le refrain proposé.'
+  },
+  {
+    id: 'messe-prieres-4',
+    question: 'Que dit-on avant la lecture de l\'Évangile ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Amen', 'Alléluia', 'Kyrie eleison', 'Gloria'],
+    correctAnswer: 1,
+    explanation: 'Avant l\'Évangile, on chante l\'Alléluia (sauf en Carême où il est remplacé par une autre acclamation).'
+  },
+  {
+    id: 'messe-prieres-5',
+    question: 'Quelles sont les paroles de la consécration du pain ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      '"Ceci est mon Corps livré pour vous"',
+      '"Ceci est le pain de vie"',
+      '"Voici l\'Agneau de Dieu"',
+      '"Prenez et mangez"'
+    ],
+    correctAnswer: 0,
+    explanation: 'Les paroles de consécration du pain sont : "Ceci est mon Corps livré pour vous".'
+  },
+  {
+    id: 'messe-prieres-6',
+    question: 'Que dit l\'assemblée après "Prions le Seigneur" ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Nous te prions, ô Seigneur',
+      'Écoute-nous, Seigneur',
+      'Amen',
+      'Alléluia'
+    ],
+    correctAnswer: 0,
+    explanation: 'Après "Prions le Seigneur" pendant la prière universelle, l\'assemblée répond "Nous te prions, ô Seigneur".'
+  },
+  {
+    id: 'messe-prieres-7',
+    question: 'Complétez la prière: "Notre Père qui es aux cieux..." ?',
+    questionType: 'multiple-choice' as const,
+    difficulty: 'moyen' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Que ton nom soit sanctifié',
+      'Que ton règne vienne',
+      'Que ta volonté soit faite',
+      'Que ta gloire soit célébrée'
+    ],
+    correctAnswer: [0, 1, 2],
+    multipleCorrectAnswers: true,
+    explanation: 'Le Notre Père continue par ces trois demandes : sanctification du nom, venue du règne, accomplissement de la volonté.'
+  },
+  {
+    id: 'messe-prieres-8',
+    question: 'Que dit le prêtre avant la communion ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      '"Prenez et mangez"',
+      '"Voici l\'Agneau de Dieu"',
+      '"Ceci est mon Corps"',
+      '"Allez dans la paix du Christ"'
+    ],
+    correctAnswer: 1,
+    explanation: 'Avant la communion, le prêtre présente l\'Eucharistie en disant "Voici l\'Agneau de Dieu qui enlève le péché du monde".'
+  },
+  {
+    id: 'messe-prieres-9',
+    question: 'Quelle est la réponse à "Voici l\'Agneau de Dieu" ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      '"Amen"',
+      '"Seigneur, je ne suis pas digne de te recevoir"',
+      '"Alléluia"',
+      '"Merci Seigneur"'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'assemblée répond : "Seigneur, je ne suis pas digne de te recevoir, mais dis seulement une parole et je serai guéri".'
+  },
+  {
+    id: 'messe-prieres-10',
+    question: 'Que dit-on après la communion ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Une prière de remerciement',
+      'Le Gloria',
+      'Le Credo',
+      'L\'Alléluia'
+    ],
+    correctAnswer: 0,
+    explanation: 'Après la communion, on observe un temps de silence puis on récite une prière de remerciement.'
+  },
+  {
+    id: 'messe-prieres-11',
+    question: 'Quand dit-on "Rendons grâce à Dieu" ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'À la fin de chaque lecture',
+      'Avant l\'Évangile',
+      'Pendant l\'offertoire',
+      'À la bénédiction finale'
+    ],
+    correctAnswer: 0,
+    explanation: 'Après chaque lecture (sauf l\'Évangile), le lecteur dit "Parole du Seigneur" et l\'assemblée répond "Nous rendons grâce à Dieu".'
+  },
+  {
+    id: 'messe-prieres-12',
+    question: 'Que répond l\'assemblée après l\'Évangile ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      '"Rendons grâce à Dieu"',
+      '"Louange à toi, Seigneur Jésus"',
+      '"Amen"',
+      '"Alléluia"'
+    ],
+    correctAnswer: 1,
+    explanation: 'Après l\'Évangile, l\'assemblée répond "Louange à toi, Seigneur Jésus" à "Acclamons la Parole de Dieu".'
+  },
+  {
+    id: 'messe-prieres-13',
+    question: 'Quelle prière dit-on pendant l\'offertoire ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Le Notre Père',
+      '"Tu es béni, Dieu de l\'univers"',
+      'Le Gloria',
+      'Le Credo'
+    ],
+    correctAnswer: 1,
+    explanation: 'Pendant l\'offertoire, le prêtre dit la prière "Tu es béni, Dieu de l\'univers" sur le pain et le vin.'
+  },
+  {
+    id: 'messe-prieres-14',
+    question: 'Complétez: "Saint, Saint, Saint, le Seigneur..." ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Dieu de tendresse',
+      'Dieu de l\'univers',
+      'Dieu de miséricorde',
+      'Dieu tout-puissant'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le Sanctus continue par "Saint, Saint, Saint, le Seigneur, Dieu de l\'univers".'
+  },
+  {
+    id: 'messe-prieres-15',
+    question: 'Quelle est la formule de bénédiction finale ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      '"Allez dans la paix du Christ"',
+      '"Que Dieu tout-puissant vous bénisse"',
+      '"Rendons grâce à Dieu"',
+      '"Au nom du Père, du Fils et du Saint-Esprit"'
+    ],
+    correctAnswer: 1,
+    explanation: 'La bénédiction finale commence généralement par "Que Dieu tout-puissant vous bénisse, le Père, le Fils et le Saint-Esprit".'
+  }
+];
+
+// Quiz 4: Histoire et théologie de la messe
+const messeHistoireQuestions: Question[] = [
+  {
+    id: 'messe-histoire-1',
+    question: 'Quel événement de la vie de Jésus fonde l\'Eucharistie ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['La multiplication des pains', 'La Dernière Cène', 'Les noces de Cana', 'La Résurrection'],
+    correctAnswer: 1,
+    explanation: 'L\'Eucharistie trouve son origine dans la Dernière Cène où Jésus a institué ce sacrement.'
+  },
+  {
+    id: 'messe-histoire-2',
+    question: 'Dans quel livre de la Bible trouve-t-on le récit de l\'institution de l\'Eucharistie ?',
+    questionType: 'multiple-choice' as const,
+    difficulty: 'moyen' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: ['Matthieu', 'Marc', 'Luc', 'Jean'],
+    correctAnswer: [0, 1, 2],
+    multipleCorrectAnswers: true,
+    explanation: 'Le récit de l\'institution se trouve dans les évangiles de Matthieu, Marc et Luc, ainsi que dans la première lettre aux Corinthiens.'
+  },
+  {
+    id: 'messe-histoire-3',
+    question: 'Que signifie le mot "Eucharistie" ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Partage', 'Action de grâce', 'Communion', 'Sacrifice'],
+    correctAnswer: 1,
+    explanation: 'Eucharistie vient du grec "eucharistein" qui signifie "rendre grâce", "remercier".'
+  },
+  {
+    id: 'messe-histoire-4',
+    question: 'Qui a fixé la structure actuelle de la messe ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Le Concile Vatican II',
+      'Saint Pie V',
+      'Le pape Grégoire le Grand',
+      'Saint Justin'
+    ],
+    correctAnswer: 0,
+    explanation: 'Le Concile Vatican II (1962-1965) a réformé la liturgie et fixé la structure actuelle de la messe.'
+  },
+  {
+    id: 'messe-histoire-5',
+    question: 'Dans les premiers siècles, comment appelait-on la messe ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'La Fraction du pain',
+      'La Sainte Communion',
+      'La Liturgie divine',
+      'Le Saint Sacrifice'
+    ],
+    correctAnswer: 0,
+    explanation: 'Les premiers chrétiens appelaient l\'Eucharistie "la Fraction du pain", en référence au geste de Jésus.'
+  },
+  {
+    id: 'messe-histoire-6',
+    question: 'Quel est le sens profond de l\'Eucharistie selon la foi catholique ?',
+    questionType: 'multiple-choice' as const,
+    difficulty: 'moyen' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Mémorial de la Passion',
+      'Présence réelle du Christ',
+      'Anticipation du banquet céleste',
+      'Simple symbole'
+    ],
+    correctAnswer: [0, 1, 2],
+    multipleCorrectAnswers: true,
+    explanation: 'L\'Eucharistie est à la fois mémorial de la Passion, présence réelle du Christ et anticipation du banquet céleste.'
+  },
+  {
+    id: 'messe-histoire-7',
+    question: 'Que signifie "transsubstantiation" ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 3,
+    points: 20,
+    options: [
+      'Le changement d\'apparence du pain et du vin',
+      'Le changement de substance du pain et du vin',
+      'La bénédiction du pain et du vin',
+      'Le partage du pain et du vin'
+    ],
+    correctAnswer: 1,
+    explanation: 'La transsubstantiation est le changement de la substance du pain et du vin en Corps et Sang du Christ.'
+  },
+  {
+    id: 'messe-histoire-8',
+    question: 'Pourquoi la messe est-elle appelée "sacrifice" ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Parce qu\'on offre du pain et du vin',
+      'Parce qu\'elle rend présent le sacrifice du Christ',
+      'Parce qu\'on fait un effort',
+      'Parce qu\'on donne de l\'argent'
+    ],
+    correctAnswer: 1,
+    explanation: 'La messe est un sacrifice car elle rend présent de manière non sanglante le sacrifice unique du Christ sur la croix.'
+  },
+  {
+    id: 'messe-histoire-9',
+    question: 'Qu\'est-ce que la communion sous les deux espèces ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Recevoir deux hosties',
+      'Recevoir le pain et le vin consacrés',
+      'Communier deux fois',
+      'Recevoir la communion à genoux et debout'
+    ],
+    correctAnswer: 1,
+    explanation: 'La communion sous les deux espèces consiste à recevoir à la fois le Corps (pain) et le Sang (vin) du Christ.'
+  },
+  {
+    id: 'messe-histoire-10',
+    question: 'Quel concile a défini la doctrine eucharistique contre les protestants ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 3,
+    points: 20,
+    options: [
+      'Concile de Nicée',
+      'Concile de Trente',
+      'Concile Vatican I',
+      'Concile Vatican II'
+    ],
+    correctAnswer: 1,
+    explanation: 'Le Concile de Trente (1545-1563) a précisé la doctrine eucharistique face aux contestations protestantes.'
+  },
+  {
+    id: 'messe-histoire-11',
+    question: 'Pourquoi utilise-t-on du pain azyme (sans levain) ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'C\'est plus pratique',
+      'Jésus a utilisé du pain azyme à la Dernière Cène',
+      'C\'est plus pur',
+      'C\'est la tradition romaine'
+    ],
+    correctAnswer: 1,
+    explanation: 'On utilise du pain azyme car Jésus a institué l\'Eucharistie pendant la Pâque juive avec du pain sans levain.'
+  },
+  {
+    id: 'messe-histoire-12',
+    question: 'Que représente l\'ajout d\'eau dans le vin ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'La dilution nécessaire',
+      'L\'union de la divinité et de l\'humanité du Christ',
+      'La purification',
+      'Une tradition pratique'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'ajout d\'eau dans le vin symbolise l\'union intime de la divinité et de l\'humanité dans le Christ.'
+  },
+  {
+    id: 'messe-histoire-13',
+    question: 'Quel saint a écrit la première description détaillée de la messe ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 3,
+    points: 20,
+    options: ['Saint Justin', 'Saint Augustin', 'Saint Jérôme', 'Saint Ambroise'],
+    correctAnswer: 0,
+    explanation: 'Saint Justin le Martyr (vers 150) a laissé la première description détaillée de la célébration eucharistique.'
+  },
+  {
+    id: 'messe-histoire-14',
+    question: 'Pourquoi la messe est-elle le "sommet" de la vie chrétienne ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'C\'est le plus beau moment',
+      'Toute la vie chrétienne y converge et en découle',
+      'C\'est obligatoire',
+      'C\'est le plus ancien sacrement'
+    ],
+    correctAnswer: 1,
+    explanation: 'La messe est le sommet car toute la vie chrétienne y converge et en découle, selon Vatican II.'
+  },
+  {
+    id: 'messe-histoire-15',
+    question: 'Quelle est la différence entre messe et communion ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Il n\'y en a pas',
+      'La messe est la célébration complète, la communion en est un moment',
+      'La communion est plus importante',
+      'La messe est plus longue'
+    ],
+    correctAnswer: 1,
+    explanation: 'La messe est la célébration eucharistique complète, dont la communion est un moment particulier.'
+  }
+];
+
+// Quiz 5: Pratique et attitude
+const messePratiqueQuestions: Question[] = [
+  {
+    id: 'messe-pratique-1',
+    question: 'Comment doit-on se tenir pendant la consécration ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: ['Assis', 'Debout', 'À genoux', 'Comme on veut'],
+    correctAnswer: 2,
+    explanation: 'Pendant la consécration, l\'attitude traditionnelle est de s\'agenouiller en signe d\'adoration.'
+  },
+  {
+    id: 'messe-pratique-2',
+    question: 'Quand faut-il arriver à la messe ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Au début de l\'Évangile',
+      'Avant le début pour se préparer',
+      'Au moment de la communion',
+      'Peu importe'
+    ],
+    correctAnswer: 1,
+    explanation: 'Il convient d\'arriver avant le début de la messe pour se recueillir et se préparer à la célébration.'
+  },
+  {
+    id: 'messe-pratique-3',
+    question: 'Comment doit-on recevoir la communion ?',
+    questionType: 'multiple-choice' as const,
+    difficulty: 'moyen' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Dans la main',
+      'Sur la langue',
+      'Avec respect',
+      'En étant en état de grâce'
+    ],
+    correctAnswer: [0, 1, 2, 3],
+    multipleCorrectAnswers: true,
+    explanation: 'On peut recevoir la communion dans la main ou sur la langue, toujours avec respect et en étant en état de grâce.'
+  },
+  {
+    id: 'messe-pratique-4',
+    question: 'Que faire si on arrive en retard à la messe ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Repartir immédiatement',
+      'Entrer discrètement et participer',
+      'Attendre la fin',
+      'Faire du bruit pour se faire remarquer'
+    ],
+    correctAnswer: 1,
+    explanation: 'Si on arrive en retard, il faut entrer discrètement et participer à partir de ce moment.'
+  },
+  {
+    id: 'messe-pratique-5',
+    question: 'Combien de temps avant la messe doit-on jeûner ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: ['30 minutes', '1 heure', '3 heures', '24 heures'],
+    correctAnswer: 1,
+    explanation: 'Le jeûne eucharistique est d\'une heure avant la communion (sauf l\'eau et les médicaments).'
+  },
+  {
+    id: 'messe-pratique-6',
+    question: 'Quelles conditions pour recevoir la communion ?',
+    questionType: 'multiple-choice' as const,
+    difficulty: 'moyen' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Être baptisé catholique',
+      'Être en état de grâce',
+      'Avoir jeûné une heure',
+      'Avoir plus de 18 ans'
+    ],
+    correctAnswer: [0, 1, 2],
+    multipleCorrectAnswers: true,
+    explanation: 'Pour communier, il faut être baptisé catholique, en état de grâce et avoir jeûné une heure.'
+  },
+  {
+    id: 'messe-pratique-7',
+    question: 'Comment faire le signe de croix correctement ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Front, cœur, épaule gauche, épaule droite',
+      'Front, cœur, épaule droite, épaule gauche',
+      'Cœur, front, épaules',
+      'Peu importe l\'ordre'
+    ],
+    correctAnswer: 0,
+    explanation: 'Le signe de croix se fait : front, cœur, épaule gauche, épaule droite, en disant "Père, Fils, Saint-Esprit, Amen".'
+  },
+  {
+    id: 'messe-pratique-8',
+    question: 'Que faire pendant l\'homélie ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Lire autre chose',
+      'Écouter attentivement',
+      'Dormir',
+      'Sortir prendre l\'air'
+    ],
+    correctAnswer: 1,
+    explanation: 'Pendant l\'homélie, il faut écouter attentivement l\'explication de la Parole de Dieu.'
+  },
+  {
+    id: 'messe-pratique-9',
+    question: 'Comment se comporter pendant la quête ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Ignorer complètement',
+      'Donner selon ses moyens et sa générosité',
+      'Critiquer le montant demandé',
+      'Sortir pour éviter de donner'
+    ],
+    correctAnswer: 1,
+    explanation: 'La quête est un geste de partage : chacun donne selon ses moyens et sa générosité.'
+  },
+  {
+    id: 'messe-pratique-10',
+    question: 'Quelle attitude avoir pendant la prière eucharistique ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Lire son livre de prières',
+      'Suivre et participer intérieurement',
+      'Préparer sa sortie',
+      'Regarder son téléphone'
+    ],
+    correctAnswer: 1,
+    explanation: 'Pendant la prière eucharistique, il faut suivre et participer intérieurement à cette prière centrale.'
+  },
+  {
+    id: 'messe-pratique-11',
+    question: 'Pourquoi faut-il éteindre son téléphone ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'C\'est interdit par la loi',
+      'Par respect pour Dieu et les autres',
+      'Pour économiser la batterie',
+      'Le curé l\'exige'
+    ],
+    correctAnswer: 1,
+    explanation: 'On éteint son téléphone par respect pour Dieu, pour soi-même et pour les autres fidèles.'
+  },
+  {
+    id: 'messe-pratique-12',
+    question: 'Comment s\'habiller pour la messe ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Comme pour aller au travail',
+      'De façon simple et décente',
+      'Avec ses plus beaux habits',
+      'Peu importe'
+    ],
+    correctAnswer: 1,
+    explanation: 'Il convient de s\'habiller de façon simple et décente, en montrant du respect pour le lieu saint.'
+  },
+  {
+    id: 'messe-pratique-13',
+    question: 'Que faire après avoir reçu la communion ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Partir immédiatement',
+      'Retourner à sa place et prier',
+      'Discuter avec ses voisins',
+      'Sortir prendre l\'air'
+    ],
+    correctAnswer: 1,
+    explanation: 'Après la communion, on retourne à sa place pour un temps de prière et de recueillement.'
+  },
+  {
+    id: 'messe-pratique-14',
+    question: 'Pourquoi dit-on "Amen" avant de recevoir la communion ?',
+    questionType: 'single-choice' as const,
+    difficulty: 'facile' as const,
+    category: 'liturgie',
+    level: 2,
+    points: 15,
+    options: [
+      'Par politesse',
+      'Pour affirmer sa foi en la présence réelle',
+      'C\'est une tradition',
+      'Pour remercier le prêtre'
+    ],
+    correctAnswer: 1,
+    explanation: 'L\'"Amen" avant la communion est un acte de foi : on affirme croire que c\'est vraiment le Corps du Christ.'
+  },
+  {
+    id: 'messe-pratique-15',
+    question: 'Comment participer activement à la messe ?',
+    questionType: 'multiple-choice' as const,
+    difficulty: 'moyen' as const,
+    category: 'liturgie',
+    level: 1,
+    points: 10,
+    options: [
+      'Chanter les cantiques',
+      'Répondre aux prières',
+      'Écouter attentivement',
+      'Regarder sa montre'
+    ],
+    correctAnswer: [0, 1, 2],
+    multipleCorrectAnswers: true,
+    explanation: 'La participation active inclut le chant, les réponses aux prières et l\'écoute attentive.'
+  }
+];
+
+// Définition des quizzes sur la messe
+const messeQuizzes: Quiz[] = [
+  {
+    id: 'messe-parties',
+    title: 'Les parties de la messe',
+    description: 'Découvrez la structure et le déroulement de la célébration eucharistique',
+    category: 'liturgie',
+    level: 1,
+    questions: [], // Sera rempli après l'ajout des questions
+    passingScore: 70,
+    timeLimit: 15
+  },
+  {
+    id: 'messe-objets',
+    title: 'Objets liturgiques de la messe',
+    description: 'Apprenez à reconnaître et comprendre les objets sacrés utilisés pendant la messe',
+    category: 'liturgie',
+    level: 1,
+    questions: [], // Sera rempli après l'ajout des questions
+    passingScore: 70,
+    timeLimit: 20
+  },
+  {
+    id: 'messe-prieres',
+    title: 'Prières et réponses de la messe',
+    description: 'Maîtrisez les prières et réponses liturgiques de la célébration eucharistique',
+    category: 'liturgie',
+    level: 1,
+    questions: [], // Sera rempli après l'ajout des questions
+    passingScore: 70,
+    timeLimit: 18
+  },
+  {
+    id: 'messe-histoire',
+    title: 'Histoire et théologie de la messe',
+    description: 'Explorez les fondements historiques et théologiques de l\'Eucharistie',
+    category: 'liturgie',
+    level: 2,
+    questions: [], // Sera rempli après l'ajout des questions
+    passingScore: 75,
+    timeLimit: 25
+  },
+  {
+    id: 'messe-pratique',
+    title: 'Pratique et attitude à la messe',
+    description: 'Apprenez les bonnes attitudes et pratiques pour bien vivre la messe',
+    category: 'liturgie',
+    level: 1,
+    questions: [], // Sera rempli après l'ajout des questions
+    passingScore: 70,
+    timeLimit: 20
+  }
+];
+
+// Définition du cours sur la messe
+const messeCourse: Course = {
+  id: 'cours-messe',
+  title: 'La Sainte Messe',
+  level: 1,
+  color: '#8B5CF6', // Violet pour la liturgie
+  description: 'Un parcours complet pour comprendre et mieux vivre la célébration eucharistique, cœur de la foi catholique.',
+  targetAudience: [
+    'Fidèles souhaitant approfondir leur participation à la messe',
+    'Nouveaux chrétiens découvrant la liturgie',
+    'Servants d\'autel et ministres liturgiques'
+  ],
+  contentTypes: [
+    'Structure de la messe',
+    'Objets liturgiques et leur signification',
+    'Prières et réponses liturgiques',
+    'Histoire et théologie de l\'Eucharistie',
+    'Attitudes et pratiques spirituelles'
+  ],
+  requiredPoints: 0,
+  requiredQuizzes: 0,
+  requiredBadges: 0,
+  unlockedBadges: [],
+  quizzes: [], // Sera rempli après l'ajout des quizzes
+  challenges: []
+};
+
+// Ajout des nouvelles questions à la liste existante
+sampleQuestions.push(
+  ...messePartiesQuestions,
+  ...messeObjetsQuestions,
+  ...messePrieresQuestions,
+  ...messeHistoireQuestions,
+  ...messePratiqueQuestions
+);
+
+// Maintenant que les questions sont ajoutées, on peut remplir les quizzes
+messeQuizzes[0].questions = sampleQuestions.filter(q => 
+  q.id.startsWith('messe-parties-')
+);
+messeQuizzes[1].questions = sampleQuestions.filter(q => 
+  q.id.startsWith('messe-objets-')
+);
+messeQuizzes[2].questions = sampleQuestions.filter(q => 
+  q.id.startsWith('messe-prieres-')
+);
+messeQuizzes[3].questions = sampleQuestions.filter(q => 
+  q.id.startsWith('messe-histoire-')
+);
+messeQuizzes[4].questions = sampleQuestions.filter(q => 
+  q.id.startsWith('messe-pratique-')
+);
+
+// Et remplir le cours avec les quizzes
+messeCourse.quizzes = messeQuizzes;
+
+// Ajout des nouveaux quizzes à la liste existante
+sampleQuizzes.push(...messeQuizzes);
+
+// Déclaration et export du tableau des cours si non existant
+export const sampleCourses: Course[] = [];
+
+// Ajout du nouveau cours à la liste existante
+sampleCourses.push(messeCourse);
+
 export function getQuizzesByCourse(level: number, userLevel: number, isAdmin: boolean = false): Quiz[] {
   return sampleQuizzes.filter(quiz => {
     if (!isAdmin && quiz.level > userLevel) return false;

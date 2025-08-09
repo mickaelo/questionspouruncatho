@@ -10,7 +10,8 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "usesAppleSignIn": true
     },
     "android": {
       "googleServicesFile": "./google-services.json",
@@ -28,8 +29,9 @@
     },
     "plugins": [
       "@react-native-firebase/crashlytics",
-      "@react-native-google-signin/google-signin",
+      "expo-apple-authentication",
       "expo-router",
+      "expo-dev-client",
       [
         "expo-splash-screen",
         {

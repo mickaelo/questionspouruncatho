@@ -1,3 +1,4 @@
+import { AppleSignInButton } from '@/components/AppleSignInButton';
 import { SSOButton } from '@/components/SSOButton';
 import { SuccessToast } from '@/components/SuccessToast';
 import { ThemedText } from '@/components/ThemedText';
@@ -27,6 +28,7 @@ export default function LoginScreen() {
   const {
     loginWithGoogle,
     loginWithFacebook,
+    loginWithApple,
     loginWithEmail,
     skipLogin,
     isLoading,
@@ -58,6 +60,9 @@ export default function LoginScreen() {
           break;
         case 'facebook':
           result = await loginWithFacebook();
+          break;
+        case 'apple':
+          result = await loginWithApple();
           break;
         default:
           return;
@@ -187,6 +192,13 @@ export default function LoginScreen() {
         <SSOButton
           provider="google"
           onPress={() => handleSSOLogin('google')}
+          loading={isLoading}
+          disabled={isLoading}
+        />
+        
+        {/* Bouton Apple Sign-In (iOS uniquement) */}
+        <AppleSignInButton
+          onPress={() => handleSSOLogin('apple')}
           loading={isLoading}
           disabled={isLoading}
         />

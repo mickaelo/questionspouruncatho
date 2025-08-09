@@ -6,7 +6,7 @@ import { useColorScheme } from '../hooks/useColorScheme';
 import { ThemedText } from './ThemedText';
 
 interface SSOButtonProps {
-  provider: 'google' | 'facebook';
+  provider: 'google' | 'facebook' | 'apple';
   onPress: () => void;
   loading?: boolean;
   disabled?: boolean;
@@ -25,6 +25,13 @@ const providerConfig = {
     icon: 'facebook',
     color: '#1877F2',
     backgroundColor: '#1877F2',
+    textColor: '#FFFFFF',
+  },
+  apple: {
+    name: 'Apple',
+    icon: 'apple',
+    color: '#000000',
+    backgroundColor: '#000000',
     textColor: '#FFFFFF',
   }
 };

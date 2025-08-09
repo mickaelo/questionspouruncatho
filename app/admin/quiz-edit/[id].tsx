@@ -39,9 +39,35 @@ export default function QuizEditScreen() {
   const [hasChanges, setHasChanges] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
+  const [selectedPrerequisites, setSelectedPrerequisites] = useState<string[]>([]);
+  const [prerequisitesPage, setPrerequisitesPage] = useState(1);
+  const [prerequisitesSearchTerm, setPrerequisitesSearchTerm] = useState('');
+  const prerequisitesPerPage = 5;
 
   // Vérifier si l'utilisateur est admin
   const isAdmin = user?.type?.includes('admin');
+
+  // Logique de pagination pour les prérequis
+  const getFilteredPrerequisites = () => {
+    return quizzes
+      .filter(q => q.id !== quiz?.id) // Exclure le quiz actuel
+      .filter(q => 
+        q.title.toLowerCase().includes(prerequisitesSearchTerm.toLowerCase()) ||
+        q.category?.toLowerCase().includes(prerequisitesSearchTerm.toLowerCase())
+      );
+  };
+
+  const getPaginatedPrerequisites = () => {
+    const filtered = getFilteredPrerequisites();
+    const startIndex = (prerequisitesPage - 1) * prerequisitesPerPage;
+    const endIndex = startIndex + prerequisitesPerPage;
+    return filtered.slice(startIndex, endIndex);
+  };
+
+  const getTotalPrerequisitesPages = () => {
+    const filtered = getFilteredPrerequisites();
+    return Math.ceil(filtered.length / prerequisitesPerPage);
+  };
 
   const handleBackNavigation = () => {
     if (hasChanges) {
@@ -71,7 +97,8 @@ export default function QuizEditScreen() {
           description: foundQuiz.description,
           category: foundQuiz.category,
           level: foundQuiz.level,
-          passingScore: foundQuiz.passingScore
+          passingScore: foundQuiz.passingScore,
+          prerequisites: foundQuiz.prerequisites
         });
 
         // Extraire les IDs des questions actuelles
@@ -90,6 +117,7 @@ export default function QuizEditScreen() {
         }
 
         setSelectedQuestions(questionIds);
+        setSelectedPrerequisites(foundQuiz.prerequisites || []);
         console.log('📋 Quiz chargé:', foundQuiz.title, 'avec', questionIds.length, 'questions');
       }
     }
@@ -122,9 +150,16 @@ export default function QuizEditScreen() {
         !selectedQuestions.every(id => currentQuestionIds.includes(id)) ||
         !currentQuestionIds.every(id => selectedQuestions.includes(id));
 
-      setHasChanges(hasQuizChanges || hasQuestionChanges);
+      // Vérifier les changements de prérequis
+      const currentPrerequisites = quiz.prerequisites || [];
+      const hasPrerequisiteChanges =
+        selectedPrerequisites.length !== currentPrerequisites.length ||
+        !selectedPrerequisites.every(id => currentPrerequisites.includes(id)) ||
+        !currentPrerequisites.every(id => selectedPrerequisites.includes(id));
+
+      setHasChanges(hasQuizChanges || hasQuestionChanges || hasPrerequisiteChanges);
     }
-  }, [quiz, editedQuiz, selectedQuestions]);
+  }, [quiz, editedQuiz, selectedQuestions, selectedPrerequisites]);
 
   const handleSave = async () => {
     if (!quiz || !hasChanges) return;
@@ -153,6 +188,18 @@ export default function QuizEditScreen() {
       }
       if (editedQuiz.passingScore !== quiz.passingScore) {
         quizUpdates.passingScore = editedQuiz.passingScore;
+        hasQuizUpdates = true;
+      }
+
+      // Vérifier les changements de prérequis
+      const currentPrerequisites = quiz.prerequisites || [];
+      const hasPrerequisiteChanges =
+        selectedPrerequisites.length !== currentPrerequisites.length ||
+        !selectedPrerequisites.every(id => currentPrerequisites.includes(id)) ||
+        !currentPrerequisites.every(id => selectedPrerequisites.includes(id));
+
+      if (hasPrerequisiteChanges) {
+        quizUpdates.prerequisites = selectedPrerequisites;
         hasQuizUpdates = true;
       }
 
@@ -217,6 +264,26 @@ export default function QuizEditScreen() {
 
   // Obtenir les catégories uniques
   const categories = [...new Set(questions.map(q => q.category))].sort();
+
+  // Filtrer et paginer les prérequis
+  const filteredPrerequisites = quizzes
+    .filter(q => q.id !== quiz?.id) // Exclure le quiz actuel
+    .filter(q => 
+      q.title.toLowerCase().includes(prerequisitesSearchTerm.toLowerCase()) ||
+      q.category.toLowerCase().includes(prerequisitesSearchTerm.toLowerCase())
+    );
+
+  const totalPrerequisitesPages = Math.ceil(filteredPrerequisites.length / prerequisitesPerPage);
+  const startIndex = (prerequisitesPage - 1) * prerequisitesPerPage;
+  const endIndex = startIndex + prerequisitesPerPage;
+  const paginatedPrerequisites = filteredPrerequisites.slice(startIndex, endIndex);
+
+  // Réinitialiser la page si elle dépasse le nombre total de pages
+  React.useEffect(() => {
+    if (prerequisitesPage > totalPrerequisitesPages && totalPrerequisitesPages > 0) {
+      setPrerequisitesPage(1);
+    }
+  }, [prerequisitesPage, totalPrerequisitesPages]);
 
   if (!isAdmin) {
     return (
@@ -407,6 +474,162 @@ export default function QuizEditScreen() {
                 />
               </View>
             </View>
+          </ThemedView>
+
+          {/* Section des prérequis */}
+          <ThemedView style={[styles.card, { backgroundColor: colors.card, borderColor: colors.border }]}>
+            <View style={styles.cardHeader}>
+              <MaterialIcons name="link" size={24} color={colors.primary} />
+              <ThemedText type="subtitle" style={[styles.cardTitle, { color: colors.text }]}>
+                Prérequis du Quiz
+              </ThemedText>
+              <View style={styles.prerequisiteCountBadge}>
+                <ThemedText style={[styles.prerequisiteCountText, { color: colors.background }]}>
+                  {filteredPrerequisites.length} quiz disponibles
+                </ThemedText>
+              </View>
+            </View>
+
+            <ThemedText style={[styles.label, { color: colors.text, marginBottom: 10 }]}>
+              Sélectionnez les quiz qui doivent être terminés avant celui-ci :
+            </ThemedText>
+
+            {/* Barre de recherche pour les prérequis */}
+            <View style={styles.prerequisitesSearchSection}>
+              <TextInput
+                style={[styles.searchInput, { color: colors.text, borderColor: colors.border, backgroundColor: colors.background }]}
+                placeholder="Rechercher des quiz prérequis..."
+                placeholderTextColor={colors.text + '80'}
+                value={prerequisitesSearchTerm}
+                onChangeText={setPrerequisitesSearchTerm}
+              />
+              {prerequisitesSearchTerm.length > 0 && (
+                <TouchableOpacity
+                  style={[styles.clearSearchButton, { backgroundColor: colors.secondary }]}
+                  onPress={() => setPrerequisitesSearchTerm('')}
+                >
+                  <MaterialIcons name="clear" size={16} color={colors.background} />
+                </TouchableOpacity>
+              )}
+            </View>
+
+            {/* Liste paginée des prérequis */}
+            <View style={styles.prerequisitesList}>
+              {paginatedPrerequisites.length === 0 ? (
+                <View style={styles.emptyPrerequisites}>
+                  <MaterialIcons name="search-off" size={32} color={colors.secondary} />
+                  <ThemedText style={[styles.emptyPrerequisitesText, { color: colors.secondary }]}>
+                    {prerequisitesSearchTerm ? 'Aucun quiz trouvé pour cette recherche' : 'Aucun quiz prérequis disponible'}
+                  </ThemedText>
+                </View>
+              ) : (
+                paginatedPrerequisites.map((prerequisiteQuiz) => {
+                  const isSelected = selectedPrerequisites.includes(prerequisiteQuiz.id);
+                  return (
+                    <TouchableOpacity
+                      key={prerequisiteQuiz.id}
+                      style={[
+                        styles.prerequisiteItem,
+                        {
+                          backgroundColor: isSelected ? `${colors.primary}20` : colors.background,
+                          borderColor: isSelected ? colors.primary : colors.border,
+                        }
+                      ]}
+                      onPress={() => {
+                        if (isSelected) {
+                          setSelectedPrerequisites(prev => prev.filter(id => id !== prerequisiteQuiz.id));
+                        } else {
+                          setSelectedPrerequisites(prev => [...prev, prerequisiteQuiz.id]);
+                        }
+                      }}
+                    >
+                      <View style={styles.prerequisiteInfo}>
+                        <ThemedText style={[styles.prerequisiteTitle, { color: colors.text }]}>
+                          {prerequisiteQuiz.title}
+                        </ThemedText>
+                        <ThemedText style={[styles.prerequisiteCategory, { color: colors.text + '80' }]}>
+                          {prerequisiteQuiz.category} • Niveau {prerequisiteQuiz.level}
+                        </ThemedText>
+                      </View>
+                      <MaterialIcons
+                        name={isSelected ? "check-circle" : "radio-button-unchecked"}
+                        size={24}
+                        color={isSelected ? colors.primary : colors.text + '60'}
+                      />
+                    </TouchableOpacity>
+                  );
+                })
+              )}
+            </View>
+
+            {/* Contrôles de pagination */}
+            {filteredPrerequisites.length > prerequisitesPerPage && (
+              <View style={styles.prerequisitesPagination}>
+                <TouchableOpacity
+                  style={[
+                    styles.paginationButton,
+                    {
+                      backgroundColor: prerequisitesPage > 1 ? colors.primary : colors.border,
+                      opacity: prerequisitesPage > 1 ? 1 : 0.5
+                    }
+                  ]}
+                  onPress={() => setPrerequisitesPage(prerequisitesPage - 1)}
+                  disabled={prerequisitesPage <= 1}
+                >
+                  <MaterialIcons name="chevron-left" size={20} color={colors.background} />
+                </TouchableOpacity>
+
+                <View style={styles.paginationInfo}>
+                  <ThemedText style={[styles.paginationText, { color: colors.text }]}>
+                    Page {prerequisitesPage} sur {totalPrerequisitesPages}
+                  </ThemedText>
+                  <ThemedText style={[styles.paginationSubtext, { color: colors.text + '80' }]}>
+                    ({startIndex + 1}-{Math.min(endIndex, filteredPrerequisites.length)} sur {filteredPrerequisites.length})
+                  </ThemedText>
+                </View>
+
+                <TouchableOpacity
+                  style={[
+                    styles.paginationButton,
+                    {
+                      backgroundColor: prerequisitesPage < totalPrerequisitesPages ? colors.primary : colors.border,
+                      opacity: prerequisitesPage < totalPrerequisitesPages ? 1 : 0.5
+                    }
+                  ]}
+                  onPress={() => setPrerequisitesPage(prerequisitesPage + 1)}
+                  disabled={prerequisitesPage >= totalPrerequisitesPages}
+                >
+                  <MaterialIcons name="chevron-right" size={20} color={colors.background} />
+                </TouchableOpacity>
+              </View>
+            )}
+
+            {selectedPrerequisites.length > 0 && (
+              <View style={styles.selectedPrerequisites}>
+                <ThemedText style={[styles.label, { color: colors.text }]}>
+                  Prérequis sélectionnés ({selectedPrerequisites.length}) :
+                </ThemedText>
+                <View style={styles.prerequisiteChips}>
+                  {selectedPrerequisites.map((prereqId) => {
+                    const prereqQuiz = quizzes.find(q => q.id === prereqId);
+                    if (!prereqQuiz) return null;
+                    return (
+                      <View key={prereqId} style={[styles.prerequisiteChip, { backgroundColor: `${colors.primary}20`, borderColor: colors.primary }]}>
+                        <ThemedText style={[styles.chipText, { color: colors.primary }]}>
+                          {prereqQuiz.title}
+                        </ThemedText>
+                        <TouchableOpacity
+                          onPress={() => setSelectedPrerequisites(prev => prev.filter(id => id !== prereqId))}
+                          style={styles.chipRemove}
+                        >
+                          <MaterialIcons name="close" size={16} color={colors.primary} />
+                        </TouchableOpacity>
+                      </View>
+                    );
+                  })}
+                </View>
+              </View>
+            )}
           </ThemedView>
 
           {/* Filtres pour les questions */}
@@ -850,5 +1073,121 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 10,
     textAlign: 'center',
+  },
+  // Styles pour les prérequis
+  prerequisitesList: {
+    maxHeight: 300,
+    minHeight: 200,
+  },
+  prerequisiteItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 12,
+    marginBottom: 8,
+    borderRadius: 8,
+    borderWidth: 1,
+  },
+  prerequisiteInfo: {
+    flex: 1,
+    marginRight: 12,
+  },
+  prerequisiteTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 4,
+  },
+  prerequisiteCategory: {
+    fontSize: 12,
+  },
+  prerequisiteCountBadge: {
+    backgroundColor: '#e0e0e0',
+    borderRadius: 12,
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    marginLeft: 'auto',
+  },
+  prerequisiteCountText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  prerequisitesSearchSection: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    gap: 8,
+  },
+  clearSearchButton: {
+    padding: 8,
+    borderRadius: 6,
+  },
+  emptyPrerequisites: {
+    alignItems: 'center',
+    paddingVertical: 40,
+    justifyContent: 'center',
+  },
+  emptyPrerequisitesText: {
+    fontSize: 14,
+    marginTop: 8,
+    textAlign: 'center',
+  },
+  prerequisitesPagination: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 16,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#e0e0e0',
+  },
+  paginationButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  paginationInfo: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  paginationText: {
+    fontSize: 14,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  paginationSubtext: {
+    fontSize: 12,
+    textAlign: 'center',
+    marginTop: 2,
+  },
+  selectedPrerequisites: {
+    marginTop: 16,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#e0e0e0',
+  },
+  prerequisiteChips: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 8,
+  },
+  prerequisiteChip: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginRight: 8,
+    marginBottom: 8,
+    borderRadius: 16,
+    borderWidth: 1,
+  },
+  chipText: {
+    fontSize: 12,
+    fontWeight: '500',
+    marginRight: 6,
+  },
+  chipRemove: {
+    padding: 2,
   },
 }); 

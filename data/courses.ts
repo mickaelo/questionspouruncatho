@@ -30,14 +30,14 @@ export const formationCourses: CourseWithQuizIds[] = [
     requiredBadges: 0,
     unlockedBadges: [],
     quizzes: [
-      "quiz-23", // Qui est Jésus-Christ ?
-      "quiz-24", // Les premiers gestes chrétiens
-      "quiz-25", // La Bible et les Écritures
-      "quiz-26", // L'Église et la messe
-      "quiz-27", // Le baptême et les sacrements
-      "quiz-1",  // Les Fondamentaux de la Foi
-      "quiz-3",  // La Bible et les Écritures
-      "quiz-5",  // Les Saints et la Communion des Saints
+      "quiz-3", // Qui est Jésus-Christ ?
+      "quiz-4", // Les premiers gestes chrétiens
+      "quiz-5", // La Bible et les Écritures
+      "quiz-6", // L'Église et la messe
+      "quiz-7", // Le baptême et les sacrements
+      "quiz-8",  // Les Fondamentaux de la Foi
+      "quiz-9",  // La Bible et les Écritures
+      "quiz-10",  // Les Saints et la Communion des Saints
       "quiz-11", // Les Prières Catholiques
       "quiz-13"  // Introduction à Saint Thomas d'Aquin
     ],

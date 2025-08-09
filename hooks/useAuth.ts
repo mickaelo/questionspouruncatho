@@ -1,8 +1,7 @@
-import { AUTH_CONFIG } from '@/config/auth';
 import { auth } from '@/config/firebase';
 import { FirebaseAuthService } from '@/services/firebaseAuthService';
 import { localStorageService } from '@/services/localStorageService';
-import { GoogleSignin, isErrorWithCode, statusCodes } from '@react-native-google-signin/google-signin';
+// import { GoogleSignin, isErrorWithCode, statusCodes } from '@react-native-google-signin/google-signin';
 import { getRedirectResult, GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signInWithRedirect } from 'firebase/auth';
 import { useCallback, useEffect, useState } from 'react';
 import { Platform } from 'react-native';
@@ -295,15 +294,15 @@ export function useAuth() {
 
         try {
           // Vérifier que Google Play Services est disponible
-          await GoogleSignin.hasPlayServices();
-          GoogleSignin.configure({
-            webClientId: AUTH_CONFIG.google.clientId,
-          });
+          // await GoogleSignin.hasPlayServices();   
+          // GoogleSignin.configure({
+          //   webClientId: AUTH_CONFIG.google.clientId,
+          // });
           console.log('✅ Google Sign-In configuré avec succès');
           // Lancer l'authentification Google Sign-In
-          const userInfo = await GoogleSignin.signIn();
+          // const userInfo = await GoogleSignin.signIn();
 
-          console.log('✅ Authentification Google Sign-In réussie:', userInfo);
+          //      console.log('✅ Authentification Google Sign-In réussie:', userInfo);
 
           // Pour l'instant, utiliser une structure simple pour éviter les erreurs de linter
           // TODO: Adapter selon la structure réelle de l'API
@@ -354,41 +353,44 @@ export function useAuth() {
         } catch (error: any) {
           console.error('❌ Erreur lors de l\'authentification Google Sign-In:', error);
 
-          if (isErrorWithCode(error)) {
-            console.log('Erreur avec code:', error.code);
-          } else {
-            console.log('Erreur sans code:', error);
-          }
-          let errorMessage = 'Erreur lors de l\'authentification Google';
+          // if (isErrorWithCode(error)) {
+          //   console.log('Erreur avec code:', error.code);
+          // } else {
+          //   console.log('Erreur sans code:', error);
+          // }
+          // let errorMessage = 'Erreur lors de l\'authentification Google';
 
-          if (error.code) {
-            switch (error.code) {
-              case statusCodes.SIGN_IN_CANCELLED:
-                errorMessage = 'Authentification annulée par l\'utilisateur';
-                break;
-              case statusCodes.IN_PROGRESS:
-                errorMessage = 'Authentification déjà en cours';
-                break;
-              case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
-                errorMessage = 'Google Play Services non disponible';
-                break;
-              case statusCodes.SIGN_IN_REQUIRED:
-                errorMessage = 'Connexion requise';
-                break;
-              default:
-                errorMessage = error.message || 'Erreur inconnue lors de l\'authentification Google';
-            }
-          } else if (error.message) {
-            errorMessage = error.message;
-          }
+          // if (error.code) {
+          //   switch (error.code) {
+          //     case statusCodes.SIGN_IN_CANCELLED:
+          //       errorMessage = 'Authentification annulée par l\'utilisateur';
+          //       break;
+          //     case statusCodes.IN_PROGRESS:
+          //       errorMessage = 'Authentification déjà en cours';
+          //       break;
+          //     case statusCodes.PLAY_SERVICES_NOT_AVAILABLE:
+          //       errorMessage = 'Google Play Services non disponible';
+          //       break;
+          //     case statusCodes.SIGN_IN_REQUIRED:
+          //       errorMessage = 'Connexion requise';
+          //       break;
+          //     default:
+          //       errorMessage = error.message || 'Erreur inconnue lors de l\'authentification Google';
+          //   }
+          // } else if (error.message) {
+          //   errorMessage = error.message;
+          // }
 
           setAuthState(prev => ({
             ...prev,
             isLoading: false,
-            error: errorMessage,
+            // error: errorMessage,
           }));
 
-          return { success: false, error: errorMessage };
+          return {
+            success: false,
+            // error: errorMessage
+          };
         }
       }
 
